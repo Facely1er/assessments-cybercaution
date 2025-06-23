@@ -12,8 +12,7 @@ import {
   Bell,
   ExternalLink,
   Check,
-  Zap,
-  Globe
+  Zap
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { CISAComplianceTracker } from '../CISAComplianceTracker';
@@ -53,8 +52,12 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <Link to="/" className="flex items-center group">
-                <div className="h-10 w-10 bg-primary text-white rounded-md flex items-center justify-center mr-2 group-hover:bg-primary/90 transition-colors">
-                  <Shield className="h-6 w-6" />
+                <div className="h-10 w-10 mr-2 group-hover:opacity-90 transition-opacity">
+                  <img 
+                    src="/logo.png" 
+                    alt="CISA Assessment Tools Logo" 
+                    className="h-full w-full" 
+                  />
                 </div>
                 <div>
                   <span className="text-lg font-bold text-foreground">CISA Assessment Tools</span>
@@ -67,17 +70,6 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <a 
-                href="https://www.cybercaution.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center text-foreground hover:text-primary transition-colors px-3 py-2 text-sm"
-              >
-                <Globe className="h-4 w-4 mr-1" />
-                Main Site
-                <ExternalLink className="ml-1 h-3.5 w-3.5" />
-              </a>
-
               <div className="relative group">
                 <button className="flex items-center text-foreground hover:text-primary transition-colors px-3 py-2 text-sm">
                   Assessments
@@ -105,6 +97,16 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
                 className="flex items-center text-foreground hover:text-primary transition-colors px-3 py-2 text-sm"
               >
                 CISA Resources
+                <ExternalLink className="ml-1 h-3.5 w-3.5" />
+              </a>
+
+              <a 
+                href="https://cybercaution.com" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-foreground hover:text-primary transition-colors px-3 py-2 text-sm"
+              >
+                Main Site
                 <ExternalLink className="ml-1 h-3.5 w-3.5" />
               </a>
 
@@ -159,18 +161,6 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
       {mobileMenuOpen && (
         <div className="md:hidden bg-background border-b border-border">
           <div className="py-2 px-4 space-y-1">
-            <a 
-              href="https://www.cybercaution.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center px-3 py-2 text-base font-medium rounded-md hover:bg-muted transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Globe className="h-5 w-5 mr-2" />
-              Main Site
-              <ExternalLink className="ml-1 h-3.5 w-3.5" />
-            </a>
-
             {assessmentTools.map((tool) => (
               <Link 
                 key={tool.path} 
@@ -189,6 +179,16 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
               onClick={() => setMobileMenuOpen(false)}
             >
               CISA Resources
+              <ExternalLink className="ml-1 h-3.5 w-3.5" />
+            </a>
+            <a 
+              href="https://cybercaution.com" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center px-3 py-2 text-base font-medium rounded-md hover:bg-muted transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Main Site
               <ExternalLink className="ml-1 h-3.5 w-3.5" />
             </a>
             <div className="border-t border-border my-2 pt-2">
@@ -244,7 +244,7 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center">
               <Shield className="h-4 w-4 mr-2 text-primary" />
-              <span className="text-sm text-muted-foreground">CyberCaution Assessment Tools</span>
+              <span className="text-sm text-muted-foreground">CISA Assessment Tools</span>
             </div>
             
             <div className="flex items-center mt-4 md:mt-0">
