@@ -52,12 +52,8 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <Link to="/" className="flex items-center group">
-                <div className="h-10 w-10 mr-2 group-hover:opacity-90 transition-opacity">
-                  <img 
-                    src="/logo.png" 
-                    alt="CISA Assessment Tools Logo" 
-                    className="h-full w-full" 
-                  />
+                <div className="h-10 w-10 bg-primary text-white rounded-md flex items-center justify-center mr-2 group-hover:bg-primary/90 transition-colors">
+                  <Shield className="h-6 w-6" />
                 </div>
                 <div>
                   <span className="text-lg font-bold text-foreground">CyberCaution Assessment Tools</span>
