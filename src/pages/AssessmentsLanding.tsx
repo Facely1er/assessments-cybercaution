@@ -138,7 +138,7 @@ const AssessmentsLanding = () => {
       <div className="bg-gradient-to-b from-primary/5 to-background/0 py-12 md:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">CISA Assessment Tools</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">CyberCaution Assessment Tools</h1>
             <p className="text-lg text-muted-foreground mb-8">
               Comprehensive assessment tools aligned with CISA and NIST guidance to strengthen your security posture.
             </p>

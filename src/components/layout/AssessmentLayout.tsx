@@ -244,7 +244,7 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center">
               <Shield className="h-4 w-4 mr-2 text-primary" />
-              <span className="text-sm text-muted-foreground">CISA Assessment Tools</span>
+              <span className="text-sm text-muted-foreground">CyberCaution Assessment Tools</span>
             </div>
             
             <div className="flex items-center mt-4 md:mt-0">
