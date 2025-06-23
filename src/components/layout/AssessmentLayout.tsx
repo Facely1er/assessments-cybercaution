@@ -2,8 +2,26 @@ import React, { ReactNode } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { 
   Shield, 
-  AlertTriangle, 
-  Menu, 
+  Target, 
+  Award, 
+  Users,
+  Smile,
+  Globe,
+  Heart,
+  Zap,
+  CheckCircle,
+  BookOpen,
+  Lock,
+  FileCheck,
+  Building,
+  Clock,
+  Star,
+  Trophy,
+  BarChart,
+  Lightbulb,
+  Calendar,
+  ArrowRight,
+  Menu,
   Sun, 
   Moon, 
   LogOut, 
@@ -12,7 +30,6 @@ import {
   Bell,
   ExternalLink,
   Check,
-  Zap
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { CISAComplianceTracker } from '../CISAComplianceTracker';
@@ -52,9 +69,11 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <Link to="/" className="flex items-center group">
-                <div className="h-10 w-10 bg-primary text-white rounded-md flex items-center justify-center mr-2 group-hover:bg-primary/90 transition-colors">
-                  <Shield className="h-6 w-6" />
-                </div>
+                <img 
+                  src="/cybercaution.png" 
+                  alt="CyberCaution Logo" 
+                  className="h-10 w-10 mr-2 group-hover:bg-primary/90 transition-colors"
+                />
                 <div>
                   <span className="text-lg font-bold text-foreground">CyberCaution Assessment Tools</span>
                   <div className="text-xs flex items-center text-primary">
