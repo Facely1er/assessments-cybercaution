@@ -12,7 +12,8 @@ import {
   Bell,
   ExternalLink,
   Check,
-  Zap
+  Zap,
+  Globe
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { CISAComplianceTracker } from '../CISAComplianceTracker';
@@ -66,6 +67,17 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
+              <a 
+                href="https://www.cybercaution.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center text-foreground hover:text-primary transition-colors px-3 py-2 text-sm"
+              >
+                <Globe className="h-4 w-4 mr-1" />
+                Main Site
+                <ExternalLink className="ml-1 h-3.5 w-3.5" />
+              </a>
+
               <div className="relative group">
                 <button className="flex items-center text-foreground hover:text-primary transition-colors px-3 py-2 text-sm">
                   Assessments
@@ -147,6 +159,18 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
       {mobileMenuOpen && (
         <div className="md:hidden bg-background border-b border-border">
           <div className="py-2 px-4 space-y-1">
+            <a 
+              href="https://www.cybercaution.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center px-3 py-2 text-base font-medium rounded-md hover:bg-muted transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Globe className="h-5 w-5 mr-2" />
+              Main Site
+              <ExternalLink className="ml-1 h-3.5 w-3.5" />
+            </a>
+
             {assessmentTools.map((tool) => (
               <Link 
                 key={tool.path} 
