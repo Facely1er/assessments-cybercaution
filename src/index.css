@@ -1,0 +1,374 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 222 47% 33%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --accent: 34 100% 47%;
+    --accent-foreground: 210 40% 98%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 84 70% 44%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222.2 47.4% 11.2%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    
+    --radius: 0.5rem;
+  }
+  
+  .dark {
+    --background: 222.2 47.4% 11.2%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222.2 47.4% 11.2%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222.2 47.4% 11.2%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 221 83% 65%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 222 47% 33%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 34 100% 55%;
+    --accent-foreground: 0 0% 0%;
+    
+    --muted: 217.2 32.6% 20%;
+    --muted-foreground: 215 20.2% 75.1%;
+    
+    --destructive: 0 74% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 84 70% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 60%;
+    --warning-foreground: 0 0% 0%;
+    
+    --border: 217.2 32.6% 25%;
+    --input: 217.2 32.6% 25%;
+    --ring: 224.3 76.3% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    @apply transition-colors duration-200;
+    scroll-behavior: smooth;
+  }
+
+  html.no-scroll-behavior {
+    scroll-behavior: auto;
+  }
+
+  .dark-mode-transition-disabled {
+    transition: none !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium leading-tight text-foreground;
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+  
+  /* Add styles for links and hover states */
+  a {
+    @apply transition-colors duration-200;
+  }
+
+  a:hover, button:hover {
+    @apply text-orange-500;
+  }
+  
+  /* Selection color */
+  ::selection {
+    @apply bg-orange-500/25 text-foreground;
+  }
+  ::-moz-selection {
+    @apply bg-orange-500/25 text-foreground;
+  }
+}
+
+@layer components {
+  .dropdown-content {
+    @apply overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md;
+  }
+
+  .animate-in {
+    animation: animateIn 0.3s ease;
+  }
+
+  .animate-out {
+    animation: animateOut 0.3s ease;
+  }
+  
+  .page-transition {
+    @apply transition-opacity duration-300;
+  }
+
+  .page-enter {
+    @apply opacity-0;
+  }
+
+  .page-enter-active {
+    @apply opacity-100 transition-opacity duration-300;
+  }
+  
+  /* Styling for navlinks */
+  .nav-link {
+    @apply text-foreground hover:text-orange-500 transition-colors duration-200;
+  }
+  
+  .nav-link.active {
+    @apply text-orange-500;
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-md dark:hover:shadow-none dark:hover:border-orange-500/50;
+  }
+  
+  /* Button transitions */
+  .btn-transition {
+    @apply transition-all duration-200;
+  }
+  
+  /* Assessment section styling */
+  .assessment-card {
+    @apply border dark:border-muted bg-card shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none transition-all duration-200;
+  }
+  
+  /* Hero background animation */
+  .hero-background {
+    @apply absolute inset-0 z-0;
+    background: url('https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&w=1920');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.07;
+    animation: pulse 15s infinite alternate, shift 30s infinite linear;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0.05;
+    }
+    100% {
+      opacity: 0.1;
+    }
+  }
+
+  @keyframes shift {
+    0% {
+      transform: scale(1.0) rotate(0deg);
+    }
+    50% {
+      transform: scale(1.05) rotate(1deg);
+    }
+    100% {
+      transform: scale(1.0) rotate(0deg);
+    }
+  }
+
+  .dark .hero-background {
+    opacity: 0.15;
+    filter: brightness(0.7) saturate(0.8);
+  }
+
+  @keyframes animateIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes animateOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  
+  /* Styling for primary and secondary assessment sections */
+  .primary-assessments {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+  }
+  
+  .additional-tools {
+    @apply mt-16 p-8 bg-pale-blue dark:bg-dark-navy/30 rounded-lg;
+  }
+  
+  .additional-tools .assessment-card {
+    @apply opacity-90 border border-border/50;
+  }
+
+  /* Status badges */
+  .status-badge-secure {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secure-green bg-opacity-10 text-secure-green;
+  }
+
+  .status-badge-warning {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-warning-amber bg-opacity-10 text-warning-amber;
+  }
+
+  .status-badge-critical {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-critical-red bg-opacity-10 text-critical-red dark:bg-dark-alert dark:bg-opacity-20;
+  }
+
+  .status-badge-ransomware {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-critical-red text-white animate-pulse;
+  }
+
+  /* Threat dashboard cards */
+  .threat-card-low {
+    @apply bg-secure-green bg-opacity-10 border border-secure-green rounded-lg p-4;
+  }
+
+  .threat-card-medium {
+    @apply bg-warning-amber bg-opacity-10 border border-warning-amber rounded-lg p-4;
+  }
+
+  .threat-card-high {
+    @apply bg-critical-red bg-opacity-10 border border-critical-red rounded-lg p-4;
+  }
+}
+
+/* Animation classes for scroll animations */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .animate-slide-in-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideInLeft 0.8s ease forwards;
+  }
+
+  .animate-slide-in-right {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideInRight 0.8s ease forwards;
+  }
+
+  .animate-slide-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideInUp 0.8s ease forwards;
+  }
+
+  .animate-scale-in {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: scaleIn 0.7s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-300 { animation-delay: 0.3s; }
+  .delay-400 { animation-delay: 0.4s; }
+  .delay-500 { animation-delay: 0.5s; }
+}
+
+/* Prevent flash of unstyled content when switching themes */
+.no-fouc {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.fouc-ready {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease-in-out;
+}
