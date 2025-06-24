@@ -1,5 +1,7 @@
 export const SUBDOMAIN_URLS = {
-  AUTH: 'https://auth.cybercaution.com',
+  AUTH: 'https://authentication.cybercaution.com',
   RESOURCES: 'https://resources.cybercaution.com',
-  ASSESSMENT: 'https://assessment.cybercaution.com'
+  ASSESS: 'https://assessments.cybercaution.com',
+  APP: 'https://application.cybercaution.com',
+  MAIN: 'https://cybercaution.com'
 };

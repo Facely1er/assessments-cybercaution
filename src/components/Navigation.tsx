@@ -36,7 +36,9 @@ const Navigation: React.FC<NavigationProps> = ({
     { 
       name: 'Home', 
       path: '/',
-      icon: Home
+      icon: Home,
+      external: true,
+      url: SUBDOMAIN_URLS.MAIN
     },
     { 
       name: 'Assessments', 
@@ -55,12 +57,16 @@ const Navigation: React.FC<NavigationProps> = ({
     { 
       name: 'Features', 
       path: '/features',
-      icon: Lightbulb
+      icon: Lightbulb,
+      external: true,
+      url: `${SUBDOMAIN_URLS.MAIN}/features`
     },
     { 
       name: 'Solutions', 
       path: '/solutions',
-      icon: Rocket
+      icon: Rocket,
+      external: true,
+      url: `${SUBDOMAIN_URLS.MAIN}/solutions`
     },
     { 
       name: 'Resources', 
@@ -72,7 +78,9 @@ const Navigation: React.FC<NavigationProps> = ({
     { 
       name: 'Pricing', 
       path: '/pricing',
-      icon: Building2
+      icon: Building2,
+      external: true,
+      url: `${SUBDOMAIN_URLS.MAIN}/pricing`
     }
   ];
 
@@ -82,7 +90,7 @@ const Navigation: React.FC<NavigationProps> = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center group">
+            <a href={SUBDOMAIN_URLS.MAIN} className="flex items-center group">
               <img 
                 src="/cybercaution.png" 
                 alt="CyberCaution Logo" 
@@ -92,7 +100,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 <span className="text-xl font-bold text-foreground hidden md:block">CyberCaution™</span>
                 <span className="text-xs text-muted-foreground hidden md:block">by ERMITS</span>
               </div>
-            </Link>
+            </a>
           </div>
           
           {/* Centered Navigation Items */}
