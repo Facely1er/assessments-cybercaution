@@ -95,7 +95,7 @@ const RansomwareAssessment = () => {
           id: "RM-3",
           question: "Have you identified critical systems and data that would be high-value ransomware targets?",
           control: "NIST IR 8374 2.1.2 | CSF ID.AM-5",
-          guidance: "Identify and prioritize high-value assets according to criticality and business value"
+          guidance: "Identify and prioritize critical systems and data according to criticality and business value"
         },
         {
           id: "RM-4",
@@ -399,7 +399,7 @@ const RansomwareAssessment = () => {
     return (
       <div className="flex gap-2 mt-2">
         <Button
-          variant={currentAnswer === 'yes' ? 'default' : 'outline'}
+          variant={currentAnswer === 'yes' ? 'orange' : 'outline'}
           size="sm"
           onClick={() => handleAnswer(questionId, 'yes')}
           className="flex items-center gap-1"
@@ -408,7 +408,7 @@ const RansomwareAssessment = () => {
           Yes
         </Button>
         <Button
-          variant={currentAnswer === 'partial' ? 'default' : 'outline'}
+          variant={currentAnswer === 'partial' ? 'orange' : 'outline'}
           size="sm"
           onClick={() => handleAnswer(questionId, 'partial')}
           className="flex items-center gap-1"
@@ -417,7 +417,7 @@ const RansomwareAssessment = () => {
           Partial
         </Button>
         <Button
-          variant={currentAnswer === 'no' ? 'default' : 'outline'}
+          variant={currentAnswer === 'no' ? 'orange' : 'outline'}
           size="sm"
           onClick={() => handleAnswer(questionId, 'no')}
           className="flex items-center gap-1"
@@ -427,22 +427,6 @@ const RansomwareAssessment = () => {
         </Button>
       </div>
     );
-  };
-
-  const getCsfCategory = (controlRef: string) => {
-    if (!controlRef.includes('CSF')) return null;
-    
-    const csfPart = controlRef.split('CSF')[1].trim();
-    const category = csfPart.split('.')[0];
-    
-    switch (category) {
-      case 'ID': return 'Identify';
-      case 'PR': return 'Protect';
-      case 'DE': return 'Detect';
-      case 'RS': return 'Respond';
-      case 'RC': return 'Recover';
-      default: return null;
-    }
   };
 
   // Determine if we have enough answers to show results
@@ -514,9 +498,9 @@ const RansomwareAssessment = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <Link to="/app/ransomware-assessment-dashboard" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+          <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
+            Back to Home
           </Link>
           
           <div className="text-center mb-12">
@@ -674,20 +658,10 @@ const RansomwareAssessment = () => {
       ) : (
         <>
           <div className="mb-6">
-            <div className="flex justify-between items-start mb-4">
-             <Link to="/app/ransomware-assessment-dashboard" className="inline-flex items-center text-foreground hover:text-primary transition-colors">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Dashboard
-              </Link>
-              
-              {lastSaved && (
-                <div className="text-xs text-muted-foreground flex items-center">
-                  <Clock className="h-3.5 w-3.5 mr-1" />
-                  Last saved: {lastSaved.toLocaleTimeString()}
-                  {isSaving && <span className="ml-2 italic">Saving...</span>}
-                </div>
-              )}
-            </div>
+            <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
             
             <div className="flex justify-between items-start">
               <div>
@@ -857,7 +831,7 @@ const RansomwareAssessment = () => {
                         </div>
                         <span className="text-sm font-medium">{score.percentage}%</span>
                       </div>
-                      <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
+                      <div className="w-full bg-muted h-2 rounded-full">
                         <div 
                           className={`h-2 rounded-full ${
                             score.percentage >= 80 ? 'bg-secure-green' :
@@ -865,7 +839,7 @@ const RansomwareAssessment = () => {
                             score.percentage > 0 ? 'bg-critical-red' : 'bg-muted'
                           }`}
                           style={{ width: `${score.percentage}%` }}
-                        ></div>
+                        />
                       </div>
                     </div>
                   );
@@ -890,6 +864,22 @@ const RansomwareAssessment = () => {
       )}
     </div>
   );
+};
+
+const getCsfCategory = (controlRef: string) => {
+  if (!controlRef.includes('CSF')) return null;
+  
+  const csfPart = controlRef.split('CSF')[1].trim();
+  const category = csfPart.split('.')[0];
+  
+  switch (category) {
+    case 'ID': return 'Identify';
+    case 'PR': return 'Protect';
+    case 'DE': return 'Detect';
+    case 'RS': return 'Respond';
+    case 'RC': return 'Recover';
+    default: return null;
+  }
 };
 
 export default RansomwareAssessment;

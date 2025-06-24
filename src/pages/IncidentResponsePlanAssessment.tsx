@@ -245,9 +245,9 @@ const IncidentResponsePlanAssessment = () => {
   return (
     <div className="container mx-auto px-4 py-8 text-center">
       <div className="mb-6">
-        <Link to="/" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+        <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Assessments
+          Back to Home
         </Link>
         
         <h1 className="text-3xl font-bold mb-2 text-foreground">Incident Response Plan Assessment</h1>
@@ -261,7 +261,7 @@ const IncidentResponsePlanAssessment = () => {
           The Incident Response Plan Assessment tool is currently being developed based on CISA guidelines. 
           Please check back soon!
         </p>
-        <Link to="/">
+        <Link to="/assessments">
           <Button>
             Return to Assessments
           </Button>
