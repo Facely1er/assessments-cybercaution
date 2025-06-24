@@ -1,0 +1,215 @@
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { AssessmentResults } from '../components/assessment/AssessmentResults';
+import { generateResultsPdf } from '../utils/generatePdf';
+import { Card, CardContent } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
+import { Download, FileText, Shield, Users, AlertCircle } from 'lucide-react';
+
+const IncidentResponseResults = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Retrieve assessment results from navigation state or use fallback
+  const assessmentResults = location.state?.assessmentResults || {
+    overall_score: 0,
+    section_scores: [],
+    assessment_type: 'incident-response',
+    framework_name: "NIST SP 800-61r2 Incident Response",
+    completed_at: new Date().toISOString()
+  };
+
+  const handleExport = () => {
+    generateResultsPdf(
+      'Incident Response Plan Assessment Results',
+      assessmentResults.overall_score,
+      assessmentResults.section_scores,
+      assessmentResults.completed_at ? 
+        new Date(assessmentResults.completed_at).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }) : 
+        new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }),
+      'incident-response-assessment-results.pdf'
+    );
+  };
+
+  const handleDownloadPlaybook = () => {
+    // In a real application, this would generate and download a customized playbook
+    alert('Generating and downloading your customized NIST-aligned incident response playbook');
+  };
+
+  const handleDownloadTemplates = () => {
+    // In a real application, this would generate incident response templates
+    alert('Downloading incident response templates and checklists');
+  };
+
+  // Transform the data to match the expected format for AssessmentResults component
+  const resultsData = {
+    overallScore: assessmentResults.overall_score,
+    sectionScores: assessmentResults.section_scores,
+    assessmentType: 'incident-response' as 'ransomware',
+    frameworkName: assessmentResults.framework_name,
+    completedDate: assessmentResults.completed_at ? 
+      new Date(assessmentResults.completed_at).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }) : 
+      new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6 text-foreground">Incident Response Plan Assessment Results</h1>
+      
+      <AssessmentResults 
+        data={resultsData}
+        onExport={handleExport}
+      />
+      
+      <div className="mt-8">
+        <h2 className="text-xl font-semibold mb-4 text-foreground">Key Findings</h2>
+        <div className="space-y-4">
+          <div className="p-4 bg-muted/30 dark:bg-muted/20 rounded-lg">
+            <h3 className="font-medium mb-2 text-foreground">Primary Areas for Improvement</h3>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              {assessmentResults.section_scores?.length > 0 ? (
+                assessmentResults.section_scores
+                  .filter((section: any) => section.percentage < 70)
+                  .map((section: any, index: number) => (
+                    <li key={index}>{section.title} needs enhancement ({section.percentage}% compliance)</li>
+                  ))
+              ) : (
+                <>
+                  <li>Complete the assessment to see detailed analysis of your incident response capabilities</li>
+                  <li>Recommendations will be generated based on NIST SP 800-61r2 guidance</li>
+                </>
+              )}
+            </ul>
+          </div>
+          
+          <div className="p-4 bg-muted/30 dark:bg-muted/20 rounded-lg">
+            <h3 className="font-medium mb-2 text-foreground">Incident Response Strengths</h3>
+            <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+              {assessmentResults.section_scores?.length > 0 ? (
+                assessmentResults.section_scores
+                  .filter((section: any) => section.percentage >= 70)
+                  .map((section: any, index: number) => (
+                    <li key={index}>{section.title} shows good implementation ({section.percentage}%)</li>
+                  ))
+              ) : (
+                <>
+                  <li>Complete the assessment to identify your incident response strengths</li>
+                  <li>NIST-aligned controls will be evaluated across six key areas</li>
+                </>
+              )}
+            </ul>
+          </div>
+          
+          <div className="p-4 bg-primary/10 dark:bg-primary/20 rounded-lg">
+            <h3 className="font-medium mb-2 text-foreground">NIST SP 800-61r2 Compliance</h3>
+            <p className="text-muted-foreground text-sm">
+              This assessment evaluates your incident response capabilities against NIST SP 800-61r2 guidelines. 
+              A score of 70% or higher indicates good alignment with NIST recommended practices. Scores below 70% 
+              suggest areas where improvements are needed to meet federal incident response standards.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="border dark:border-muted">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              <Shield className="h-8 w-8 text-primary mr-3" />
+              <h3 className="text-xl font-semibold">IR Playbook Generator</h3>
+            </div>
+            <p className="text-muted-foreground mb-4">
+              Generate a customized incident response playbook based on your assessment results and NIST SP 800-61r2 guidance.
+            </p>
+            <Button onClick={handleDownloadPlaybook} className="w-full">
+              <Download className="mr-2 h-4 w-4" />
+              Generate Playbook
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border dark:border-muted">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              <FileText className="h-8 w-8 text-primary mr-3" />
+              <h3 className="text-xl font-semibold">IR Templates & Checklists</h3>
+            </div>
+            <p className="text-muted-foreground mb-4">
+              Download ready-to-use incident response templates, communication plans, and response checklists.
+            </p>
+            <Button variant="outline" className="w-full" onClick={handleDownloadTemplates}>
+              <Download className="mr-2 h-4 w-4" />
+              Download Templates
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border dark:border-muted">
+          <CardContent className="p-6">
+            <div className="flex items-center mb-4">
+              <Users className="h-8 w-8 text-primary mr-3" />
+              <h3 className="text-xl font-semibold">Training Resources</h3>
+            </div>
+            <p className="text-muted-foreground mb-4">
+              Access NIST-aligned training materials for your incident response team and stakeholders.
+            </p>
+            <Button variant="outline" className="w-full">
+              <AlertCircle className="mr-2 h-4 w-4" />
+              View Training
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-8 p-4 bg-muted/20 rounded-lg">
+        <h3 className="font-medium mb-2 text-foreground">Next Steps</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h4 className="font-medium text-sm mb-2">Immediate Actions</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• Review and address critical priority gaps</li>
+              <li>• Update incident response documentation</li>
+              <li>• Schedule team training sessions</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-medium text-sm mb-2">Long-term Improvements</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
+              <li>• Conduct tabletop exercises quarterly</li>
+              <li>• Establish continuous improvement process</li>
+              <li>• Review and update plan annually</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 flex justify-end">
+        <button
+          onClick={() => navigate('/incident-response-recommendations')}
+          className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+          disabled
+        >
+          View Detailed Recommendations (Coming Soon)
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default IncidentResponseResults;

@@ -17,6 +17,7 @@ import ZeroTrustMaturityAssessment from './pages/ZeroTrustMaturityAssessment';
 import NetworkSegmentationAssessment from './pages/NetworkSegmentationAssessment';
 import BackupReadinessAssessment from './pages/BackupReadinessAssessment';
 import IncidentResponsePlanAssessment from './pages/IncidentResponsePlanAssessment';
+import IncidentResponseResults from './pages/IncidentResponseResults';
 import VulnerabilityManagementAssessment from './pages/VulnerabilityManagementAssessment';
 import TabletopExercise from './pages/TabletopExercise';
 import NistCsfAlignment from './pages/NistCsfAlignment';
@@ -94,6 +95,7 @@ function App() {
           <Route path="/network-segmentation-assessment" element={<NetworkSegmentationAssessment />} />
           <Route path="/backup-readiness-assessment" element={<BackupReadinessAssessment />} />
           <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
+          <Route path="/incident-response-results" element={<IncidentResponseResults />} />
           <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
           <Route path="/tabletop-exercise" element={<TabletopExercise />} />
           <Route path="/nist-csf-alignment" element={<NistCsfAlignment />} />
