@@ -11,7 +11,8 @@ import {
   Moon, 
   SunMoon, 
   Menu, 
-  X 
+  X,
+  ClipboardList
 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
@@ -40,16 +41,16 @@ const Navigation: React.FC<NavigationProps> = ({
     { 
       name: 'Assessments', 
       path: '/assessments',
-      icon: Gauge,
+      icon: ClipboardList,
       external: true,
-      url: `${SUBDOMAIN_URLS.ASSESS}/assessment`
+      url: SUBDOMAIN_URLS.ASSESS
     },
     { 
       name: 'Dashboard', 
       path: '/dashboard',
       icon: Gauge,
       external: true,
-      url: `${SUBDOMAIN_URLS.APP}/dashboard`
+      url: SUBDOMAIN_URLS.APP
     },
     { 
       name: 'Features', 
@@ -78,7 +79,8 @@ const Navigation: React.FC<NavigationProps> = ({
   return (
     <nav className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo Section */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center group">
               <img 
@@ -91,36 +93,38 @@ const Navigation: React.FC<NavigationProps> = ({
                 <span className="text-xs text-muted-foreground hidden md:block">by ERMITS</span>
               </div>
             </Link>
-            
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-1">
-              {navItems.map(item => (
-                <div key={item.name}>
-                  {item.external ? (
-                    <a 
-                      href={item.url}
-                      className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium"
-                    >
-                      {item.icon && <item.icon className="h-4 w-4 mr-2" />}
-                      <span>{item.name}</span>
-                    </a>
-                  ) : (
-                    <Link 
-                      to={item.path} 
-                      className={`flex items-center transition-colors duration-200 px-2 py-2 text-sm font-medium ${
-                        location.pathname === item.path 
-                          ? 'text-electric-blue' 
-                          : 'text-foreground hover:text-electric-blue'
-                      }`}
-                    >
-                      {item.icon && <item.icon className="h-4 w-4 mr-2" />}
-                      {item.name}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </div>
           </div>
           
+          {/* Centered Navigation Items */}
+          <div className="hidden sm:flex sm:space-x-1">
+            {navItems.map(item => (
+              <div key={item.name}>
+                {item.external ? (
+                  <a 
+                    href={item.url}
+                    className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium"
+                  >
+                    {item.icon && <item.icon className="h-4 w-4 mr-2" />}
+                    <span>{item.name}</span>
+                  </a>
+                ) : (
+                  <Link 
+                    to={item.path} 
+                    className={`flex items-center transition-colors duration-200 px-2 py-2 text-sm font-medium ${
+                      location.pathname === item.path 
+                        ? 'text-electric-blue' 
+                        : 'text-foreground hover:text-electric-blue'
+                    }`}
+                  >
+                    {item.icon && <item.icon className="h-4 w-4 mr-2" />}
+                    {item.name}
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+          
+          {/* Right Actions */}
           <div className="flex items-center">
             <button
               onClick={toggleDarkMode}
