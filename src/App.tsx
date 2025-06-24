@@ -19,6 +19,7 @@ import BackupReadinessAssessment from './pages/BackupReadinessAssessment';
 import IncidentResponsePlanAssessment from './pages/IncidentResponsePlanAssessment';
 import IncidentResponseResults from './pages/IncidentResponseResults';
 import VulnerabilityManagementAssessment from './pages/VulnerabilityManagementAssessment';
+import VulnerabilityManagementResults from './pages/VulnerabilityManagementResults';
 import TabletopExercise from './pages/TabletopExercise';
 import NistCsfAlignment from './pages/NistCsfAlignment';
 import SecurityAwareness from './pages/SecurityAwareness';
@@ -97,6 +98,7 @@ function App() {
           <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
           <Route path="/incident-response-results" element={<IncidentResponseResults />} />
           <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
+          <Route path="/vulnerability-management-results" element={<VulnerabilityManagementResults />} />
           <Route path="/tabletop-exercise" element={<TabletopExercise />} />
           <Route path="/nist-csf-alignment" element={<NistCsfAlignment />} />
           <Route path="/security-awareness" element={<SecurityAwareness />} />
