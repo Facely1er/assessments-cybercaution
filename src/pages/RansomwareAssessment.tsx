@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '../components/ui/Toaster';
+import { supabase, assessmentSubmissions } from '../lib/supabase';
 
 const RansomwareAssessment = () => {
   const navigate = useNavigate();
@@ -440,14 +441,62 @@ const RansomwareAssessment = () => {
     return completedSections >= Math.ceil(sections.length / 2);
   };
 
-  const handleViewResults = () => {
+  const handleViewResults = async () => {
     setIsLoading(true);
     
-    // In a real application, you would save the assessment results to a backend here
-    setTimeout(() => {
-      navigate('/ransomware-results');
+    try {
+      // Get the current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        toast.error('Authentication error', 'Please log in to save your assessment results.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Calculate scores
+      const overallScore = getOverallScore();
+      const sectionScores = sections.map((section, index) => {
+        const score = calculateSectionScore(index);
+        return {
+          title: section.title,
+          percentage: score.percentage,
+          completed: score.completed
+        };
+      });
+
+      // Prepare assessment data
+      const assessmentData = {
+        user_id: user.id,
+        assessment_type: 'ransomware',
+        framework_name: 'NIST Ransomware Risk Management (IR 8374)',
+        overall_score: overallScore,
+        section_scores: sectionScores,
+        answers: answers,
+        completed_at: new Date().toISOString()
+      };
+
+      // Save to Supabase
+      const savedAssessment = await assessmentSubmissions.create(assessmentData);
+      
+      // Clear local storage since we've saved to database
+      localStorage.removeItem('ransomwareAssessment');
+      
+      toast.success('Assessment saved!', 'Your ransomware assessment results have been saved successfully.');
+      
+      // Navigate to results page with the saved data
+      navigate('/ransomware-results', { 
+        state: { 
+          assessmentResults: savedAssessment 
+        } 
+      });
+      
+    } catch (error) {
+      console.error('Error saving assessment:', error);
+      toast.error('Error saving assessment', 'Failed to save your assessment results. Please try again.');
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleDownloadTemplate = () => {
@@ -795,11 +844,11 @@ const RansomwareAssessment = () => {
                       <span className="animate-spin">
                         <RefreshCw className="h-4 w-4" />
                       </span>
-                      Processing...
+                      Saving Assessment...
                     </>
                   ) : (
                     <>
-                      View Results
+                      Save & View Results
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}

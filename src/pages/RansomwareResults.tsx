@@ -10,34 +10,31 @@ const RansomwareResults = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // In a real application, this would be passed through the location state
-  // We're mocking it here for demonstration purposes
-  const mockResults = {
-    overallScore: 68,
-    sectionScores: [
-      { title: "Risk Management", percentage: 75, completed: true },
-      { title: "Identity Management & Access Control", percentage: 60, completed: true },
-      { title: "Protective Technology", percentage: 80, completed: true },
-      { title: "Email & Phishing Defense", percentage: 85, completed: true },
-      { title: "Detection & Monitoring", percentage: 55, completed: true },
-      { title: "Incident Response & Recovery", percentage: 50, completed: true },
-      { title: "Tabletop Exercise Readiness", percentage: 45, completed: true }
-    ],
-    assessmentType: 'ransomware',
-    frameworkName: "NIST Ransomware Risk Management (IR 8374)",
-    completedDate: new Date().toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    })
+  // Retrieve assessment results from navigation state or use fallback
+  const assessmentResults = location.state?.assessmentResults || {
+    overall_score: 0,
+    section_scores: [],
+    assessment_type: 'ransomware',
+    framework_name: "NIST Ransomware Risk Management (IR 8374)",
+    completed_at: new Date().toISOString()
   };
 
   const handleExport = () => {
     generateResultsPdf(
       'Ransomware Readiness Assessment Results',
-      mockResults.overallScore,
-      mockResults.sectionScores,
-      mockResults.completedDate,
+      assessmentResults.overall_score,
+      assessmentResults.section_scores,
+      assessmentResults.completed_at ? 
+        new Date(assessmentResults.completed_at).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }) : 
+        new Date().toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        }),
       'ransomware-assessment-results.pdf'
     );
   };
@@ -47,12 +44,31 @@ const RansomwareResults = () => {
     alert('Generating and downloading your customized NIST-aligned ransomware playbook');
   };
 
+  // Transform the data to match the expected format for AssessmentResults component
+  const resultsData = {
+    overallScore: assessmentResults.overall_score,
+    sectionScores: assessmentResults.section_scores,
+    assessmentType: assessmentResults.assessment_type as 'ransomware',
+    frameworkName: assessmentResults.framework_name,
+    completedDate: assessmentResults.completed_at ? 
+      new Date(assessmentResults.completed_at).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      }) : 
+      new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-foreground">Ransomware Readiness Assessment Results</h1>
       
       <AssessmentResults 
-        data={mockResults as any}
+        data={resultsData}
         onExport={handleExport}
       />
       
@@ -62,19 +78,36 @@ const RansomwareResults = () => {
           <div className="p-4 bg-muted/30 dark:bg-muted/20 rounded-lg">
             <h3 className="font-medium mb-2 text-foreground">Primary Risk Areas</h3>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-              <li>Tabletop exercise readiness needs significant improvement (45% compliance)</li>
-              <li>Incident response capabilities need improvement (50% compliance)</li>
-              <li>Detection and monitoring systems have critical gaps (55% compliance)</li>
-              <li>Identity and access management controls require strengthening (60% compliance)</li>
+              {assessmentResults.section_scores?.length > 0 ? (
+                assessmentResults.section_scores
+                  .filter((section: any) => section.percentage < 70)
+                  .map((section: any, index: number) => (
+                    <li key={index}>{section.title} needs improvement ({section.percentage}% compliance)</li>
+                  ))
+              ) : (
+                <>
+                  <li>Complete the assessment to see detailed risk analysis</li>
+                  <li>Recommendations will be generated based on your responses</li>
+                </>
+              )}
             </ul>
           </div>
           
           <div className="p-4 bg-muted/30 dark:bg-muted/20 rounded-lg">
             <h3 className="font-medium mb-2 text-foreground">Strengths</h3>
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-              <li>Strong email and phishing defenses (85% compliance)</li>
-              <li>Effective protective technologies implemented (80% compliance)</li>
-              <li>Good risk management foundation (75% compliance)</li>
+              {assessmentResults.section_scores?.length > 0 ? (
+                assessmentResults.section_scores
+                  .filter((section: any) => section.percentage >= 70)
+                  .map((section: any, index: number) => (
+                    <li key={index}>{section.title} shows good compliance ({section.percentage}%)</li>
+                  ))
+              ) : (
+                <>
+                  <li>Complete the assessment to see your organizational strengths</li>
+                  <li>NIST-aligned controls will be evaluated</li>
+                </>
+              )}
             </ul>
           </div>
         </div>
