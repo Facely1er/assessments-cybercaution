@@ -75,7 +75,7 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
                   className="h-10 w-10 mr-2 group-hover:bg-primary/90 transition-colors"
                 />
                 <div>
-                  <span className="text-lg font-bold text-foreground">CyberCaution Assessment Tools</span>
+                  <span className="text-lg font-bold text-foreground">CyberCaution Assessment Portal</span>
                   <div className="text-xs flex items-center text-primary">
                     <Check className="h-3 w-3 mr-1" />
                     <span>Official CISA Guidance Aligned</span>
