@@ -51,8 +51,7 @@ const Navigation: React.FC<NavigationProps> = ({
       name: 'Dashboard', 
       path: '/dashboard',
       icon: Gauge,
-      external: true,
-      url: SUBDOMAIN_URLS.APP
+      external: false
     },
     { 
       name: 'Features', 

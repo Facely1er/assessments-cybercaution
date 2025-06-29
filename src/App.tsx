@@ -5,6 +5,7 @@ import { AssessmentLayout } from './components/layout/AssessmentLayout';
 
 // Assessment landing page
 import AssessmentsLanding from './pages/AssessmentsLanding';
+import Dashboard from './pages/Dashboard';
 
 // Assessment tools
 import RansomwareAssessment from './pages/RansomwareAssessment';
@@ -84,6 +85,9 @@ function App() {
         <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
           {/* Assessment landing page */}
           <Route path="/assessments" element={<AssessmentsLanding />} />
+          
+          {/* Dashboard */}
+          <Route path="/dashboard" element={<Dashboard />} />
           
           {/* Assessment tools */}
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
