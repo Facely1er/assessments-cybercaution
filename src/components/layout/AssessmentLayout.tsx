@@ -34,6 +34,7 @@ import {
 import { Button } from '../ui/Button';
 import { CISAComplianceTracker } from '../CISAComplianceTracker';
 import Navigation from '../Navigation';
+import AssessmentSubNav from '../AssessmentSubNav';
 
 interface AssessmentLayoutProps {
   children?: ReactNode;
@@ -90,6 +91,9 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
           </a>
         </div>
       </div>
+
+      {/* Assessment Sub-Navigation */}
+      <AssessmentSubNav />
 
       {/* Main Content */}
       <main className="flex-1 container mx-auto px-4 py-6">
