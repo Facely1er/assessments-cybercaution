@@ -44,8 +44,7 @@ const Navigation: React.FC<NavigationProps> = ({
       name: 'Assessments', 
       path: '/assessments',
       icon: ClipboardList,
-      external: true,
-      url: SUBDOMAIN_URLS.ASSESS
+      external: false
     },
     { 
       name: 'Dashboard', 
