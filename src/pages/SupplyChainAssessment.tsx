@@ -10,23 +10,69 @@ import {
   ArrowLeft, 
   ArrowRight, 
   ExternalLink,
-  Link2,
-  Network,
+  Save,
   Clock,
   HelpCircle,
   BarChart3,
   FileText,
+  RefreshCw,
+  Link2,
+  Network,
   Building2,
   Users,
   Settings
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from '../components/ui/Toaster';
+import { supabase, assessmentSubmissions } from '../lib/supabase';
 
 const SupplyChainAssessment = () => {
   const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [showStartScreen, setShowStartScreen] = useState(true);
+
+  // Load saved progress on initial render
+  useEffect(() => {
+    const savedProgress = localStorage.getItem('supplyChainAssessment');
+    if (savedProgress) {
+      try {
+        const { answers: savedAnswers, section } = JSON.parse(savedProgress);
+        setAnswers(savedAnswers || {});
+        setCurrentSection(section || 0);
+        setLastSaved(new Date());
+      } catch (error) {
+        console.error('Error loading saved progress', error);
+      }
+    }
+  }, []);
+
+  // Autosave progress when answers or current section changes
+  useEffect(() => {
+    const saveProgress = async () => {
+      if (Object.keys(answers).length > 0) {
+        setIsSaving(true);
+        try {
+          localStorage.setItem('supplyChainAssessment', JSON.stringify({
+            answers,
+            section: currentSection,
+            timestamp: new Date().toISOString()
+          }));
+          setLastSaved(new Date());
+        } catch (error) {
+          console.error('Error saving progress', error);
+        } finally {
+          setIsSaving(false);
+        }
+      }
+    };
+
+    const timer = setTimeout(saveProgress, 2000);
+    return () => clearTimeout(timer);
+  }, [answers, currentSection]);
 
   const sections = [
     {
@@ -322,10 +368,82 @@ const SupplyChainAssessment = () => {
     return completedSections >= Math.ceil(sections.length / 2);
   };
 
-  const handleViewResults = () => {
-    // In a real application, you would save the assessment results
-    // before navigating to the results page
-    navigate('/supply-chain-results');
+  const handleViewResults = async () => {
+    setIsLoading(true);
+    
+    try {
+      // Get the current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        toast.error('Authentication error', 'Please log in to save your assessment results.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Calculate scores
+      const overallScore = getOverallScore();
+      const sectionScores = sections.map((section, index) => {
+        const score = calculateSectionScore(index);
+        return {
+          title: section.title,
+          percentage: score.percentage,
+          completed: score.completed
+        };
+      });
+
+      // Prepare assessment data
+      const assessmentData = {
+        user_id: user.id,
+        assessment_type: 'supply-chain',
+        framework_name: 'NIST SP 800-161 Supply Chain Risk Management',
+        overall_score: overallScore,
+        section_scores: sectionScores,
+        answers: answers,
+        completed_at: new Date().toISOString()
+      };
+
+      // Save to Supabase
+      const savedAssessment = await assessmentSubmissions.create(assessmentData);
+      
+      // Clear local storage since we've saved to database
+      localStorage.removeItem('supplyChainAssessment');
+      
+      toast.success('Assessment saved!', 'Your supply chain assessment results have been saved successfully.');
+      
+      // Navigate to results page with the saved data
+      navigate('/supply-chain-results', { 
+        state: { 
+          assessmentResults: savedAssessment 
+        } 
+      });
+      
+    } catch (error) {
+      console.error('Error saving assessment:', error);
+      toast.error('Error saving assessment', 'Failed to save your assessment results. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDownloadTemplate = () => {
+    toast.info('Downloading template', 'NIST-aligned supply chain assessment template is being prepared for download');
+  };
+
+  const handleSaveProgress = () => {
+    setIsSaving(true);
+    
+    localStorage.setItem('supplyChainAssessment', JSON.stringify({
+      answers,
+      section: currentSection,
+      timestamp: new Date().toISOString()
+    }));
+
+    setTimeout(() => {
+      setIsSaving(false);
+      setLastSaved(new Date());
+      toast.success('Progress saved', 'Your assessment progress has been saved');
+    }, 800);
   };
 
   const getTotalEstimatedTime = () => {
@@ -353,9 +471,9 @@ const SupplyChainAssessment = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <Link to="/" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+          <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Home
+            Back to Assessments
           </Link>
           
           <div className="text-center mb-12">
@@ -525,25 +643,24 @@ const SupplyChainAssessment = () => {
       ) : (
         <>
           <div className="mb-6">
-            <Link to="/" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+            <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Back to Assessments
             </Link>
             <div className="flex justify-between items-start">
               <div>
                 <h1 className="text-3xl font-bold mb-2 text-foreground">Supply Chain Risk Assessment</h1>
                 <p className="text-muted-foreground mb-6">Based on NIST SP 800-161 Supply Chain Risk Management Practices</p>
               </div>
-              <div className="bg-muted/30 p-3 rounded-lg">
-                <a 
-                  href="https://vendortal.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center text-primary hover:underline text-sm"
-                >
-                  For comprehensive supply chain assessments
-                  <ExternalLink className="ml-1 h-3 w-3" />
-                </a>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={handleSaveProgress} disabled={isSaving}>
+                  <Save className="mr-2 h-4 w-4" />
+                  {isSaving ? 'Saving...' : 'Save Progress'}
+                </Button>
+                <Button variant="outline" onClick={handleDownloadTemplate}>
+                  <Download className="mr-2 h-4 w-4" />
+                  Download Template
+                </Button>
               </div>
             </div>
           </div>
@@ -578,7 +695,8 @@ const SupplyChainAssessment = () => {
             <div className="flex justify-between items-center mb-6">
               <div>
                 <h2 className="text-2xl font-semibold text-foreground">{sections[currentSection].title}</h2>
-                <p className="text-muted-foreground">{sections[currentSection].description}</p>
+                <p className="text-muted-foreground">{sections[currentSection].description}
+                </p>
               </div>
               <div className="text-xl font-semibold text-foreground">
                 Overall Score: {getOverallScore()}%
@@ -616,6 +734,7 @@ const SupplyChainAssessment = () => {
                 onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
                 disabled={currentSection === 0}
               >
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous Section
               </Button>
               
@@ -625,16 +744,28 @@ const SupplyChainAssessment = () => {
                   variant="orange"
                 >
                   Next Section
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               ) : (
                 <Button
                   onClick={handleViewResults}
-                  disabled={!hasCompletedMinimumSections()}
+                  disabled={!hasCompletedMinimumSections() || isLoading}
                   className="flex items-center gap-2"
                   variant="orange"
                 >
-                  View Results
-                  <ArrowRight className="h-4 w-4" />
+                  {isLoading ? (
+                    <>
+                      <span className="animate-spin">
+                        <RefreshCw className="h-4 w-4" />
+                      </span>
+                      Saving Assessment...
+                    </>
+                  ) : (
+                    <>
+                      Save & View Results
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
                 </Button>
               )}
             </div>

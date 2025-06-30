@@ -10,23 +10,73 @@ import {
   ArrowLeft, 
   ArrowRight, 
   Download,
+  Save,
+  Clock,
+  HelpCircle,
+  BarChart3,
+  FileText,
+  RefreshCw,
   ExternalLink,
   Lock,
   User,
   Network,
   Globe,
-  Database,
-  HelpCircle
+  Database
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from '../components/ui/Toaster';
+import { supabase, assessmentSubmissions } from '../lib/supabase';
 import { CISA, CISA_ASSESSMENT_FRAMEWORK, AssessmentQuestion } from '../utils/cisaAssessment';
 
 const ZeroTrustMaturityAssessment = () => {
+  const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [complianceScore, setComplianceScore] = useState(0);
   const [maturityLevel, setMaturityLevel] = useState('Traditional');
   const [showStartScreen, setShowStartScreen] = useState(true);
+
+  // Load saved progress on initial render
+  useEffect(() => {
+    const savedProgress = localStorage.getItem('zeroTrustAssessment');
+    if (savedProgress) {
+      try {
+        const { answers: savedAnswers, section } = JSON.parse(savedProgress);
+        setAnswers(savedAnswers || {});
+        setCurrentSection(section || 0);
+        setLastSaved(new Date());
+      } catch (error) {
+        console.error('Error loading saved progress', error);
+      }
+    }
+  }, []);
+
+  // Autosave progress when answers or current section changes
+  useEffect(() => {
+    const saveProgress = async () => {
+      if (Object.keys(answers).length > 0) {
+        setIsSaving(true);
+        try {
+          localStorage.setItem('zeroTrustAssessment', JSON.stringify({
+            answers,
+            section: currentSection,
+            timestamp: new Date().toISOString()
+          }));
+          setLastSaved(new Date());
+        } catch (error) {
+          console.error('Error saving progress', error);
+        } finally {
+          setIsSaving(false);
+        }
+      }
+    };
+
+    const timer = setTimeout(saveProgress, 2000);
+    return () => clearTimeout(timer);
+  }, [answers, currentSection]);
 
   // CISA Zero Trust Maturity Assessment sections
   const sections = [
@@ -330,7 +380,7 @@ const ZeroTrustMaturityAssessment = () => {
     return (
       <div className="flex gap-2 mt-2">
         <Button
-          variant={currentAnswer === 'yes' ? 'default' : 'outline'}
+          variant={currentAnswer === 'yes' ? 'orange' : 'outline'}
           size="sm"
           onClick={() => handleAnswer(questionId, 'yes')}
           className="flex items-center gap-1"
@@ -339,7 +389,7 @@ const ZeroTrustMaturityAssessment = () => {
           Yes
         </Button>
         <Button
-          variant={currentAnswer === 'partial' ? 'default' : 'outline'}
+          variant={currentAnswer === 'partial' ? 'orange' : 'outline'}
           size="sm"
           onClick={() => handleAnswer(questionId, 'partial')}
           className="flex items-center gap-1"
@@ -348,7 +398,7 @@ const ZeroTrustMaturityAssessment = () => {
           Partial
         </Button>
         <Button
-          variant={currentAnswer === 'no' ? 'default' : 'outline'}
+          variant={currentAnswer === 'no' ? 'orange' : 'outline'}
           size="sm"
           onClick={() => handleAnswer(questionId, 'no')}
           className="flex items-center gap-1"
@@ -371,21 +421,89 @@ const ZeroTrustMaturityAssessment = () => {
     return completedSections >= Math.ceil(sections.length / 2);
   };
 
-  const handleViewResults = () => {
-    // In a real application, this would navigate to a results page
-    alert(`Zero Trust Maturity Level: ${maturityLevel}\nOverall Score: ${complianceScore}%\nResults would be displayed with CISA zero trust recommendations.`);
+  const handleViewResults = async () => {
+    setIsLoading(true);
+    
+    try {
+      // Get the current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        toast.error('Authentication error', 'Please log in to save your assessment results.');
+        setIsLoading(false);
+        return;
+      }
+
+      // Calculate scores
+      const overallScore = getOverallScore();
+      const sectionScores = sections.map((section, index) => {
+        const score = calculateSectionScore(index);
+        return {
+          title: section.title,
+          percentage: score.percentage,
+          completed: score.completed
+        };
+      });
+
+      // Prepare assessment data
+      const assessmentData = {
+        user_id: user.id,
+        assessment_type: 'zero-trust',
+        framework_name: 'CISA Zero Trust Maturity Model',
+        overall_score: overallScore,
+        section_scores: sectionScores,
+        answers: answers,
+        completed_at: new Date().toISOString()
+      };
+
+      // Save to Supabase
+      const savedAssessment = await assessmentSubmissions.create(assessmentData);
+      
+      // Clear local storage since we've saved to database
+      localStorage.removeItem('zeroTrustAssessment');
+      
+      toast.success('Assessment saved!', 'Your Zero Trust maturity assessment results have been saved successfully.');
+      
+      // Navigate to results page with the saved data
+      navigate('/zero-trust-maturity-results', { 
+        state: { 
+          assessmentResults: savedAssessment 
+        } 
+      });
+      
+    } catch (error) {
+      console.error('Error saving assessment:', error);
+      toast.error('Error saving assessment', 'Failed to save your assessment results. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleExportAssessment = () => {
-    // Implementation for exporting assessment data
-    alert('Exporting Zero Trust Maturity assessment data to PDF...');
+    toast.info('Downloading template', 'CISA-aligned Zero Trust assessment template is being prepared for download');
+  };
+
+  const handleSaveProgress = () => {
+    setIsSaving(true);
+    
+    localStorage.setItem('zeroTrustAssessment', JSON.stringify({
+      answers,
+      section: currentSection,
+      timestamp: new Date().toISOString()
+    }));
+
+    setTimeout(() => {
+      setIsSaving(false);
+      setLastSaved(new Date());
+      toast.success('Progress saved', 'Your assessment progress has been saved');
+    }, 800);
   };
 
   const renderStartScreen = () => {
     return (
       <>
         <div className="mb-6">
-          <Link to="/" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+          <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Assessments
           </Link>
@@ -549,7 +667,7 @@ const ZeroTrustMaturityAssessment = () => {
     return (
       <>
         <div className="mb-6">
-          <Link to="/" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
+          <Link to="/assessments" className="inline-flex items-center text-foreground hover:text-primary transition-colors mb-4">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Assessments
           </Link>
@@ -560,6 +678,10 @@ const ZeroTrustMaturityAssessment = () => {
               <p className="text-muted-foreground">Based on CISA's Zero Trust Maturity Model</p>
             </div>
             <div className="flex gap-2">
+              <Button variant="outline" onClick={handleSaveProgress} disabled={isSaving}>
+                <Save className="mr-2 h-4 w-4" />
+                {isSaving ? 'Saving...' : 'Save Progress'}
+              </Button>
               <Button variant="outline" onClick={handleExportAssessment}>
                 <Download className="mr-2 h-4 w-4" />
                 Export Assessment
@@ -685,11 +807,22 @@ const ZeroTrustMaturityAssessment = () => {
             ) : (
               <Button
                 onClick={handleViewResults}
-                disabled={!hasCompletedMinimumSections()}
+                disabled={!hasCompletedMinimumSections() || isLoading}
                 className="flex items-center gap-2"
               >
-                View Results
-                <ArrowRight className="h-4 w-4" />
+                {isLoading ? (
+                  <>
+                    <span className="animate-spin">
+                      <RefreshCw className="h-4 w-4" />
+                    </span>
+                    Saving Assessment...
+                  </>
+                ) : (
+                  <>
+                    Save & View Results
+                    <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
               </Button>
             )}
           </div>

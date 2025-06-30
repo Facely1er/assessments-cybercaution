@@ -15,8 +15,11 @@ import SupplyChainAssessment from './pages/SupplyChainAssessment';
 import SupplyChainResults from './pages/SupplyChainResults';
 import SupplyChainRecommendations from './pages/SupplyChainRecommendations';
 import ZeroTrustMaturityAssessment from './pages/ZeroTrustMaturityAssessment';
+import ZeroTrustMaturityResults from './pages/ZeroTrustMaturityResults';
 import NetworkSegmentationAssessment from './pages/NetworkSegmentationAssessment';
+import NetworkSegmentationResults from './pages/NetworkSegmentationResults';
 import BackupReadinessAssessment from './pages/BackupReadinessAssessment';
+import BackupReadinessResults from './pages/BackupReadinessResults';
 import IncidentResponsePlanAssessment from './pages/IncidentResponsePlanAssessment';
 import IncidentResponseResults from './pages/IncidentResponseResults';
 import VulnerabilityManagementAssessment from './pages/VulnerabilityManagementAssessment';
@@ -97,8 +100,11 @@ function App() {
           <Route path="/supply-chain-results" element={<SupplyChainResults />} />
           <Route path="/supply-chain-recommendations" element={<SupplyChainRecommendations />} />
           <Route path="/zero-trust-maturity-assessment" element={<ZeroTrustMaturityAssessment />} />
+          <Route path="/zero-trust-maturity-results" element={<ZeroTrustMaturityResults />} />
           <Route path="/network-segmentation-assessment" element={<NetworkSegmentationAssessment />} />
+          <Route path="/network-segmentation-results" element={<NetworkSegmentationResults />} />
           <Route path="/backup-readiness-assessment" element={<BackupReadinessAssessment />} />
+          <Route path="/backup-readiness-results" element={<BackupReadinessResults />} />
           <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
           <Route path="/incident-response-results" element={<IncidentResponseResults />} />
           <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
