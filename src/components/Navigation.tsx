@@ -82,7 +82,8 @@ const Navigation: React.FC<NavigationProps> = ({
     }
   ];
 
-  const handleExternalClick = (url: string) => {
+  const handleExternalNavigation = (url: string) => {
+    // Use window.location.href for same-tab navigation to external URLs
     window.location.href = url;
   };
 
@@ -92,7 +93,10 @@ const Navigation: React.FC<NavigationProps> = ({
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <div className="flex items-center">
-            <button onClick={() => handleExternalClick(SUBDOMAIN_URLS.MAIN)} className="flex items-center group">
+            <button 
+              onClick={() => handleExternalNavigation(SUBDOMAIN_URLS.MAIN)} 
+              className="flex items-center group cursor-pointer"
+            >
               <img 
                 src="/cybercaution.png" 
                 alt="CyberCaution Logo" 
@@ -111,8 +115,8 @@ const Navigation: React.FC<NavigationProps> = ({
               <div key={item.name}>
                 {item.external ? (
                   <button 
-                    onClick={() => handleExternalClick(item.url!)}
-                    className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium"
+                    onClick={() => handleExternalNavigation(item.url!)}
+                    className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium cursor-pointer"
                   >
                     {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                     <span>{item.name}</span>
@@ -147,7 +151,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 <Moon className="h-5 w-5 hover:rotate-12 transition-transform" />
               )}
             </button>
-            <button onClick={() => handleExternalClick(`${SUBDOMAIN_URLS.AUTH}/login`)}>
+            <button onClick={() => handleExternalNavigation(`${SUBDOMAIN_URLS.AUTH}/login`)}>
               <Button variant="orange" className="ml-1 flex items-center" size="sm">
                 <User className="mr-1 h-3 w-3" />
                 Login
@@ -182,9 +186,9 @@ const Navigation: React.FC<NavigationProps> = ({
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    handleExternalClick(item.url!);
+                    handleExternalNavigation(item.url!);
                   }}
-                  className={`flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted w-full text-left`}
+                  className={`flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted w-full text-left cursor-pointer`}
                 >
                   {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                   {item.name}
