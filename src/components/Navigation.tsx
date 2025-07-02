@@ -108,6 +108,8 @@ const Navigation: React.FC<NavigationProps> = ({
                 {item.external ? (
                   <a 
                     href={item.url}
+                    target="_self"
+                    rel="noopener"
                     className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium"
                   >
                     {item.icon && <item.icon className="h-4 w-4 mr-2" />}
@@ -143,7 +145,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 <Moon className="h-5 w-5 hover:rotate-12 transition-transform" />
               )}
             </button>
-            <a href={`${SUBDOMAIN_URLS.AUTH}/login`}>
+            <a href={`${SUBDOMAIN_URLS.AUTH}/login`} target="_self" rel="noopener">
               <Button variant="orange" className="ml-1 flex items-center" size="sm">
                 <User className="mr-1 h-3 w-3" />
                 Login
@@ -177,7 +179,10 @@ const Navigation: React.FC<NavigationProps> = ({
               {item.external ? (
                 <a
                   href={item.url}
+                  target="_self"
+                  rel="noopener"
                   className={`flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                   {item.name}
@@ -190,6 +195,7 @@ const Navigation: React.FC<NavigationProps> = ({
                       ? 'text-electric-blue bg-electric-blue/5 dark:bg-electric-blue/10' 
                       : 'text-foreground hover:bg-muted'
                   }`}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                   {item.name}
