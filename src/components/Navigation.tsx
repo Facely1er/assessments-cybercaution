@@ -57,28 +57,28 @@ const Navigation: React.FC<NavigationProps> = ({
       path: '/features',
       icon: Lightbulb,
       external: true,
-      url: SUBDOMAIN_URLS.MAIN
+      url: `${SUBDOMAIN_URLS.MAIN}/features`
     },
     { 
       name: 'Solutions', 
       path: '/solutions',
       icon: Rocket,
       external: true,
-      url: SUBDOMAIN_URLS.MAIN
+      url: `${SUBDOMAIN_URLS.MAIN}/solutions`
     },
     { 
       name: 'Resources', 
       path: '/resources',
       icon: BookOpen,
       external: true,
-      url: SUBDOMAIN_URLS.RESOURCES
+      url: `${SUBDOMAIN_URLS.RESOURCES}/guides`
     },
     { 
       name: 'Pricing', 
       path: '/pricing',
       icon: Building2,
       external: true,
-      url: SUBDOMAIN_URLS.MAIN
+      url: `${SUBDOMAIN_URLS.MAIN}/pricing`
     }
   ];
 
