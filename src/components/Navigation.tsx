@@ -57,14 +57,14 @@ const Navigation: React.FC<NavigationProps> = ({
       path: '/features',
       icon: Lightbulb,
       external: true,
-      url: `${SUBDOMAIN_URLS.MAIN}/features`
+      url: `https://cybercaution.com/features`
     },
     { 
       name: 'Solutions', 
       path: '/solutions',
       icon: Rocket,
       external: true,
-      url: `${SUBDOMAIN_URLS.MAIN}/solutions`
+      url: `https://cybercaution.com/solutions`
     },
     { 
       name: 'Resources', 
@@ -78,7 +78,7 @@ const Navigation: React.FC<NavigationProps> = ({
       path: '/pricing',
       icon: Building2,
       external: true,
-      url: `${SUBDOMAIN_URLS.MAIN}/pricing`
+      url: `https://cybercaution.com/pricing`
     }
   ];
 
