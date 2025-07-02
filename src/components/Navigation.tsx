@@ -71,7 +71,7 @@ const Navigation: React.FC<NavigationProps> = ({
       path: '/resources',
       icon: BookOpen,
       external: true,
-      url: `${SUBDOMAIN_URLS.RESOURCES}/guides`
+      url: `https://resources.cybercaution.com/`
     },
     { 
       name: 'Pricing', 
