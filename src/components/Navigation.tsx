@@ -83,8 +83,20 @@ const Navigation: React.FC<NavigationProps> = ({
   ];
 
   const handleExternalNavigation = (url: string) => {
-    // Use window.location.href for same-tab navigation to external URLs
-    window.location.href = url;
+    if (url) {
+      window.location.href = url;
+    }
+  };
+
+  const handleMobileExternalClick = (url: string) => {
+    setMobileMenuOpen(false);
+    setTimeout(() => {
+      handleExternalNavigation(url);
+    }, 100); // Small delay to allow menu close animation
+  };
+
+  const handleMobileInternalClick = () => {
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -95,7 +107,8 @@ const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center">
             <button 
               onClick={() => handleExternalNavigation(SUBDOMAIN_URLS.MAIN)} 
-              className="flex items-center group cursor-pointer"
+              className="flex items-center group cursor-pointer hover:opacity-80 transition-opacity"
+              type="button"
             >
               <img 
                 src="/cybercaution.png" 
@@ -115,8 +128,9 @@ const Navigation: React.FC<NavigationProps> = ({
               <div key={item.name}>
                 {item.external ? (
                   <button 
-                    onClick={() => handleExternalNavigation(item.url!)}
+                    onClick={() => handleExternalNavigation(item.url || '')}
                     className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium cursor-pointer"
+                    type="button"
                   >
                     {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                     <span>{item.name}</span>
@@ -144,6 +158,7 @@ const Navigation: React.FC<NavigationProps> = ({
               onClick={toggleDarkMode}
               className="p-1 rounded-md text-foreground hover:text-electric-blue transition-colors duration-200 mr-1"
               aria-label="Toggle dark mode"
+              type="button"
             >
               {darkMode ? (
                 <SunMoon className="h-5 w-5 hover:rotate-12 transition-transform" />
@@ -151,7 +166,11 @@ const Navigation: React.FC<NavigationProps> = ({
                 <Moon className="h-5 w-5 hover:rotate-12 transition-transform" />
               )}
             </button>
-            <button onClick={() => handleExternalNavigation(`${SUBDOMAIN_URLS.AUTH}/login`)}>
+            <button 
+              onClick={() => handleExternalNavigation(`${SUBDOMAIN_URLS.AUTH}/login`)}
+              type="button"
+              className="cursor-pointer"
+            >
               <Button variant="orange" className="ml-1 flex items-center" size="sm">
                 <User className="mr-1 h-3 w-3" />
                 Login
@@ -184,11 +203,9 @@ const Navigation: React.FC<NavigationProps> = ({
             <React.Fragment key={item.name}>
               {item.external ? (
                 <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleExternalNavigation(item.url!);
-                  }}
-                  className={`flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted w-full text-left cursor-pointer`}
+                  onClick={() => handleMobileExternalClick(item.url || '')}
+                  className="flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted w-full text-left cursor-pointer"
+                  type="button"
                 >
                   {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                   {item.name}
@@ -201,7 +218,7 @@ const Navigation: React.FC<NavigationProps> = ({
                       ? 'text-electric-blue bg-electric-blue/5 dark:bg-electric-blue/10' 
                       : 'text-foreground hover:bg-muted'
                   }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={handleMobileInternalClick}
                 >
                   {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                   {item.name}
