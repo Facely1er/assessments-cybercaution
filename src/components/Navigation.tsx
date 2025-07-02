@@ -82,13 +82,17 @@ const Navigation: React.FC<NavigationProps> = ({
     }
   ];
 
+  const handleExternalClick = (url: string) => {
+    window.location.href = url;
+  };
+
   return (
     <nav className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo Section */}
           <div className="flex items-center">
-            <a href={SUBDOMAIN_URLS.MAIN} className="flex items-center group">
+            <button onClick={() => handleExternalClick(SUBDOMAIN_URLS.MAIN)} className="flex items-center group">
               <img 
                 src="/cybercaution.png" 
                 alt="CyberCaution Logo" 
@@ -98,7 +102,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 <span className="text-xl font-bold text-foreground hidden md:block">CyberCaution™</span>
                 <span className="text-xs text-muted-foreground hidden md:block">by ERMITS</span>
               </div>
-            </a>
+            </button>
           </div>
           
           {/* Centered Navigation Items */}
@@ -106,15 +110,13 @@ const Navigation: React.FC<NavigationProps> = ({
             {navItems.map(item => (
               <div key={item.name}>
                 {item.external ? (
-                  <a 
-                    href={item.url}
-                    target="_self"
-                    rel="noopener"
+                  <button 
+                    onClick={() => handleExternalClick(item.url!)}
                     className="flex items-center text-foreground hover:text-electric-blue transition-colors duration-200 px-2 py-2 text-sm font-medium"
                   >
                     {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                     <span>{item.name}</span>
-                  </a>
+                  </button>
                 ) : (
                   <Link 
                     to={item.path} 
@@ -145,12 +147,12 @@ const Navigation: React.FC<NavigationProps> = ({
                 <Moon className="h-5 w-5 hover:rotate-12 transition-transform" />
               )}
             </button>
-            <a href={`${SUBDOMAIN_URLS.AUTH}/login`} target="_self" rel="noopener">
+            <button onClick={() => handleExternalClick(`${SUBDOMAIN_URLS.AUTH}/login`)}>
               <Button variant="orange" className="ml-1 flex items-center" size="sm">
                 <User className="mr-1 h-3 w-3" />
                 Login
               </Button>
-            </a>
+            </button>
             <button
               type="button"
               className="sm:hidden ml-4 inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-electric-blue transition-colors"
@@ -177,16 +179,16 @@ const Navigation: React.FC<NavigationProps> = ({
           {navItems.map((item) => (
             <React.Fragment key={item.name}>
               {item.external ? (
-                <a
-                  href={item.url}
-                  target="_self"
-                  rel="noopener"
-                  className={`flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted`}
-                  onClick={() => setMobileMenuOpen(false)}
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleExternalClick(item.url!);
+                  }}
+                  className={`flex items-center px-3 py-2 text-base font-medium rounded-md text-foreground hover:bg-muted w-full text-left`}
                 >
                   {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                   {item.name}
-                </a>
+                </button>
               ) : (
                 <Link
                   to={item.path}
