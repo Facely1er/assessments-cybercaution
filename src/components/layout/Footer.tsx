@@ -156,6 +156,8 @@ const Footer: React.FC = () => {
                 <MessageSquare className="h-3 w-3 mr-2" />
                 FAQ
         
+            </li>
+            <li>
         {/* Footer Bottom - Single Row */}
             </ul>
         <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-border text-sm">
