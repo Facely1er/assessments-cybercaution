@@ -9,7 +9,7 @@ import ToolkitPage from './pages/ToolkitPage';
 import ResourcesPage from './pages/ResourcesPage';
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
 import { MainLayout } from './components/layout/MainLayout';
-
+import { Analytics } from '@vercel/analytics/react';
 // Assessment landing page
 import AssessmentsLanding from './pages/AssessmentsLanding';
 import Dashboard from './pages/Dashboard';
@@ -137,6 +137,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
+     <Analytics />
     </Router>
   );
 }
