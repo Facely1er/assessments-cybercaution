@@ -27,7 +27,8 @@ import {
   ChevronDown, 
   HelpCircle,
   Bell,
-  Check
+  Check,
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { CISAComplianceTracker } from '../CISAComplianceTracker';
