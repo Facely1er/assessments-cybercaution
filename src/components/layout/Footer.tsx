@@ -155,7 +155,7 @@ const Footer: React.FC = () => {
               <Link to="/faq" className="flex items-center text-muted-foreground hover:text-primary">
                 <MessageSquare className="h-3 w-3 mr-2" />
                 FAQ
-        
+               </Link>
             </li>
             <li>
         {/* Footer Bottom - Single Row */}
