@@ -157,6 +157,7 @@ const Footer: React.FC = () => {
                 FAQ
         
         {/* Footer Bottom - Single Row */}
+            </ul>
         <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-border text-sm">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <p className="text-muted-foreground">
