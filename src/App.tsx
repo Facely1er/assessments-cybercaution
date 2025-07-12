@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/Toaster';
+import HomePage from './pages/HomePage';
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
 
 // Assessment landing page
@@ -82,7 +83,7 @@ function App() {
     <Router>
       <Routes>
         {/* Default redirect to the assessments landing page */}
-        <Route path="/" element={<Navigate to="/assessments" replace />} />
+        <Route path="/" element={<HomePage />} />
         
         {/* Assessment routes */}
         <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
