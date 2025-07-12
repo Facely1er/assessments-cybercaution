@@ -158,6 +158,7 @@ const Footer: React.FC = () => {
                </Link>
             </li>
             <li>
+            </li>
         {/* Footer Bottom - Single Row */}
             </ul>
         <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-border text-sm">
