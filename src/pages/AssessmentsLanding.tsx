@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 
 const AssessmentsLanding = () => {
+  const [activeFilter, setActiveFilter] = React.useState('all');
+
   const assessmentTools = [
     {
       id: 'ransomware',
