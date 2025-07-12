@@ -12,7 +12,8 @@ import {
   SunMoon, 
   Menu, 
   X,
-  ClipboardList
+  ClipboardList,
+  Wrench
 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
@@ -69,6 +70,12 @@ const Navigation: React.FC<NavigationProps> = ({
       icon: BookOpen,
       external: false
     },
+   { 
+     name: 'Toolkit', 
+     path: '/toolkit',
+     icon: Wrench,
+     external: false
+   },
     { 
       name: 'Pricing', 
       path: '/pricing',
