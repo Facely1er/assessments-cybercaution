@@ -444,59 +444,37 @@ const RansomwareAssessment = () => {
   const handleViewResults = async () => {
     setIsLoading(true);
     
-    try {
-      // Get the current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-
-      if (userError || !user) {
-        toast.error('Authentication error', 'Please log in to save your assessment results.');
-        setIsLoading(false);
-        return;
-      }
-
-      // Calculate scores
-      const overallScore = getOverallScore();
-      const sectionScores = sections.map((section, index) => {
-        const score = calculateSectionScore(index);
-        return {
-          title: section.title,
-          percentage: score.percentage,
-          completed: score.completed
-        };
-      });
-
-      // Prepare assessment data
-      const assessmentData = {
-        user_id: user.id,
-        assessment_type: 'ransomware',
-        framework_name: 'NIST Ransomware Risk Management (IR 8374)',
-        overall_score: overallScore,
-        section_scores: sectionScores,
-        answers: answers,
-        completed_at: new Date().toISOString()
+    // Calculate scores
+    const overallScore = getOverallScore();
+    const sectionScores = sections.map((section, index) => {
+      const score = calculateSectionScore(index);
+      return {
+        title: section.title,
+        percentage: score.percentage,
+        completed: score.completed
       };
+    });
 
-      // Save to Supabase
-      const savedAssessment = await assessmentSubmissions.create(assessmentData);
+    // Prepare assessment data
+    const assessmentData = {
+      assessment_type: 'ransomware',
+      framework_name: 'NIST Ransomware Risk Management (IR 8374)',
+      overall_score: overallScore,
+      section_scores: sectionScores,
+      answers: answers,
+      completed_at: new Date().toISOString()
+    };
+    
+    // We don't clear localStorage here to allow saving later
+    
+    // Navigate to results page with the assessment data
+    navigate('/ransomware-results', { 
+      state: { 
+        assessmentResults: assessmentData 
+      } 
+    });
       
-      // Clear local storage since we've saved to database
-      localStorage.removeItem('ransomwareAssessment');
-      
-      toast.success('Assessment saved!', 'Your ransomware assessment results have been saved successfully.');
-      
-      // Navigate to results page with the saved data
-      navigate('/ransomware-results', { 
-        state: { 
-          assessmentResults: savedAssessment 
-        } 
-      });
-      
-    } catch (error) {
-      console.error('Error saving assessment:', error);
-      toast.error('Error saving assessment', 'Failed to save your assessment results. Please try again.');
-    } finally {
       setIsLoading(false);
-    }
   };
 
   const handleDownloadTemplate = () => {
