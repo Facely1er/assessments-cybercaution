@@ -55,7 +55,7 @@ const FAQ = () => {
       id: 'faq-4',
       category: 'account',
       question: 'How do I change my subscription plan?',
-      answer: 'You can change your subscription plan at any time from the Account Settings page. Navigate to Account > Subscription, and select "Change Plan." Your new plan will take effect at the start of your next billing cycle. If you're upgrading mid-cycle, we'll prorate the difference.'
+      answer: 'You can change your subscription plan at any time from the Account Settings page. Navigate to Account > Subscription, and select "Change Plan." Your new plan will take effect at the start of your next billing cycle. If you\'re upgrading mid-cycle, we'll prorate the difference.'
     },
     {
       id: 'faq-5',
@@ -97,13 +97,13 @@ const FAQ = () => {
       id: 'faq-11',
       category: 'product',
       question: 'Is CyberCaution suitable for small businesses?',
-      answer: 'Absolutely! CyberCaution™ is designed to scale for organizations of all sizes. Our Starter plan is specifically tailored for small businesses, offering essential security assessment tools at an affordable price point. The platform's recommendations are contextual to your organization's size and industry.'
+      answer: 'Absolutely! CyberCaution™ is designed to scale for organizations of all sizes. Our Starter plan is specifically tailored for small businesses, offering essential security assessment tools at an affordable price point. The platform\'s recommendations are contextual to your organization's size and industry.'
     },
     {
       id: 'faq-12',
       category: 'security',
       question: 'What should I do if I discover a security vulnerability?',
-      answer: 'If you believe you've found a security vulnerability in our platform, please report it immediately to security@ermits.com. We have a responsible disclosure program and take all security reports seriously. Our security team will investigate and respond to your report within 24 hours.'
+      answer: 'If you believe you\'ve found a security vulnerability in our platform, please report it immediately to security@ermits.com. We have a responsible disclosure program and take all security reports seriously. Our security team will investigate and respond to your report within 24 hours.'
     }
   ];
   
