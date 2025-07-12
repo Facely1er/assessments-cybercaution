@@ -55,7 +55,7 @@ const FAQ = () => {
       id: 'faq-4',
       category: 'account',
       question: 'How do I change my subscription plan?',
-      answer: 'You can change your subscription plan at any time from the Account Settings page. Navigate to Account > Subscription, and select "Change Plan." Your new plan will take effect at the start of your next billing cycle. If you\'re upgrading mid-cycle, we'll prorate the difference.'
+      answer: `You can change your subscription plan at any time from the Account Settings page. Navigate to Account > Subscription, and select "Change Plan." Your new plan will take effect at the start of your next billing cycle. If you're upgrading mid-cycle, we'll prorate the difference.`
     },
     {
       id: 'faq-5',

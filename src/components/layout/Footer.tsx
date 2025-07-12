@@ -141,18 +141,20 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/contact" className="flex items-center text-muted-foreground hover:text-primary">
+                <MessageSquare className="h-3 w-3 mr-2" />
+                Contact
+              </Link>
+            </li>
+            <li>
               <Link to="/support" className="flex items-center text-muted-foreground hover:text-primary">
-                Visit CISA #StopRansomware
+                <HelpCircle className="h-3 w-3 mr-2" />
+                Support
               </Link>
             </li>
             <li>
               <Link to="/faq" className="flex items-center text-muted-foreground hover:text-primary">
                 <MessageSquare className="h-3 w-3 mr-2" />
                 FAQ
-              </Link>
-            </div>
-          </div>
-        </div>
         
         {/* Footer Bottom - Single Row */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-border text-sm">
