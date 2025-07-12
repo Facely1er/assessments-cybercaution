@@ -1,7 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import { 
-  Shield, 
   Target, 
   Award, 
   Users,
@@ -28,13 +27,12 @@ import {
   ChevronDown, 
   HelpCircle,
   Bell,
-  ExternalLink,
   Check
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { CISAComplianceTracker } from '../CISAComplianceTracker';
-import Navigation from '../Navigation';
 import AssessmentSubNav from '../AssessmentSubNav';
+import MainLayout from './MainLayout';
 
 interface AssessmentLayoutProps {
   children?: ReactNode;
@@ -64,15 +62,12 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Navigation Header */}
-      <Navigation 
-        toggleDarkMode={toggleDarkMode} 
-        darkMode={darkMode} 
-        mobileMenuOpen={mobileMenuOpen}
-        setMobileMenuOpen={setMobileMenuOpen}
-      />
-
+    <MainLayout
+      toggleDarkMode={toggleDarkMode}
+      darkMode={darkMode}
+      mobileMenuOpen={mobileMenuOpen}
+      setMobileMenuOpen={setMobileMenuOpen}
+    >
       {/* CISA Compliance Indicator */}
       <div className="bg-primary/10 border-b border-primary/20">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
@@ -96,39 +91,12 @@ export const AssessmentLayout: React.FC<AssessmentLayoutProps> = ({
       <AssessmentSubNav />
 
       {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6">
         {children || <Outlet />}
-      </main>
+      </div>
 
       {/* Assessment Progress */}
       <CISAComplianceTracker />
-
-      {/* Security Footer */}
-      <footer className="bg-muted/30 border-t border-border py-4">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center">
-              <Shield className="h-4 w-4 mr-2 text-primary" />
-              <span className="text-sm text-muted-foreground">CyberCaution Assessment Portal</span>
-            </div>
-            
-            <div className="flex items-center mt-4 md:mt-0">
-              <span className="text-xs text-muted-foreground mr-4">
-                Based on CISA guidelines and best practices
-              </span>
-              <a 
-                href="https://www.cisa.gov" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-primary hover:underline text-sm flex items-center"
-              >
-                CISA.gov
-                <ExternalLink className="ml-1 h-3 w-3" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </MainLayout>
   );
 };

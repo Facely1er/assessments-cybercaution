@@ -2,7 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/Toaster';
 import HomePage from './pages/HomePage';
+import Pricing from './pages/Pricing';
+import Features from './pages/Features';
+import Solutions from './pages/Solutions';
+import ToolkitPage from './pages/ToolkitPage';
+import ResourcesPage from './pages/ResourcesPage';
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
+import { MainLayout } from './components/layout/MainLayout';
 
 // Assessment landing page
 import AssessmentsLanding from './pages/AssessmentsLanding';
@@ -39,6 +45,7 @@ function App() {
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   
   // Apply dark mode class with a slight delay to prevent flicker
   React.useEffect(() => {
@@ -81,17 +88,24 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        {/* Default redirect to the assessments landing page */}
-        <Route path="/" element={<HomePage />} />
-        
-        {/* Assessment routes */}
-        <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
-          {/* Assessment landing page */}
-          <Route path="/assessments" element={<AssessmentsLanding />} />
-          
-          {/* Dashboard */}
-          <Route path="/dashboard" element={<Dashboard />} />
+        <Routes>
+          {/* Main website routes */}
+          <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/toolkit" element={<ToolkitPage />} />
+          </Route>
+
+          {/* Assessment routes */}
+          <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
+            {/* Assessment landing page */}
+            <Route path="/assessments" element={<AssessmentsLanding />} />
+            
+            {/* Dashboard */}
+            <Route path="/dashboard" element={<Dashboard />} />
           
           {/* Assessment tools */}
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
