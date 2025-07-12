@@ -14,7 +14,8 @@ import {
   ExternalLink,
   AlertTriangle,
   Mail,
-  Phone
+  Phone,
+  BookOpen
 } from 'lucide-react';
 import { SUBDOMAIN_URLS } from '../../utils/navigation';
 
@@ -141,26 +142,27 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/contact" className="flex items-center text-muted-foreground hover:text-primary">
-                <MessageSquare className="h-3 w-3 mr-2" />
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link to="/support" className="flex items-center text-muted-foreground hover:text-primary">
-                <HelpCircle className="h-3 w-3 mr-2" />
-                Support
-              </Link>
-            </li>
-            <li>
-              <Link to="/faq" className="flex items-center text-muted-foreground hover:text-primary">
-                <MessageSquare className="h-3 w-3 mr-2" />
-                FAQ
-               </Link>
-            </li>
-            <li>
-            </li>
-        {/* Footer Bottom - Single Row */}
+                  <MessageSquare className="h-3 w-3 mr-2" />
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/support" className="flex items-center text-muted-foreground hover:text-primary">
+                  <HelpCircle className="h-3 w-3 mr-2" />
+                  Support
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="flex items-center text-muted-foreground hover:text-primary">
+                  <MessageSquare className="h-3 w-3 mr-2" />
+                  FAQ
+                </Link>
+              </li>
             </ul>
+          </div>
+        </div>
+
+        {/* Footer Bottom - Single Row */}
         <div className="flex flex-col md:flex-row justify-between items-center pt-4 border-t border-border text-sm">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <p className="text-muted-foreground">
@@ -191,5 +193,3 @@ const Footer: React.FC = () => {
 };
 
 export default Footer;
-  )
-}
