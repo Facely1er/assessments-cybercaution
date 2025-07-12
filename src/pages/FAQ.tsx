@@ -97,7 +97,7 @@ const FAQ = () => {
       id: 'faq-11',
       category: 'product',
       question: 'Is CyberCaution suitable for small businesses?',
-      answer: 'Absolutely! CyberCaution™ is designed to scale for organizations of all sizes. Our Starter plan is specifically tailored for small businesses, offering essential security assessment tools at an affordable price point. The platform\'s recommendations are contextual to your organization's size and industry.'
+      answer: 'Absolutely! CyberCaution™ is designed to scale for organizations of all sizes. Our Starter plan is specifically tailored for small businesses, offering essential security assessment tools at an affordable price point. The platform\'s recommendations are contextual to your organization\'s size and industry.'
     },
     {
       id: 'faq-12',
