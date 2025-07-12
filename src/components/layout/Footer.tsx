@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Building2, 
-  Lightbulb, 
-  CircleDollarSign, 
-  FileText, 
-  BookOpen, 
-  MessageSquare, 
-  HelpCircle, 
-  Info, 
-  Briefcase, 
-  Shield, 
-  ScrollText, 
+  Building2,
+  Lightbulb,
+  CircleDollarSign,
+  FileText,
+  MessageSquare,
+  HelpCircle,
+  Info,
+  Briefcase,
+  Shield,
+  ScrollText,
   ExternalLink,
   AlertTriangle,
   Mail,
@@ -142,39 +141,15 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link to="/contact" className="flex items-center text-muted-foreground hover:text-primary">
-                  <Mail className="h-3 w-3 mr-2" />
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/company/privacy" className="flex items-center text-muted-foreground hover:text-primary">
-                  <Shield className="h-3 w-3 mr-2" />
-                  Privacy
-                </Link>
-              </li>
-              <li>
-                <Link to="/company/terms" className="flex items-center text-muted-foreground hover:text-primary">
-                  <ScrollText className="h-3 w-3 mr-2" />
-                  Terms
-                </Link>
-              </li>
-             </ul>
-          </div>
-
-          {/* CISA Compliance - Compact */}
-          <div className="lg:col-span-1 md:col-span-2 lg:col-span-1">
-            <h3 className="text-sm font-semibold mb-3 text-foreground">CISA Partnership</h3>
-            <div className="bg-muted/20 rounded-lg p-3 mb-3">
-              <p className="text-xs text-muted-foreground mb-2">CISA #StopRansomware Alignment</p>
-              <a 
-                href="https://www.cisa.gov/stopransomware" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-xs text-primary hover:underline"
-              >
+              <Link to="/support" className="flex items-center text-muted-foreground hover:text-primary">
                 Visit CISA #StopRansomware
-                <ExternalLink className="h-2.5 w-2.5 ml-1" />
-              </a>
+              </Link>
+            </li>
+            <li>
+              <Link to="/faq" className="flex items-center text-muted-foreground hover:text-primary">
+                <MessageSquare className="h-3 w-3 mr-2" />
+                FAQ
+              </Link>
             </div>
           </div>
         </div>

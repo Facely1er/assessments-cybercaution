@@ -35,6 +35,8 @@ import TabletopExercise from './pages/TabletopExercise';
 import NistCsfAlignment from './pages/NistCsfAlignment';
 import SecurityAwareness from './pages/SecurityAwareness';
 import NotFound from './pages/NotFound';
+import Support from './pages/Support';
+import FAQ from './pages/FAQ';
 
 function App() {
   const [darkMode, setDarkMode] = React.useState(() => {
@@ -96,6 +98,8 @@ function App() {
             <Route path="/features" element={<Features />} />
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/resources" element={<ResourcesPage />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/toolkit" element={<ToolkitPage />} />
           </Route>
 
