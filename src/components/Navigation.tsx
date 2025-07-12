@@ -168,16 +168,12 @@ const Navigation: React.FC<NavigationProps> = ({
                 <Moon className="h-5 w-5 hover:rotate-12 transition-transform" />
               )}
             </button>
-            <button 
-              onClick={() => handleExternalNavigation(`${SUBDOMAIN_URLS.AUTH}/login`)}
-              type="button"
-              className="cursor-pointer"
-            >
+            <Link to="/login">
               <Button variant="orange" className="ml-1 flex items-center" size="sm">
                 <User className="mr-1 h-3 w-3" />
                 Login
               </Button>
-            </button>
+            </Link>
             <button
               type="button"
               className="sm:hidden ml-4 inline-flex items-center justify-center p-2 rounded-md text-foreground hover:text-electric-blue transition-colors"

@@ -20,6 +20,7 @@ import RansomwareResults from './pages/RansomwareResults';
 import RansomwareRecommendations from './pages/RansomwareRecommendations';
 import SupplyChainAssessment from './pages/SupplyChainAssessment';
 import SupplyChainResults from './pages/SupplyChainResults';
+import LoginPage from './pages/LoginPage';
 import SupplyChainRecommendations from './pages/SupplyChainRecommendations';
 import ZeroTrustMaturityAssessment from './pages/ZeroTrustMaturityAssessment';
 import ZeroTrustMaturityResults from './pages/ZeroTrustMaturityResults';
@@ -36,6 +37,7 @@ import NistCsfAlignment from './pages/NistCsfAlignment';
 import SecurityAwareness from './pages/SecurityAwareness';
 import NotFound from './pages/NotFound';
 import Support from './pages/Support';
+import AuthLayout from './components/auth/AuthLayout';
 import FAQ from './pages/FAQ';
 
 function App() {
@@ -103,14 +105,27 @@ function App() {
             <Route path="/toolkit" element={<ToolkitPage />} />
           </Route>
 
+          {/* Auth routes */}
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<LoginPage />} />
+          </Route>
+
           {/* Assessment routes */}
           <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
             {/* Assessment landing page */}
             <Route path="/assessments" element={<AssessmentsLanding />} />
-            
-            {/* Dashboard */}
-            <Route path="/dashboard" element={<Dashboard />} />
-          
+          </Route>
+
+          {/* Protected routes */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode}>
+                <Dashboard />
+              </AssessmentLayout>
+            </ProtectedRoute>
+          } />
+
+          <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
           {/* Assessment tools */}
           <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
           <Route path="/ransomware-results" element={<RansomwareResults />} />
