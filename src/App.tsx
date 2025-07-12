@@ -39,6 +39,7 @@ import NotFound from './pages/NotFound';
 import Support from './pages/Support';
 import AuthLayout from './components/auth/AuthLayout';
 import FAQ from './pages/FAQ';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [darkMode, setDarkMode] = React.useState(() => {
