@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import Navigation from '../Navigation';
 import { Shield, ExternalLink } from 'lucide-react';
 
@@ -37,12 +37,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       <footer className="bg-muted/30 border-t border-border py-4">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center">
+            <div className="flex items-center mb-4 md:mb-0">
               <Shield className="h-4 w-4 mr-2 text-primary" />
               <span className="text-sm text-muted-foreground">CyberCaution Assessment Portal</span>
             </div>
             
-            <div className="flex items-center mt-4 md:mt-0">
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-4 md:mt-0">
+              <Link to="/company/privacy" className="text-primary hover:underline text-sm">
+                Privacy Policy
+              </Link>
+              <Link to="/company/terms" className="text-primary hover:underline text-sm">
+                Terms of Service
+              </Link>
               <span className="text-xs text-muted-foreground mr-4">
                 Based on CISA guidelines and best practices
               </span>
