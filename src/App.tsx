@@ -1,45 +1,46 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/Toaster';
-import HomePage from './pages/HomePage';
-import Pricing from './pages/Pricing';
-import Features from './pages/Features';
-import Solutions from './pages/Solutions';
-import ToolkitPage from './pages/ToolkitPage';
-import ResourcesPage from './pages/ResourcesPage';
+// Import main layout components directly since they're used for the structure
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
 import { MainLayout } from './components/layout/MainLayout';
 import { Analytics } from '@vercel/analytics/react';
-// Assessment landing page
-import AssessmentsLanding from './pages/AssessmentsLanding';
-import Dashboard from './pages/Dashboard';
-
-// Assessment tools
-import RansomwareAssessment from './pages/RansomwareAssessment';
-import RansomwareResults from './pages/RansomwareResults';
-import RansomwareRecommendations from './pages/RansomwareRecommendations';
-import SupplyChainAssessment from './pages/SupplyChainAssessment';
-import SupplyChainResults from './pages/SupplyChainResults';
-import LoginPage from './pages/LoginPage';
-import SupplyChainRecommendations from './pages/SupplyChainRecommendations';
-import ZeroTrustMaturityAssessment from './pages/ZeroTrustMaturityAssessment';
-import ZeroTrustMaturityResults from './pages/ZeroTrustMaturityResults';
-import NetworkSegmentationAssessment from './pages/NetworkSegmentationAssessment';
-import NetworkSegmentationResults from './pages/NetworkSegmentationResults';
-import BackupReadinessAssessment from './pages/BackupReadinessAssessment';
-import BackupReadinessResults from './pages/BackupReadinessResults';
-import IncidentResponsePlanAssessment from './pages/IncidentResponsePlanAssessment';
-import IncidentResponseResults from './pages/IncidentResponseResults';
-import VulnerabilityManagementAssessment from './pages/VulnerabilityManagementAssessment';
-import VulnerabilityManagementResults from './pages/VulnerabilityManagementResults';
-import TabletopExercise from './pages/TabletopExercise';
-import NistCsfAlignment from './pages/NistCsfAlignment';
-import SecurityAwareness from './pages/SecurityAwareness';
-import NotFound from './pages/NotFound';
-import Support from './pages/Support';
 import AuthLayout from './components/auth/AuthLayout';
-import FAQ from './pages/FAQ';
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Lazy load all page components
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const Pricing = React.lazy(() => import('./pages/Pricing'));
+const Features = React.lazy(() => import('./pages/Features'));
+const Solutions = React.lazy(() => import('./pages/Solutions'));
+const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage'));
+const ResourcesPage = React.lazy(() => import('./pages/ResourcesPage'));
+const AssessmentsLanding = React.lazy(() => import('./pages/AssessmentsLanding'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const RansomwareAssessment = React.lazy(() => import('./pages/RansomwareAssessment'));
+const RansomwareResults = React.lazy(() => import('./pages/RansomwareResults'));
+const RansomwareRecommendations = React.lazy(() => import('./pages/RansomwareRecommendations'));
+const SupplyChainAssessment = React.lazy(() => import('./pages/SupplyChainAssessment'));
+const SupplyChainResults = React.lazy(() => import('./pages/SupplyChainResults'));
+const SupplyChainRecommendations = React.lazy(() => import('./pages/SupplyChainRecommendations'));
+const ZeroTrustMaturityAssessment = React.lazy(() => import('./pages/ZeroTrustMaturityAssessment'));
+const ZeroTrustMaturityResults = React.lazy(() => import('./pages/ZeroTrustMaturityResults'));
+const NetworkSegmentationAssessment = React.lazy(() => import('./pages/NetworkSegmentationAssessment'));
+const NetworkSegmentationResults = React.lazy(() => import('./pages/NetworkSegmentationResults'));
+const BackupReadinessAssessment = React.lazy(() => import('./pages/BackupReadinessAssessment'));
+const BackupReadinessResults = React.lazy(() => import('./pages/BackupReadinessResults'));
+const IncidentResponsePlanAssessment = React.lazy(() => import('./pages/IncidentResponsePlanAssessment'));
+const IncidentResponseResults = React.lazy(() => import('./pages/IncidentResponseResults'));
+const VulnerabilityManagementAssessment = React.lazy(() => import('./pages/VulnerabilityManagementAssessment'));
+const VulnerabilityManagementResults = React.lazy(() => import('./pages/VulnerabilityManagementResults'));
+const TabletopExercise = React.lazy(() => import('./pages/TabletopExercise'));
+const NistCsfAlignment = React.lazy(() => import('./pages/NistCsfAlignment'));
+const SecurityAwareness = React.lazy(() => import('./pages/SecurityAwareness'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+const Support = React.lazy(() => import('./pages/Support'));
+import AuthLayout from './components/auth/AuthLayout';
+const FAQ = React.lazy(() => import('./pages/FAQ'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 
 function App() {
   const [darkMode, setDarkMode] = React.useState(() => {
@@ -87,12 +88,22 @@ function App() {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
+  // Loading fallback for lazy loaded components
+  const LoadingFallback = () => (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="relative">
+        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+      </div>
+    </div>
+  );
+
   const toggleDarkMode = () => {
     setDarkMode(prevMode => !prevMode);
   };
 
   return (
     <Router>
+      <Suspense fallback={<LoadingFallback />}>
         <Routes>
           {/* Main website routes */}
           <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
@@ -152,6 +163,7 @@ function App() {
         {/* 404 route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
       <Toaster />
      <Analytics />
     </Router>
