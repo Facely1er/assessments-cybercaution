@@ -1,5 +1,9 @@
-import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+// Import jsPDF dynamically to reduce initial load size
+const loadJsPDF = async () => {
+  const jsPDFModule = await import('jspdf');
+  await import('jspdf-autotable');
+  return jsPDFModule.jsPDF;
+};
 
 // Extend jsPDF with autotable plugin
 declare module 'jspdf' {
@@ -31,20 +35,21 @@ export const generateResultsPdf = (
   date: string,
   filename = 'assessment-results.pdf'
 ) => {
-  const doc = new jsPDF();
-  let y = 20;
+  loadJsPDF().then(jsPDF => {
+    const doc = new jsPDF();
+    let y = 20;
 
-  // Add title
-  doc.setFontSize(20);
-  doc.setTextColor(40, 40, 40);
-  doc.text(title, 105, y, { align: 'center' });
-  y += 10;
+    // Add title
+    doc.setFontSize(20);
+    doc.setTextColor(40, 40, 40);
+    doc.text(title, 105, y, { align: 'center' });
+    y += 10;
 
-  // Add date
-  doc.setFontSize(10);
-  doc.setTextColor(100, 100, 100);
-  doc.text(`Generated on: ${date}`, 105, y, { align: 'center' });
-  y += 20;
+    // Add date
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Generated on: ${date}`, 105, y, { align: 'center' });
+    y += 20;
 
   // Add overall score
   doc.setFontSize(16);
@@ -122,8 +127,9 @@ export const generateResultsPdf = (
     doc.text(`${new Date().toISOString().split('T')[0]}`, 190, 290, { align: 'right' });
   }
 
-  // Save the PDF
-  doc.save(filename);
+    // Save the PDF
+    doc.save(filename);
+  });
 };
 
 export const generateRecommendationsPdf = (
@@ -132,20 +138,21 @@ export const generateRecommendationsPdf = (
   date: string, 
   filename = 'recommendations.pdf'
 ) => {
-  const doc = new jsPDF();
-  let y = 20;
+  loadJsPDF().then(jsPDF => {
+    const doc = new jsPDF();
+    let y = 20;
 
-  // Add title
-  doc.setFontSize(20);
-  doc.setTextColor(40, 40, 40);
-  doc.text(title, 105, y, { align: 'center' });
-  y += 10;
+    // Add title
+    doc.setFontSize(20);
+    doc.setTextColor(40, 40, 40);
+    doc.text(title, 105, y, { align: 'center' });
+    y += 10;
 
-  // Add date
-  doc.setFontSize(10);
-  doc.setTextColor(100, 100, 100);
-  doc.text(`Generated on: ${date}`, 105, y, { align: 'center' });
-  y += 20;
+    // Add date
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Generated on: ${date}`, 105, y, { align: 'center' });
+    y += 20;
 
   // Group recommendations by priority for the summary
   const criticalCount = recommendations.filter(r => r.priority === 'critical').length;
@@ -243,6 +250,7 @@ export const generateRecommendationsPdf = (
     doc.text(`${new Date().toISOString().split('T')[0]}`, 190, 290, { align: 'right' });
   }
 
-  // Save the PDF
-  doc.save(filename);
+    // Save the PDF
+    doc.save(filename);
+  });
 };
