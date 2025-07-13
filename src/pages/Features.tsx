@@ -423,7 +423,7 @@ const Features = () => {
                 Ready to Transform Your Security Program?
               </h2>
               <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-                Get started with CyberCaution by ERMITS® today and take control of your security and compliance
+                Get started with CyberCaution™ by ERMITS today and take control of your security and compliance
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/ransomware-assessment">
