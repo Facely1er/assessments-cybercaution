@@ -445,12 +445,9 @@ const Features = () => {
         </div>
       </AnimatedSection>
       
-    
-
-    
      
       
-      {/* Final CTA */}
+      /* Final CTA 
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
@@ -472,7 +469,7 @@ const Features = () => {
             </Link>
           </div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection>*/
     </div>
   );
 };
