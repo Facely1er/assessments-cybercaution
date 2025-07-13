@@ -101,26 +101,26 @@ const Footer: React.FC = () => {
             <ul className="space-y-1 text-xs">
               <li>
                 <a 
-                  href={`${SUBDOMAIN_URLS.RESOURCES}/documentation`}
+                  href={`/documentation`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
                 >
                   <FileText className="h-3 w-3 mr-2" />
                   Documentation
-                  <ExternalLink className="h-2 w-2 ml-1" />
+                 
                 </a>
               </li>
               <li>
                 <a 
-                  href={`${SUBDOMAIN_URLS.RESOURCES}/guides`}
+                  href={`/guides`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
                 >
                   <BookOpen className="h-3 w-3 mr-2" />
                   Security Guides
-                  <ExternalLink className="h-2 w-2 ml-1" />
+               
                 </a>
               </li>
               <li>
