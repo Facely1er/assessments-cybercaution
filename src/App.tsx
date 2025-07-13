@@ -37,7 +37,6 @@ const TabletopExercise = React.lazy(() => import('./pages/TabletopExercise'));
 const NistCsfAlignment = React.lazy(() => import('./pages/NistCsfAlignment'));
 const SecurityAwareness = React.lazy(() => import('./pages/SecurityAwareness'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
-const Support = React.lazy(() => import('./pages/Support'));
 const FAQ = React.lazy(() => import('./pages/FAQ'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 
