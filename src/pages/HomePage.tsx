@@ -478,6 +478,79 @@ const HomePage = () => {
 
       {/* Incident Reporting Section */}
       <IncidentReportingSection />
+           {/* NIST Compliance Section */}
+      <AnimatedSection type="fadeIn" className="bg-muted/30 dark:bg-muted/10 py-16 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block mb-4">
+              <span className="bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
+                Framework-Aligned Security
+              </span>
+            </div>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Built on NIST Standards</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              All features are aligned with NIST frameworks and industry best practices to ensure comprehensive and effective security
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <AnimatedItem type="slideInLeft" delay={0.1}>
+              <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
+                <CardContent className="p-6">
+                  <Shield className="h-10 w-10 text-[#FF6B00] mb-4" />
+                  <h3 className="text-xl font-semibold mb-3 text-foreground">NIST CSF 2.0</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Align your security program with the NIST Cybersecurity Framework to build a comprehensive security foundation.
+                  </p>
+                  <Link to="/demo">
+                    <Button variant="orange" className="w-full">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </AnimatedItem>
+            
+            <AnimatedItem type="slideInLeft" delay={0.2}>
+              <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
+                <CardContent className="p-6">
+                  <AlertTriangle className="h-10 w-10 text-[#FF6B00] mb-4" />
+                  <h3 className="text-xl font-semibold mb-3 text-foreground">NIST IR 8374</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Implement specific controls to protect against ransomware following NIST's specialized guidance.
+                  </p>
+                  <Link to="/ransomware-assessment">
+                    <Button variant="orange" className="w-full">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </AnimatedItem>
+            
+            <AnimatedItem type="slideInLeft" delay={0.3}>
+              <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
+                <CardContent className="p-6">
+                  <Network className="h-10 w-10 text-[#FF6B00] mb-4" />
+                  <h3 className="text-xl font-semibold mb-3 text-foreground">NIST SP 800-161</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Secure your supply chain following NIST's supply chain risk management practices.
+                  </p>
+                  <Link to="/demo">
+                    <Button variant="orange" className="w-full">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </AnimatedItem>
+          </div>
+        </div>
+      </AnimatedSection>
+
 
   {/* Key Benefits Section */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
