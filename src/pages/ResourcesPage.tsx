@@ -9,7 +9,6 @@ import { useSupabaseQuery } from '../hooks/useSupabase';
 import { 
   ArrowLeft, 
   ArrowRight, 
-  AlertTriangle,
   BookOpen, 
   Download,
   ExternalLink,
