@@ -358,7 +358,7 @@ const Features = () => {
 
     
       { /* Final CTA */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
+      <AnimatedSection type="fadeIn" className="py-12 px-4 md:px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
           <p className="text-lg text-orange-500 mb-8 max-w-2xl mx-auto">
