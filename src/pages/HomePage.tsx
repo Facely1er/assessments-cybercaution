@@ -95,7 +95,7 @@ const HomePage = () => {
           <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">CISA-Aligned</span> Security Framework
         </>
       ),
-      subtitle: "Official #StopRansomware partner providing government-grade protection"
+      subtitle: "Official #StopRansomware alignment providing government-grade protection"
     },
     {
       title: (
@@ -178,7 +178,7 @@ const HomePage = () => {
     {
       label: 'CISA',
       value: 'Compliance Ready',
-      description: 'Official #StopRansomware Partner'
+      description: 'Official #StopRansomware Alignment'
     },
     {
       label: '24/7',
