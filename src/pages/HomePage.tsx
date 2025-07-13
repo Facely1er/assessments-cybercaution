@@ -24,7 +24,10 @@ import {
   BarChart3,
   Lightbulb,
   Heart,
-  Network
+  Network,
+  Target,
+  Gauge,
+  TrendingUp
 } from 'lucide-react';
 
 // Simple animated counter component for statistics
