@@ -799,13 +799,26 @@ const Features = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
             {[
-              'Microsoft', 'AWS', 'Google Cloud', 'Splunk', 
-              'Crowdstrike', 'Okta', 'Salesforce', 'ServiceNow', 
-              'Jamf', 'Slack', 'Teams', 'Jira'
+              {name: 'Microsoft', logo: 'https://images.pexels.com/photos/4145775/pexels-photo-4145775.jpeg'},
+              {name: 'AWS', logo: 'https://images.pexels.com/photos/11371159/pexels-photo-11371159.jpeg'},
+              {name: 'Google Cloud', logo: 'https://images.pexels.com/photos/11371162/pexels-photo-11371162.jpeg'},
+              {name: 'Splunk', logo: 'https://images.pexels.com/photos/20011077/pexels-photo-20011077.jpeg'},
+              {name: 'Crowdstrike', logo: 'https://images.pexels.com/photos/20011078/pexels-photo-20011078.jpeg'},
+              {name: 'Okta', logo: 'https://images.pexels.com/photos/20011079/pexels-photo-20011079.jpeg'},
+              {name: 'Salesforce', logo: 'https://images.pexels.com/photos/20011080/pexels-photo-20011080.jpeg'},
+              {name: 'ServiceNow', logo: 'https://images.pexels.com/photos/20011081/pexels-photo-20011081.jpeg'},
+              {name: 'Jamf', logo: 'https://images.pexels.com/photos/20011082/pexels-photo-20011082.jpeg'},
+              {name: 'Slack', logo: 'https://images.pexels.com/photos/20011083/pexels-photo-20011083.jpeg'},
+              {name: 'Teams', logo: 'https://images.pexels.com/photos/20011084/pexels-photo-20011084.jpeg'},
+              {name: 'Jira', logo: 'https://images.pexels.com/photos/20011085/pexels-photo-20011085.jpeg'}
             ].map((partner, index) => (
               <AnimatedItem key={index} type="fadeIn" delay={index * 0.05 + 0.1}>
                 <div className="bg-background dark:bg-muted/30 rounded-lg p-4 h-24 flex items-center justify-center border border-border">
-                  <span className="text-foreground font-medium">{partner}</span>
+                  <img 
+                    src={partner.logo} 
+                    alt={`${partner.name} logo`} 
+                    className="max-h-16 max-w-full object-contain" 
+                  />
                 </div>
               </AnimatedItem>
             ))}
