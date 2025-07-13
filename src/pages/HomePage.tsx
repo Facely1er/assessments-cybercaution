@@ -572,7 +572,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">CISA Compliance Ready</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Official #StopRansomware partner providing comprehensive alignment with CISA recommendations. 
+                    #StopRansomware #comprehensive alignment with CISA recommendations. 
                     Our platform ensures you meet government cybersecurity standards and guidelines.
                   </p>
                   <div className="space-y-2">
