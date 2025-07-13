@@ -477,7 +477,7 @@ const HomePage = () => {
       </section>
 
       {/* Incident Reporting Section */}
-      <IncidentReportingSection />
+     /* <IncidentReportingSection /> */
            {/* NIST Compliance Section */}
       <AnimatedSection type="fadeIn" className="bg-muted/30 dark:bg-muted/10 py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
