@@ -92,14 +92,14 @@ const Features = () => {
           title: "NIST CSF Alignment",
           description: "Assess and improve your alignment with the NIST Cybersecurity Framework with guided implementation tools.",
           frameworks: ["NIST CSF"],
-          path: "/demo"
+          path: "/nist-csf-alignment"
         },
         {
           icon: Link2,
           title: "Control Mapping",
           description: "Cross-framework control mapping between NIST CSF, RMF, ISO 27001, and other major frameworks.",
           frameworks: ["Multiple"],
-          path: "/demo"
+          path: "/contact"
         },
     {
       id: 'ransomware',
@@ -120,21 +120,21 @@ const Features = () => {
           title: "Tabletop Exercise Kits",
           description: "Ready-to-use ransomware tabletop exercises based on real-world scenarios and NIST guidance for response team training.",
           frameworks: ["NIST IR 8374", "NIST CSF"],
-          path: "/demo"
+          path: "/tabletop-exercise"
         },
         {
           icon: FileText,
           title: "Ransomware Playbooks",
           description: "Generate customized ransomware response playbooks aligned with NIST frameworks and tailored to your organization.",
           frameworks: ["NIST CSF", "NIST IR 8374"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: Database,
           title: "Backup Validation Tool",
           description: "Test and verify your backup restoration capabilities to ensure recoverability from ransomware attacks.",
           frameworks: ["NIST SP 800-30", "NIST CSF"],
-          path: "/demo"
+          path: "/backup-readiness-assessment"
         }
       ]
     },
@@ -150,28 +150,28 @@ const Features = () => {
           title: "Risk Register Mapping",
           description: "Map ransomware risks to NIST CSF ID.RA controls for comprehensive risk management and prioritization.",
           frameworks: ["NIST CSF", "NIST RMF"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: BarChart3,
           title: "Risk Analytics",
           description: "Advanced risk analytics based on NIST risk assessment methodologies and industry best practices.",
           frameworks: ["NIST SP 800-30", "NIST CSF"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: Building2,
           title: "Business Impact Analysis",
           description: "Evaluate the operational and financial impact of security incidents on critical business functions.",
           frameworks: ["NIST CSF", "ISO 27001"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: Heart,
           title: "Business Continuity Planning",
           description: "Develop and maintain business continuity and disaster recovery plans for security incidents.",
           frameworks: ["NIST SP 800-34", "ISO 22301"],
-          path: "/demo"
+          path: "/contact"
         }
       ]
     },
@@ -187,28 +187,28 @@ const Features = () => {
           title: "Supply Chain Risk Assessment",
           description: "Comprehensive assessment framework for evaluating supply chain security risks based on NIST guidance.",
           frameworks: ["NIST SP 800-161", "Supply Chain"],
-          path: "/demo"
+          path: "/supply-chain-assessment"
         },
         {
           icon: Eye,
           title: "Vendor Security Monitoring",
           description: "Continuously monitor your critical vendors and suppliers for security risks and vulnerabilities.",
           frameworks: ["NIST SP 800-161", "Supply Chain"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: FileText,
           title: "Third-Party Due Diligence",
           description: "Streamlined workflows for vendor security assessments and ongoing due diligence.",
           frameworks: ["NIST SP 800-161", "Supply Chain"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: Link2,
           title: "Dependency Risk Mapping",
           description: "Map and visualize dependencies between your systems and third-party services to identify critical risks.",
           frameworks: ["NIST SP 800-161", "Supply Chain"],
-          path: "/demo"
+          path: "/contact"
         }
       ]
     },
@@ -218,14 +218,14 @@ const Features = () => {
           title: "Compliance Dashboard",
           description: "Real-time visibility into your compliance posture across multiple regulatory frameworks.",
           frameworks: ["Multiple"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: Lock,
           title: "Risk Management Framework",
           description: "Implement the NIST Risk Management Framework (RMF) with guided workflows and documentation.",
           frameworks: ["NIST RMF"],
-          path: "/demo"
+          path: "/contact"
         }
       ]
     },
@@ -241,28 +241,28 @@ const Features = () => {
           title: "Security Training",
           description: "Role-based security awareness training and educational resources for your entire organization.",
           frameworks: ["NIST SP 800-50", "NIST CSF"],
-          path: "/demo"
+          path: "/security-awareness"
         },
         {
           icon: BookOpen,
           title: "Documentation Library",
           description: "Comprehensive template library for security policies, procedures, and controls.",
           frameworks: ["Multiple"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: CalendarCheck,
           title: "Assessment Scheduling",
           description: "Schedule and manage regular security assessments and compliance reviews.",
           frameworks: ["Multiple"],
-          path: "/demo"
+          path: "/contact"
         },
         {
           icon: RefreshCw,
           title: "Continuous Monitoring",
           description: "Automated monitoring tools to maintain visibility into your security and compliance posture.",
           frameworks: ["NIST CSF", "NIST RMF"],
-          path: "/demo"
+          path: "/contact"
         }
       ]
     }
@@ -454,7 +454,7 @@ const Features = () => {
                     Start Free Assessment
                   </Button>
                 </Link>
-                <Link to="/demo">
+                <Link to="/contact">
                   <Button 
                     variant="outline" 
                     className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
