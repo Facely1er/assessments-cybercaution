@@ -79,6 +79,28 @@ const Features = () => {
 
   // Fallback if no data is fetched (should not happen if loading/error handled)
   const fallbackFeatureCategories = [
+
+      {
+      id: 'compliance',
+      title: "Compliance & Governance",
+      description: "Maintain regulatory compliance and implement security frameworks with purpose-built tools",
+      icon: CheckCircle,
+      color: 'secure-green',
+      features: [
+        {
+          icon: Shield,
+          title: "NIST CSF Alignment",
+          description: "Assess and improve your alignment with the NIST Cybersecurity Framework with guided implementation tools.",
+          frameworks: ["NIST CSF"],
+          path: "/demo"
+        },
+        {
+          icon: Link2,
+          title: "Control Mapping",
+          description: "Cross-framework control mapping between NIST CSF, RMF, ISO 27001, and other major frameworks.",
+          frameworks: ["Multiple"],
+          path: "/demo"
+        },
     {
       id: 'ransomware',
       title: "Ransomware Protection",
@@ -190,27 +212,7 @@ const Features = () => {
         }
       ]
     },
-    {
-      id: 'compliance',
-      title: "Compliance & Governance",
-      description: "Maintain regulatory compliance and implement security frameworks with purpose-built tools",
-      icon: CheckCircle,
-      color: 'secure-green',
-      features: [
-        {
-          icon: Shield,
-          title: "NIST CSF Alignment",
-          description: "Assess and improve your alignment with the NIST Cybersecurity Framework with guided implementation tools.",
-          frameworks: ["NIST CSF"],
-          path: "/demo"
-        },
-        {
-          icon: Link2,
-          title: "Control Mapping",
-          description: "Cross-framework control mapping between NIST CSF, RMF, ISO 27001, and other major frameworks.",
-          frameworks: ["Multiple"],
-          path: "/demo"
-        },
+  
         {
           icon: CheckCircle,
           title: "Compliance Dashboard",
