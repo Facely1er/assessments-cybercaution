@@ -446,30 +446,7 @@ const Features = () => {
       </AnimatedSection>
       
      
-      
-      /* Final CTA 
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
-          <p className="text-lg text-orange-500 mb-8 max-w-2xl mx-auto">
-            Start your ransomware protection journey with CyberCaution™ by ERMITS today
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/ransomware-assessment">
-              <Button variant="orange">
-                Start Free Assessment
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link to="/pricing">
-              <Button variant="outline">
-                View Pricing Plans
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </AnimatedSection>*/
+  
     </div>
   );
 };
