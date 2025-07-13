@@ -476,57 +476,206 @@ const HomePage = () => {
       {/* Incident Reporting Section */}
       <IncidentReportingSection />
 
-      {/* Features Showcase Section */}
-      <section className="py-20 bg-muted/30 dark:bg-muted/15">
-        <div className="container">
-          <AnimatedSection>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-foreground mb-6">Why Choose CyberCaution</h2>
-              <p className="text-xl text-orange-500 max-w-2xl mx-auto">
-                Built specifically for cybersecurity professionals who demand excellence
-              </p>
-            </div>
-          </AnimatedSection>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <AnimatedItem delay={0.1} direction="up">
-              <Card className="text-center p-8 hover:shadow-lg transition-all duration-300">
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Shield className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4 text-foreground">CISA Compliance</h3>
-                <p className="text-muted-foreground">
-                  Full alignment with CISA #StopRansomware guidelines and recommended security practices.
-                </p>
+  {/* Key Benefits Section */}
+      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Key Benefits of CyberCaution</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Discover why security professionals choose CyberCaution by ERMITS® for comprehensive protection
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <AnimatedItem type="fadeIn" delay={0.1}>
+              <Card className="dark:border-muted h-full">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
+                      <Shield className="h-6 w-6 text-[#FF6B00]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">CISA Compliance Ready</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4 flex-1">
+                    Official #StopRansomware partner providing comprehensive alignment with CISA recommendations. 
+                    Our platform ensures you meet government cybersecurity standards and guidelines.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>CISA #StopRansomware alignment</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Government-grade security controls</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Regulatory compliance reporting</span>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             </AnimatedItem>
             
-            <AnimatedItem delay={0.2} direction="up">
-              <Card className="text-center p-8 hover:shadow-lg transition-all duration-300">
-                <div className="w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="h-8 w-8 text-success" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Proactive Approach</h3>
-                <p className="text-muted-foreground">
-                  Move beyond reactive measures with predictive threat analysis and prevention.
-                </p>
+            <AnimatedItem type="fadeIn" delay={0.2}>
+              <Card className="dark:border-muted h-full">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
+                      <Target className="h-6 w-6 text-[#FF6B00]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">Proactive Defense Strategy</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4 flex-1">
+                    Move beyond reactive security measures with predictive threat analysis and prevention. 
+                    Our proactive approach helps organizations prevent incidents before they occur.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Predictive threat intelligence</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Automated risk detection</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Continuous monitoring</span>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             </AnimatedItem>
             
-            <AnimatedItem delay={0.3} direction="up">
-              <Card className="text-center p-8 hover:shadow-lg transition-all duration-300">
-                <div className="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Heart className="h-8 w-8 text-accent" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Critical Infrastructure Focus</h3>
-                <p className="text-muted-foreground">
-                  Specialized protection for organizations that maintain critical infrastructure.
-                </p>
+            <AnimatedItem type="fadeIn" delay={0.3}>
+              <Card className="dark:border-muted h-full">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
+                      <Building2 className="h-6 w-6 text-[#FF6B00]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">Critical Infrastructure Focus</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4 flex-1">
+                    Specialized protection designed for organizations that maintain critical infrastructure. 
+                    Enhanced security measures to protect vital systems and ensure operational continuity.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Critical system protection</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Operational resilience planning</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Business continuity assurance</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </AnimatedItem>
+
+            <AnimatedItem type="fadeIn" delay={0.4}>
+              <Card className="dark:border-muted h-full">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
+                      <Gauge className="h-6 w-6 text-[#FF6B00]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">Rapid Implementation</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4 flex-1">
+                    Get up and running quickly with our streamlined implementation process. 
+                    Pre-configured templates and automated workflows reduce deployment time significantly.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Quick-start templates</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Automated configuration</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Expert implementation support</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </AnimatedItem>
+
+            <AnimatedItem type="fadeIn" delay={0.5}>
+              <Card className="dark:border-muted h-full">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
+                      <TrendingUp className="h-6 w-6 text-[#FF6B00]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">Measurable ROI</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4 flex-1">
+                    Demonstrate clear return on investment with quantifiable security improvements. 
+                    Track metrics that matter to your business and show tangible security value.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Cost reduction analytics</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Risk reduction measurement</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Executive reporting</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </AnimatedItem>
+
+            <AnimatedItem type="fadeIn" delay={0.6}>
+              <Card className="dark:border-muted h-full">
+                <CardContent className="p-6 flex flex-col h-full">
+                  <div className="flex items-center mb-6">
+                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
+                      <Users className="h-6 w-6 text-[#FF6B00]" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-foreground">Expert Support</h3>
+                  </div>
+                  <p className="text-muted-foreground mb-4 flex-1">
+                    Access to certified cybersecurity professionals and industry experts. 
+                    Get guidance from experienced practitioners who understand real-world security challenges.
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Certified security experts</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>24/7 support availability</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                      <span>Strategic consulting services</span>
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             </AnimatedItem>
           </div>
         </div>
-      </section>
+      </AnimatedSection>
+
 
       {/* CTA Section */}
       <section className="py-20">
