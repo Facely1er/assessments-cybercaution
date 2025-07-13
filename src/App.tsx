@@ -38,7 +38,6 @@ const NistCsfAlignment = React.lazy(() => import('./pages/NistCsfAlignment'));
 const SecurityAwareness = React.lazy(() => import('./pages/SecurityAwareness'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const Support = React.lazy(() => import('./pages/Support'));
-import AuthLayout from './components/auth/AuthLayout';
 const FAQ = React.lazy(() => import('./pages/FAQ'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 
