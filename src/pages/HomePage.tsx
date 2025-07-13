@@ -6,7 +6,6 @@ import { useInView } from 'react-intersection-observer';
 import AnimatedSection from '../utils/AnimatedSection';
 import AnimatedItem from '../utils/AnimatedItem';
 import CisaSecurityBanner from '../components/CisaSecurityBanner';
-import IncidentReportingSection from '../components/IncidentReportingSection';
 import TextCarousel from '../components/TextCarousel';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
 import { useSupabaseQuery } from '../hooks/useSupabase';
@@ -748,7 +747,6 @@ const HomePage = () => {
       </AnimatedSection>
 
          {/* Incident Reporting Section */}
-     /* <IncidentReportingSection /> */
 
       {/* CTA Section */}
       <section className="py-20">
