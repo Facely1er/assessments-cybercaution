@@ -357,41 +357,31 @@ const Features = () => {
       ))}
 
     
-    
-
-      {/* CTA Section */}
+      /* Final CTA */
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
-            {/* Background glow effect */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Ready to Transform Your Security Program?
-              </h2>
-              <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-                Get started with CyberCaution™ by ERMITS today and take control of your security and compliance
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/ransomware-assessment">
-                  <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                    Start Free Assessment
-                  </Button>
-                </Link>
-                <Link to="/demo">
-                  <Button 
-                    variant="outline" 
-                    className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
-                  >
-                    Schedule Demo
-                  </Button>
-                </Link>
-              </div>
-            </div>
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
+          <p className="text-lg text-orange-500 mb-8 max-w-2xl mx-auto">
+            Start your ransomware protection journey with CyberCaution™ by ERMITS today
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/ransomware-assessment">
+              <Button variant="orange">
+                Start Free Assessment
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/pricing">
+              <Button variant="outline">
+                View Pricing Plans
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </AnimatedSection>
+
+      
         {/* Mobile Support */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
@@ -444,30 +434,40 @@ const Features = () => {
           </div>
         </div>
       </AnimatedSection>
-      
-           /* Final CTA */
+      {/* CTA Section */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
-          <p className="text-lg text-orange-500 mb-8 max-w-2xl mx-auto">
-            Start your ransomware protection journey with CyberCaution™ by ERMITS today
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/ransomware-assessment">
-              <Button variant="orange">
-                Start Free Assessment
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link to="/pricing">
-              <Button variant="outline">
-                View Pricing Plans
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+        <div className="max-w-6xl mx-auto">
+          <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
+            {/* Background glow effect */}
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
+            
+            <div className="relative z-10">
+              <h2 className="text-3xl font-bold text-white mb-6">
+                Ready to Transform Your Security Program?
+              </h2>
+              <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
+                Get started with CyberCaution™ by ERMITS today and take control of your security and compliance
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/ransomware-assessment">
+                  <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
+                    Start Free Assessment
+                  </Button>
+                </Link>
+                <Link to="/demo">
+                  <Button 
+                    variant="outline" 
+                    className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
+                  >
+                    Schedule Demo
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </AnimatedSection>
+         
   
     </div>
   );
