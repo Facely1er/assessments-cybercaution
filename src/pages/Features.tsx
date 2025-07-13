@@ -292,58 +292,6 @@ const Features = () => {
         </div>
       </AnimatedSection>
 
-        {/* Mobile Support */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block mb-6">
-                <span className="bg-primary/10 text-primary px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
-                  Anywhere Access
-                </span>
-              </div>
-              <h2 className="text-3xl font-bold mb-6 text-foreground">Access Your Security Data Anywhere</h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                CyberCaution by ERMITS® provides mobile-optimized interfaces, allowing you to:
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Monitor security status on the go</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Respond to security alerts from anywhere</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Access incident response plans during emergencies</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Review and approve security actions remotely</span>
-                </li>
-              </ul>
-              <Link to="/demo">
-                <Button variant="orange">
-                  Explore Dashboard
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="flex justify-center">
-              <div className="relative max-w-xs">
-                <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-blue-500/20 rounded-3xl transform rotate-6"></div>
-                <img 
-                  src="https://images.pexels.com/photos/6893825/pexels-photo-6893825.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                  alt="Mobile dashboard" 
-                  className="relative rounded-3xl shadow-xl z-10 border border-white dark:border-gray-800"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </AnimatedSection>
       
       
       {/* Feature Categories */}
@@ -444,8 +392,82 @@ const Features = () => {
           </div>
         </div>
       </AnimatedSection>
+        {/* Mobile Support */}
+      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-block mb-6">
+                <span className="bg-primary/10 text-primary px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
+                  Anywhere Access
+                </span>
+              </div>
+              <h2 className="text-3xl font-bold mb-6 text-foreground">Access Your Security Data Anywhere</h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                CyberCaution by ERMITS® provides mobile-optimized interfaces, allowing you to:
+              </p>
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-foreground">Monitor security status on the go</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-foreground">Respond to security alerts from anywhere</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-foreground">Access incident response plans during emergencies</span>
+                </li>
+                <li className="flex items-start">
+                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
+                  <span className="text-foreground">Review and approve security actions remotely</span>
+                </li>
+              </ul>
+              <Link to="/demo">
+                <Button variant="orange">
+                  Explore Dashboard
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+            <div className="flex justify-center">
+              <div className="relative max-w-xs">
+                <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-blue-500/20 rounded-3xl transform rotate-6"></div>
+                <img 
+                  src="https://images.pexels.com/photos/6893825/pexels-photo-6893825.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                  alt="Mobile dashboard" 
+                  className="relative rounded-3xl shadow-xl z-10 border border-white dark:border-gray-800"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </AnimatedSection>
       
-     
+           /* Final CTA */
+      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
+          <p className="text-lg text-orange-500 mb-8 max-w-2xl mx-auto">
+            Start your ransomware protection journey with CyberCaution™ by ERMITS today
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/ransomware-assessment">
+              <Button variant="orange">
+                Start Free Assessment
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/pricing">
+              <Button variant="outline">
+                View Pricing Plans
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </AnimatedSection>
   
     </div>
   );
