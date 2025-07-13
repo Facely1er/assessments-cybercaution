@@ -53,21 +53,21 @@ const fallbackToolCategories = [
         name: 'Risk Assessment Calculator',
         description: 'Calculate and prioritize security risks based on impact and likelihood',
         type: 'Interactive Tool',
-        path: '/restricted-toolkit',
+        path: '/login',
         icon: Target
       },
       {
         name: 'Compliance Gap Analyzer',
         description: 'Identify gaps in your compliance with various frameworks',
         type: 'Assessment',
-        path: '/restricted-toolkit',
+        path: '/login',
         icon: CheckCircle
       },
       {
         name: 'Vendor Risk Scorecard',
         description: 'Evaluate third-party security risks with our scoring system',
         type: 'Evaluation Tool',
-        path: '/restricted-toolkit',
+        path: '/login',
         icon: Network
       }
     ]
@@ -84,21 +84,21 @@ const fallbackToolCategories = [
         name: 'Security Roadmap Builder',
         description: 'Create a strategic roadmap for your cybersecurity initiatives',
         type: 'Planning Tool',
-        path: '/restricted-toolkit',
+        path: '/login',
         icon: Calendar
       },
       {
         name: 'Budget Planning Calculator',
         description: 'Plan and allocate your cybersecurity budget effectively',
         type: 'Financial Tool',
-        path: '/restricted-toolkit',
+        path: '/login',
         icon: BarChart3
       },
       {
         name: 'Incident Response Planner',
         description: 'Build comprehensive incident response plans and playbooks',
         type: 'Planning Tool',
-        path: '/restricted-toolkit',
+        path: '/login',
         icon: FileText
       }
     ]
@@ -120,7 +120,7 @@ const fallbackFeaturedTools = [
     description: 'Map your security controls to CISA recommendations',
     icon: Network,
     color: 'text-warning-amber',
-    path: '/restricted-toolkit',
+    path: '/login',
     isPopular: true
   },
   {
@@ -128,7 +128,7 @@ const fallbackFeaturedTools = [
     description: 'Track and assess risks in your supply chain relationships',
     icon: AlertTriangle,
     color: 'text-electric-blue',
-    path: '/restricted-toolkit',
+    path: '/login',
     isUpdated: true
   }
 ];
@@ -324,7 +324,7 @@ const ToolkitPage = () => {
                         <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
                           {tool.type}
                         </span>
-                        {tool.path === '/restricted-toolkit' && (
+                        {tool.path === '/login' && (
                           <Lock className="h-4 w-4 text-warning-amber" />
                         )}
                       </div>
@@ -336,7 +336,7 @@ const ToolkitPage = () => {
                         <Link to={tool.path} className="flex-1">
                           <Button variant="outline" className="w-full">
                             <Wrench className="mr-2 h-4 w-4" />
-                            {tool.path === '/restricted-toolkit' ? 'Premium Tool' : 'Use Tool'}
+                            {tool.path === '/login' ? 'Premium Tool' : 'Use Tool'}
                           </Button>
                         </Link>
                         <Button variant="ghost" size="sm">
@@ -421,21 +421,21 @@ const ToolkitPage = () => {
                     <span className="text-xs">Ransomware Check</span>
                   </Button>
                 </Link>
-                <Link to="/restricted-toolkit">
+                <Link to="/login">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center relative">
                     <BarChart3 className="h-5 w-5 mb-2" />
                     <span className="text-xs">Risk Calculator</span>
                     <Lock className="absolute top-1 right-1 h-3 w-3 text-warning-amber" />
                   </Button>
                 </Link>
-                <Link to="/restricted-toolkit">
+                <Link to="/login">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center relative">
                     <FileText className="h-5 w-5 mb-2" />
                     <span className="text-xs">Policy Templates</span>
                     <Lock className="absolute top-1 right-1 h-3 w-3 text-warning-amber" />
                   </Button>
                 </Link>
-                <Link to="/restricted-toolkit">
+                <Link to="/login">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center relative">
                     <Users className="h-5 w-5 mb-2" />
                     <span className="text-xs">Training Kit</span>
