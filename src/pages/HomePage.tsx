@@ -6,7 +6,6 @@ import { useInView } from 'react-intersection-observer';
 import AnimatedSection from '../utils/AnimatedSection';
 import AnimatedItem from '../utils/AnimatedItem';
 import CisaSecurityBanner from '../components/CisaSecurityBanner';
-import CisaResourcesSection from '../components/CisaResourcesSection';
 import IncidentReportingSection from '../components/IncidentReportingSection';
 import TextCarousel from '../components/TextCarousel';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
@@ -364,9 +363,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* CISA Resources Section */}
-      <CisaResourcesSection />
 
       {/* Value Proposition Section */}
       <section className="py-20 bg-background to-background">
