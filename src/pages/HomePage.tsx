@@ -496,7 +496,7 @@ const HomePage = () => {
                   <p className="text-muted-foreground mb-4">
                     Align your security program with the NIST Cybersecurity Framework to build a comprehensive security foundation.
                   </p>
-                  <Link to="/demo">
+                  <Link to="/features#compliance">
                     <Button variant="orange" className="w-full">
                       Learn More
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -514,7 +514,7 @@ const HomePage = () => {
                   <p className="text-muted-foreground mb-4">
                     Implement specific controls to protect against ransomware following NIST's specialized guidance.
                   </p>
-                  <Link to="/ransomware-assessment">
+                  <Link to="/features#ransomware">
                     <Button variant="orange" className="w-full">
                       Learn More
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -532,7 +532,7 @@ const HomePage = () => {
                   <p className="text-muted-foreground mb-4">
                     Secure your supply chain following NIST's supply chain risk management practices.
                   </p>
-                  <Link to="/demo">
+                  <Link to="/features#supply-chain">
                     <Button variant="orange" className="w-full">
                       Learn More
                       <ArrowRight className="ml-2 h-4 w-4" />
