@@ -769,7 +769,7 @@ const HomePage = () => {
                       Start 3-Minute Readiness Assessment
                     </Button>
                   </Link>
-                  <Link to="/contact">
+                  <Link to="/demo">
                     <Button 
                       variant="outline" 
                       className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"

@@ -141,7 +141,7 @@ const Pricing = () => {
                     className="w-full" 
                     variant={plan.popular ? "orange" : "outline"}
                   >
-                    {plan.price === "Contact us" ? "Contact Sales" : "Get Started"}
+                    {plan.price === "Contact us" ? "Request Demo" : "Get Started"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardContent>
@@ -438,18 +438,18 @@ const Pricing = () => {
               Start with a free assessment or schedule a personalized demo today
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/ransomware-assessment">
+              <Link to="/demo">
                 <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                  Start Free Assessment
+                  Schedule Demo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Link to="/demo">
+              <Link to="/ransomware-assessment">
                 <Button 
                   variant="outline" 
                   className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
                 >
-                  Schedule Demo
+                  Start Free Assessment
                 </Button>
               </Link>
             </div>

@@ -351,7 +351,7 @@ const Features = () => {
                 Explore All {category.title} Features
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-            </Link>
+              <Link to="/demo">
           </div>
         </AnimatedSection>
       ))}
@@ -370,7 +370,7 @@ const Features = () => {
                 Start Free Assessment
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </Link>
+              <Link to="/demo">
             <Link to="/pricing">
               <Button variant="outline">
                 View Pricing Plans
@@ -451,7 +451,7 @@ const Features = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/ransomware-assessment">
                   <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                    Start Free Assessment
+                    Start 3-Minute Ransomware Readiness Assessment
                   </Button>
                 </Link>
                 <Link to="/contact">
