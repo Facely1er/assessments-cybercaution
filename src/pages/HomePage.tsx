@@ -250,7 +250,7 @@ const HomePage = () => {
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
-                  <Link to="/demo">
+                  <Link to="/onboarding">
                     <Button variant="outline" className="w-full sm:w-auto">
                       See the Demo
                       <ArrowRight className="ml-2 h-5 w-5" />
@@ -769,7 +769,7 @@ const HomePage = () => {
                       Start 3-Minute Readiness Assessment
                     </Button>
                   </Link>
-                  <Link to="/demo">
+                  <Link to="/contact">
                     <Button 
                       variant="outline" 
                       className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
