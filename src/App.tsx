@@ -39,6 +39,7 @@ const SecurityAwareness = React.lazy(() => import('./pages/SecurityAwareness'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const Support = React.lazy(() => import('./pages/Support'));
 const FAQ = React.lazy(() => import('./pages/FAQ'));
+const DemoPage = React.lazy(() => import('./pages/DemoPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 
 function App() {
@@ -113,6 +114,7 @@ function App() {
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/support" element={<Support />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/demo" element={<DemoPage />} />
             <Route path="/toolkit" element={<ToolkitPage />} />
           </Route>
 
