@@ -438,12 +438,12 @@ const Pricing = () => {
               Ready to Strengthen Your Security Posture?
             </h2>
             <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-              Start with a free assessment or schedule a personalized demo today
+              Start with a free assessment or see a demo of our platform
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/demo">
+              <Link to="/onboarding">
                 <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                  Schedule Demo
+                  See Demo
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -462,7 +462,7 @@ const Pricing = () => {
         <div className="inline-flex items-center gap-2 bg-muted/50 dark:bg-muted/20 rounded-lg p-4">
           <HelpCircle className="h-5 w-5 text-[#FF6B00]" />
           <p className="text-sm text-foreground">
-            Need a custom plan? <Button variant="link" className="p-0 text-[#FF6B00]">Contact our sales team</Button>
+            Need a custom plan? <Link to="/contact"><Button variant="link" className="p-0 text-[#FF6B00]">Contact our sales team</Button></Link>
           </p>
         </div>
       </div>
