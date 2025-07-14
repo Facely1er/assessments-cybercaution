@@ -346,7 +346,7 @@ const Features = () => {
             Start your ransomware protection journey with CyberCaution™ by ERMITS today
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/ransomware-assessment">
+            <Link to="/onboarding">
               <Button variant="orange">
                 Start Free Assessment
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -354,7 +354,7 @@ const Features = () => {
             </Link>
             <Link to="/pricing">
               <Button variant="outline">
-                View Pricing Plans
+                Request Personalized Demo
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>

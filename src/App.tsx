@@ -8,6 +8,9 @@ import { Analytics } from '@vercel/analytics/react';
 import AuthLayout from './components/auth/AuthLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 
+// Lazy load the OnboardingPage component
+const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
+
 // Lazy load all page components
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Pricing = React.lazy(() => import('./pages/Pricing'));
@@ -114,6 +117,7 @@ function App() {
             <Route path="/resources" element={<ResourcesPage />} />
             <Route path="/support" element={<Support />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/toolkit" element={<ToolkitPage />} />
           </Route>
