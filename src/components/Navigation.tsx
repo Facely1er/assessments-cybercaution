@@ -157,7 +157,7 @@ const Navigation: React.FC<NavigationProps> = ({
                   </button>
                 ) : (
                   <Link 
-                    to={item.path} 
+                    to={item.path || '/'} 
                     className={`flex items-center transition-colors duration-200 px-2 py-2 text-sm font-medium ${
                       location.pathname === item.path 
                         ? 'text-electric-blue' 

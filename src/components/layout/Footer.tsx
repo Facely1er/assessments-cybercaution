@@ -108,20 +108,18 @@ const Footer: React.FC = () => {
                 >
                   <FileText className="h-3 w-3 mr-2" />
                   Documentation
-                 
-                </a>
+              </a>
               </li>
               <li>
                 <a 
-                  href={`/guides`}
+                  href="/guides" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
                 >
                   <BookOpen className="h-3 w-3 mr-2" />
                   Security Guides
-               
-                </a>
+              </a>
               </li>
               <li>
                 <Link to="/toolkit" className="flex items-center text-muted-foreground hover:text-primary">
@@ -130,16 +128,10 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <a 
-                  href={`${SUBDOMAIN_URLS.RESOURCES}/blog`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-muted-foreground hover:text-primary"
-                >
+                <Link to="/blog" className="flex items-center text-muted-foreground hover:text-primary">
                   <FileText className="h-3 w-3 mr-2" />
                   Blog
-                  <ExternalLink className="h-2 w-2 ml-1" />
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -149,7 +141,7 @@ const Footer: React.FC = () => {
             <h3 className="text-sm font-semibold mb-2 text-foreground">Company & Legal</h3>
             <ul className="space-y-1 text-xs">
               <li>
-                <Link to="/about" className="flex items-center text-muted-foreground hover:text-primary">
+                <Link to="/" className="flex items-center text-muted-foreground hover:text-primary">
                   <Info className="h-3 w-3 mr-2" />
                   About
                 </Link>
