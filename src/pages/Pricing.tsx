@@ -141,14 +141,9 @@ const Pricing = () => {
                     className="w-full" 
                     variant={plan.popular ? "orange" : "outline"}
                   >
-                    Get Started
+                    {plan.price === "Contact us" ? "Request Demo" : "Get Started"}
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
-                  <Link to="/solutions#financial">
-                    <Button variant="outline" size="sm" className="w-full mt-4">
-                      Learn More
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </Link>
                 </CardContent>
               </Card>
             </AnimatedItem>
@@ -177,7 +172,7 @@ const Pricing = () => {
             </thead>
             <tbody>
               <tr className="border-b border-border">
-                <td className="p-4 font-medium">Security Assessment</td>
+                <td className="p-4 font-medium">Ransomware Protection</td>
                 <td className="p-4 text-center">Basic</td>
                 <td className="p-4 text-center">Advanced</td>
                 <td className="p-4 text-center">Enterprise-grade</td>
@@ -450,9 +445,11 @@ const Pricing = () => {
                 </Button>
               </Link>
               <Link to="/ransomware-assessment">
-                <Button variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10">
-                  Free Assessment
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                <Button 
+                  variant="outline" 
+                  className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
+                >
+                  Start Free Assessment
                 </Button>
               </Link>
             </div>
