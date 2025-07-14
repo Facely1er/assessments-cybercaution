@@ -140,10 +140,12 @@ const Pricing = () => {
                   <Button 
                     className="w-full" 
                     variant={plan.popular ? "orange" : "outline"}
-                  >
-                    {plan.price === "Contact us" ? "Request Demo" : "Get Started"}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  <Link to="/solutions#financial">
+                    <Button variant="outline" size="sm" className="w-full mt-4">
+                      Learn More
+                      <ArrowRight className="ml-2 h-3 w-3" />
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </AnimatedItem>
@@ -169,10 +171,12 @@ const Pricing = () => {
                 <th className="p-4 text-center font-semibold">Professional</th>
                 <th className="p-4 text-center font-semibold">Enterprise</th>
               </tr>
-            </thead>
-            <tbody>
-              <tr className="border-b border-border">
-                <td className="p-4 font-medium">Ransomware Protection</td>
+                  <Link to="/solutions#healthcare">
+                    <Button variant="outline" size="sm" className="w-full mt-4">
+                      Learn More
+                      <ArrowRight className="ml-2 h-3 w-3" />
+                    </Button>
+                  </Link>
                 <td className="p-4 text-center">Basic</td>
                 <td className="p-4 text-center">Advanced</td>
                 <td className="p-4 text-center">Enterprise-grade</td>
@@ -417,10 +421,12 @@ const Pricing = () => {
                     <h3 className="font-medium text-foreground mb-2">{faq.question}</h3>
                     <p className="text-muted-foreground text-sm">{faq.answer}</p>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <Link to="/solutions#technology">
+                    <Button variant="outline" size="sm" className="w-full mt-4">
+                      Learn More
+                      <ArrowRight className="ml-2 h-3 w-3" />
+                    </Button>
+                  </Link>
         </div>
       </AnimatedSection>
 
@@ -446,10 +452,12 @@ const Pricing = () => {
               </Link>
               <Link to="/ransomware-assessment">
                 <Button 
-                  variant="outline" 
-                  className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
-                >
-                  Start Free Assessment
+                  <Link to="/solutions#manufacturing">
+                    <Button variant="outline" size="sm" className="w-full mt-4">
+                      Learn More
+                      <ArrowRight className="ml-2 h-3 w-3" />
+                    </Button>
+                  </Link>
                 </Button>
               </Link>
             </div>
