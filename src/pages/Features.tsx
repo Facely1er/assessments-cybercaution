@@ -79,7 +79,6 @@ const Features = () => {
 
   // Fallback if no data is fetched (should not happen if loading/error handled)
   const fallbackFeatureCategories = [
-
       {
       id: 'compliance',
       title: "Compliance & Governance",
@@ -100,7 +99,8 @@ const Features = () => {
           description: "Cross-framework control mapping between NIST CSF, RMF, ISO 27001, and other major frameworks.",
           frameworks: ["Multiple"],
           path: "/contact"
-        },
+        }]
+      },
     {
       id: 'ransomware',
       title: "Ransomware Protection",
@@ -208,23 +208,6 @@ const Features = () => {
           title: "Dependency Risk Mapping",
           description: "Map and visualize dependencies between your systems and third-party services to identify critical risks.",
           frameworks: ["NIST SP 800-161", "Supply Chain"],
-          path: "/contact"
-        }
-      ]
-    },
-  
-        {
-          icon: CheckCircle,
-          title: "Compliance Dashboard",
-          description: "Real-time visibility into your compliance posture across multiple regulatory frameworks.",
-          frameworks: ["Multiple"],
-          path: "/contact"
-        },
-        {
-          icon: Lock,
-          title: "Risk Management Framework",
-          description: "Implement the NIST Risk Management Framework (RMF) with guided workflows and documentation.",
-          frameworks: ["NIST RMF"],
           path: "/contact"
         }
       ]
@@ -351,13 +334,13 @@ const Features = () => {
                 Explore All {category.title} Features
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Link to="/demo">
+            </Link>
           </div>
         </AnimatedSection>
       ))}
 
     
-      { /* Final CTA */}
+      {/* Final CTA */}
       <AnimatedSection type="fadeIn" className="py-12 px-4 md:px-6">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
@@ -370,7 +353,7 @@ const Features = () => {
                 Start Free Assessment
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Link to="/demo">
+            </Link>
             <Link to="/pricing">
               <Button variant="outline">
                 View Pricing Plans
@@ -382,7 +365,7 @@ const Features = () => {
       </AnimatedSection>
 
       
-        {/* Mobile Support */}
+      {/* Mobile Support */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -467,8 +450,6 @@ const Features = () => {
           </div>
         </div>
       </AnimatedSection>
-         
-  
     </div>
   );
 };
