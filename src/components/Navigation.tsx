@@ -25,6 +25,15 @@ interface NavigationProps {
   setMobileMenuOpen: (open: boolean) => void;
 }
 
+interface NavItem {
+  name: string;
+  path: string;
+  isActive?: (pathname: string) => boolean;
+  icon: React.FC<any>;
+  external: boolean;
+  url?: string;
+}
+
 const Navigation: React.FC<NavigationProps> = ({ 
   toggleDarkMode, 
   darkMode, 
@@ -33,7 +42,7 @@ const Navigation: React.FC<NavigationProps> = ({
 }) => {
   const location = useLocation();
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { 
       name: 'Home', 
       path: '/',
@@ -43,6 +52,15 @@ const Navigation: React.FC<NavigationProps> = ({
     { 
       name: 'Assessments', 
       path: '/assessments',
+      isActive: (pathname) => pathname === '/assessments' || 
+                            pathname.includes('-assessment') || 
+                            pathname.includes('tabletop-exercise') || 
+                            pathname.includes('nist-csf-alignment') ||
+                            pathname.includes('backup-readiness') ||
+                            pathname.includes('incident-response') ||
+                            pathname.includes('network-segmentation') ||
+                            pathname.includes('vulnerability-management') ||
+                            pathname.includes('zero-trust'),
       icon: ClipboardList,
       external: false
     },
@@ -212,7 +230,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 <Link
                   to={item.path}
                   className={`flex items-center px-3 py-2 text-base font-medium rounded-md ${
-                    location.pathname === item.path 
+                   location.pathname === item.path || (item.isActive && item.isActive(location.pathname))
                       ? 'text-electric-blue bg-electric-blue/5 dark:bg-electric-blue/10' 
                       : 'text-foreground hover:bg-muted'
                   }`}

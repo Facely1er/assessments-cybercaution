@@ -99,8 +99,9 @@ const Features = () => {
           description: "Cross-framework control mapping between NIST CSF, RMF, ISO 27001, and other major frameworks.",
           frameworks: ["Multiple"],
           path: "/contact"
-        }]
-      },
+        }
+      ]
+    },
     {
       id: 'ransomware',
       title: "Ransomware Protection",
@@ -275,8 +276,6 @@ const Features = () => {
         </div>
       </AnimatedSection>
 
-      
-      
       {/* Feature Categories */}
       {(featureCategories.length > 0 ? featureCategories : fallbackFeatureCategories).map((category, categoryIndex) => (
         <AnimatedSection 
@@ -339,7 +338,6 @@ const Features = () => {
         </AnimatedSection>
       ))}
 
-    
       {/* Final CTA */}
       <AnimatedSection type="fadeIn" className="py-12 px-4 md:px-6">
         <div className="max-w-6xl mx-auto text-center">
@@ -364,7 +362,6 @@ const Features = () => {
         </div>
       </AnimatedSection>
 
-      
       {/* Mobile Support */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
@@ -417,6 +414,7 @@ const Features = () => {
           </div>
         </div>
       </AnimatedSection>
+
       {/* CTA Section */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
