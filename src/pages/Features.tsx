@@ -334,7 +334,7 @@ const Features = () => {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/onboarding">
+          </div>
         </AnimatedSection>
       ))}
 
@@ -395,7 +395,7 @@ const Features = () => {
                 </li>
               </ul>
               <Link to="/demo">
-              <Link to="/demo">
+                <Button variant="orange">
                   Explore Dashboard
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
