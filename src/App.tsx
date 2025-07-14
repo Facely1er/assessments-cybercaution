@@ -44,6 +44,8 @@ const Support = React.lazy(() => import('./pages/Support'));
 const FAQ = React.lazy(() => import('./pages/FAQ'));
 const DemoPage = React.lazy(() => import('./pages/DemoPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const Privacy = React.lazy(() => import('./pages/Privacy'));
+const Terms = React.lazy(() => import('./pages/Terms'));
 
 function App() {
   const [darkMode, setDarkMode] = React.useState(() => {
@@ -120,6 +122,8 @@ function App() {
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/toolkit" element={<ToolkitPage />} />
+            <Route path="/company/privacy" element={<Privacy />} />
+            <Route path="/company/terms" element={<Terms />} />
           </Route>
 
           {/* Auth routes */}
