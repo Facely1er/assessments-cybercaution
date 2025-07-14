@@ -140,6 +140,9 @@ const Pricing = () => {
                   <Button 
                     className="w-full" 
                     variant={plan.popular ? "orange" : "outline"}
+                  >
+                    Get Started
+                  </Button>
                   <Link to="/solutions#financial">
                     <Button variant="outline" size="sm" className="w-full mt-4">
                       Learn More
@@ -171,12 +174,10 @@ const Pricing = () => {
                 <th className="p-4 text-center font-semibold">Professional</th>
                 <th className="p-4 text-center font-semibold">Enterprise</th>
               </tr>
-                  <Link to="/solutions#healthcare">
-                    <Button variant="outline" size="sm" className="w-full mt-4">
-                      Learn More
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </Link>
+            </thead>
+            <tbody>
+              <tr className="border-b border-border">
+                <td className="p-4 font-medium">Security Assessment</td>
                 <td className="p-4 text-center">Basic</td>
                 <td className="p-4 text-center">Advanced</td>
                 <td className="p-4 text-center">Enterprise-grade</td>
@@ -421,12 +422,10 @@ const Pricing = () => {
                     <h3 className="font-medium text-foreground mb-2">{faq.question}</h3>
                     <p className="text-muted-foreground text-sm">{faq.answer}</p>
                   </div>
-                  <Link to="/solutions#technology">
-                    <Button variant="outline" size="sm" className="w-full mt-4">
-                      Learn More
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </AnimatedSection>
 
@@ -451,13 +450,9 @@ const Pricing = () => {
                 </Button>
               </Link>
               <Link to="/ransomware-assessment">
-                <Button 
-                  <Link to="/solutions#manufacturing">
-                    <Button variant="outline" size="sm" className="w-full mt-4">
-                      Learn More
-                      <ArrowRight className="ml-2 h-3 w-3" />
-                    </Button>
-                  </Link>
+                <Button variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10">
+                  Free Assessment
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
             </div>
