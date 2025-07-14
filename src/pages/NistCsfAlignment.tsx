@@ -378,7 +378,7 @@ const NistCsfAlignment = () => {
             <p className="text-muted-foreground mb-4">
               Map your organization's ransomware risks to NIST CSF controls.
             </p>
-            <RouterLink to="/app/risk-register">
+            <RouterLink to="/dashboard">
               <Button className="w-full" variant="orange">
                 Map Risks
                 <ArrowRight className="ml-2 h-4 w-4" />

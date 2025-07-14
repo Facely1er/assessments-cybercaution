@@ -274,15 +274,15 @@ const Solutions = () => {
           Tailored security and risk management solutions for your industry challenges
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/demo">
+          <Link to="/ransomware-assessment">
             <Button variant="orange">
-              Request Solution Demo
+              Start Free Assessment
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
-          <Link to="/ransomware-assessment">
+          <Link to="/demo">
             <Button variant="outline">
-              Start Free Assessment
+              Request Solution Demo
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
@@ -865,8 +865,8 @@ const Solutions = () => {
               <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
                 Get a personalized demo of our solution tailored to your industry needs
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/demo">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center"> 
+                <Link to="/demo"> 
                   <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
                     Request Demo
                     <ArrowRight className="ml-2 h-5 w-5" />

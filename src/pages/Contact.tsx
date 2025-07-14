@@ -288,10 +288,12 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <AnimatedItem type="fadeIn" delay={0.1}>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      Schedule a Demo
-                    </Button>
+                    <Link to="/demo">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Schedule a Demo
+                      </Button>
+                    </Link>
                   </AnimatedItem>
                   
                   <AnimatedItem type="fadeIn" delay={0.2}>
@@ -362,9 +364,11 @@ const Contact = () => {
                         Start Free Assessment
                       </Button>
                     </Link>
-                    <Button variant="outline">
-                      Download Resources
-                    </Button>
+                    <Link to="/demo">
+                      <Button variant="outline">
+                        Schedule Demo
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>

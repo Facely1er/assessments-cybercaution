@@ -635,11 +635,13 @@ const SecurityAwareness = () => {
                           </div>
                         </div>
                         
-                        <div className="mt-4 md:mt-0 md:ml-6 flex md:flex-col justify-end gap-2">
-                          <Button>
-                            View Details
+                        <Link to="/demo">
+                          <Button variant="orange">
+                            Request Program Demo
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </Button>
+                        </Link>
+                        <Link to="/dashboard">
                           <Button variant="outline">
                             Implementation Guide
                           </Button>
