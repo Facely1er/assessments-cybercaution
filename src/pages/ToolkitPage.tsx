@@ -284,7 +284,7 @@ const ToolkitPage = () => {
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-foreground">{tool.title}</h3>
                       <p className="text-muted-foreground mb-4">{tool.description}</p>
-                      <Link to={tool.path}>
+                      <Link to={tool.path || '/login'}>
                         <Button variant="orange" className="w-full">
                           <Play className="mr-2 h-4 w-4" />
                           Launch Tool
@@ -333,7 +333,7 @@ const ToolkitPage = () => {
                     <CardContent className="flex-1 flex flex-col">
                       <p className="text-muted-foreground mb-4 flex-1">{tool.description}</p>
                       <div className="flex gap-2">
-                        <Link to={tool.path} className="flex-1">
+                        <Link to={tool.path || '/login'} className="flex-1">
                           <Button variant="outline" className="w-full">
                             <Wrench className="mr-2 h-4 w-4" />
                             {tool.path === '/login' ? 'Premium Tool' : 'Use Tool'}
@@ -415,7 +415,7 @@ const ToolkitPage = () => {
             <CardContent className="p-8">
               <h2 className="text-2xl font-bold mb-6 text-center text-foreground">Quick Access</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Link to="/ransomware-assessment">
+                <Link to={'/ransomware-assessment'}>
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
                     <Shield className="h-5 w-5 mb-2" />
                     <span className="text-xs">Ransomware Check</span>
@@ -586,13 +586,13 @@ const ToolkitPage = () => {
                   Explore our comprehensive toolkit and start improving your cybersecurity posture today
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/ransomware-assessment">
+                  <Link to={'/ransomware-assessment'}>
                     <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
                       Start with Assessment
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
-                  <Link to="/contact">
+                  <Link to={'/contact'}>
                     <Button 
                       variant="outline" 
                       className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
