@@ -645,7 +645,7 @@ const SecurityAwareness = () => {
                           <Button variant="outline">
                             Implementation Guide
                           </Button>
-                        </div>
+                        </Link>
                       </div>
                     </CardContent>
                   </Card>
