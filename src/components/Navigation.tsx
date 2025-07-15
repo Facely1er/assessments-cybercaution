@@ -132,7 +132,7 @@ const Navigation: React.FC<NavigationProps> = ({
               type="button"
             >
               <img 
-                src={appAssets.logo} 
+                src="/cybercaution.png" 
                 alt="CyberCaution Logo" 
                 className="h-12 w-12 transform group-hover:scale-110 transition-transform" 
               />
