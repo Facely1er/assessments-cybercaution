@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
+import { getStorageUrl } from '../utils/supabaseAssets';
 import { 
   Shield, 
   Users, 
@@ -869,19 +870,19 @@ const SecurityAwareness = () => {
                     id: 'video-1',
                     title: 'Phishing: Don\'t Take the Bait',
                     duration: '5:32',
-                    thumbnail: 'https://images.pexels.com/photos/5380642/pexels-photo-5380642.jpeg'
+                    thumbnail: getStorageUrl('images/videos/phishing-thumbnail.jpeg')
                   },
                   {
                     id: 'video-2',
                     title: 'Password Security Essentials',
                     duration: '4:45',
-                    thumbnail: 'https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg'
+                    thumbnail: getStorageUrl('images/videos/password-thumbnail.jpeg')
                   },
                   {
                     id: 'video-3',
                     title: 'Social Engineering Defense',
                     duration: '6:18',
-                    thumbnail: 'https://images.pexels.com/photos/5380651/pexels-photo-5380651.jpeg'
+                    thumbnail: getStorageUrl('images/videos/social-engineering-thumbnail.jpeg')
                   }
                 ].map((video) => (
                   <div key={video.id} className="overflow-hidden rounded-lg border border-border">

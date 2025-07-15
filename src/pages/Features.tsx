@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { useSupabaseQuery } from '../hooks/useSupabase';
+import { appAssets } from '../utils/supabaseAssets';
 import AnimatedSection from '../utils/AnimatedSection';
 import AnimatedItem from '../utils/AnimatedItem';
 import { Link } from 'react-router-dom';
@@ -405,7 +406,7 @@ const Features = () => {
               <div className="relative max-w-xs">
                 <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-blue-500/20 rounded-3xl transform rotate-6"></div>
                 <img 
-                  src="https://images.pexels.com/photos/6893825/pexels-photo-6893825.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                  src={appAssets.mobileDashboard} 
                   alt="Mobile dashboard" 
                   className="relative rounded-3xl shadow-xl z-10 border border-white dark:border-gray-800"
                 />

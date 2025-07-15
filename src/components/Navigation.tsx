@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/Button';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
+import { appAssets } from '../utils/supabaseAssets';
 
 interface NavigationProps {
   toggleDarkMode: () => void;
@@ -131,7 +132,7 @@ const Navigation: React.FC<NavigationProps> = ({
               type="button"
             >
               <img 
-                src="/cybercaution.png" 
+                src={appAssets.logo} 
                 alt="CyberCaution Logo" 
                 className="h-12 w-12 transform group-hover:scale-110 transition-transform" 
               />
