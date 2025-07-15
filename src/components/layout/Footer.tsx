@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-1 text-xs">
               <li>
                 <a 
-                  href={`/documentation`}
+                  href={`${SUBDOMAIN_URLS.RESOURCES}/documentation`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
@@ -112,7 +112,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a 
-                  href="/guides" 
+                  href={`${SUBDOMAIN_URLS.RESOURCES}/guides`} 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
