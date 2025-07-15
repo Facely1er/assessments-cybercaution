@@ -49,8 +49,8 @@ export const uploadFile = async (
  * Helper to get common app assets
  */
 export const appAssets = {
-  logo: getStorageUrl('images/cybercaution.png'),
-  favicon: getStorageUrl('images/favicon.png'),
+  logo: getStorageUrl('images/logos/cybercaution.png'),
+  favicon: getStorageUrl('images/icons/favicon.png'),
   heroBackground: getStorageUrl('images/backgrounds/hero-bg.jpeg'),
   mobileDashboard: getStorageUrl('images/screenshots/mobile-dashboard.jpeg'),
   // Add more common assets here
