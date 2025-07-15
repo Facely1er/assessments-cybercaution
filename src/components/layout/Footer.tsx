@@ -128,10 +128,15 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="flex items-center text-muted-foreground hover:text-primary">
+                <a 
+                  href={`${SUBDOMAIN_URLS.RESOURCES}/blog`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-muted-foreground hover:text-primary"
+                >
                   <FileText className="h-3 w-3 mr-2" />
                   Blog
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
