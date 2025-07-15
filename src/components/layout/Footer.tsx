@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-1 text-xs">
               <li>
                 <a 
-                  href={`${SUBDOMAIN_URLS.RESOURCES}/documentation`}
+                  href="https://resources.cybercaution.com/documentation"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
@@ -112,7 +112,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a 
-                  href={`${SUBDOMAIN_URLS.RESOURCES}/guides`} 
+                  href="https://resources.cybercaution.com/guides" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
@@ -129,7 +129,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <a 
-                  href={`${SUBDOMAIN_URLS.RESOURCES}/blog`}
+                  href="https://resources.cybercaution.com/blog"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center text-muted-foreground hover:text-primary"
