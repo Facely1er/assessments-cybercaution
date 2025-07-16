@@ -372,20 +372,258 @@ const Solutions = () => {
   const [loading, setLoading] = useState(false);
 
   // Set initial active section
-  useEffect(() => {
-    if (!activeSectionId && solutions.length > 0) {
-      setActiveSectionId(solutions[0].solution_id);
-    }
-  }, [activeSectionId, solutions]);
+ const fallbackData = {
+  compliance_frameworks: {
+    'healthcare': ['HIPAA', 'HITRUST', 'NIST CSF', 'HITECH'],
+    'financial': ['PCI DSS', 'GLBA', 'SOX', 'NIST CSF', 'FFIEC'],
+    'manufacturing': ['NIST CSF', 'IEC 62443', 'ISO 27001', 'NERC CIP'],
+    'education': ['FERPA', 'COPPA', 'NIST CSF', 'State Privacy Laws'],
+    'government': ['NIST RMF', 'FISMA', 'FedRAMP', 'CISA Directives'],
+    'technology': ['SOC 2', 'ISO 27001', 'NIST CSF', 'Cloud Security']
+  },
+  compliance_features: {
+    'healthcare': [
+      'HIPAA Risk Assessment automation',
+      'PHI inventory and classification', 
+      'Medical device security monitoring',
+      'Business associate management',
+      'Breach notification workflows',
+      'Telehealth privacy controls'
+    ],
+    'financial': [
+      'Multi-regulatory compliance dashboard',
+      'Financial transaction monitoring',
+      'Customer data protection controls',
+      'Fraud detection and prevention',
+      'Regulatory reporting automation',
+      'Third-party risk assessment'
+    ],
+    'manufacturing': [
+      'OT/IT network security integration',
+      'Industrial control system monitoring',
+      'Supply chain risk assessment',
+      'Intellectual property protection',
+      'Production continuity planning',
+      'Safety system security'
+    ],
+    'education': [
+      'Student data privacy protection',
+      'Secure remote learning platforms',
+      'FERPA compliance automation',
+      'Educational technology security',
+      'Campus network protection',
+      'Research data safeguards'
+    ],
+    'government': [
+      'NIST RMF implementation support',
+      'Authority to Operate (ATO) documentation',
+      'Critical infrastructure protection',
+      'Government-specific threat monitoring',
+      'Supply chain risk management (SCRM)',
+      'Incident response coordination'
+    ],
+    'technology': [
+      'DevSecOps pipeline integration',
+      'Cloud security posture management',
+      'Software supply chain security',
+      'API security and monitoring',
+      'Container and Kubernetes security',
+      'Code vulnerability scanning'
+    ]
+  },
+  compliance_benefits: {
+    'healthcare': [
+      'Streamlined HIPAA compliance with automated controls',
+      'Ransomware protection for patient data systems',
+      'Real-time PHI monitoring and alerting',
+      'Simplified business associate assessments',
+      'Reduced audit preparation time by 80%',
+      'Enhanced patient trust through data protection'
+    ],
+    'financial': [
+      'Consolidated compliance across multiple regulations',
+      'Advanced fraud protection with AI detection',
+      'Automated regulatory reporting capabilities',
+      'Enhanced customer financial data security',
+      'Reduced compliance costs by 60%',
+      'Improved audit readiness and results'
+    ],
+    'manufacturing': [
+      'Unified IT and OT security management',
+      'Protection of critical production systems',
+      'Supply chain cyber risk visibility',
+      'Intellectual property theft prevention',
+      'Reduced production downtime from cyber incidents',
+      'Enhanced industrial safety through cybersecurity'
+    ],
+    'education': [
+      'Simplified FERPA compliance management',
+      'Secure online learning environments',
+      'Student privacy protection across systems',
+      'Enhanced campus cybersecurity posture',
+      'Protection of research and academic data',
+      'Improved incident response for educational settings'
+    ],
+    'government': [
+      'Streamlined ATO processes and documentation',
+      'Enhanced critical infrastructure resilience',
+      'Government-specific threat intelligence',
+      'Improved inter-agency coordination',
+      'Accelerated FISMA compliance',
+      'Robust supply chain security'
+    ],
+    'technology': [
+      'Security integrated into development lifecycle',
+      'Automated cloud security monitoring',
+      'Enhanced software supply chain protection',
+      'Rapid security feedback for developers',
+      'Scalable security for agile environments',
+      'Improved time-to-market with security'
+    ]
+  },
+  features: {
+    'healthcare': [
+      'Threat Weather System™ for healthcare-specific threats',
+      'Medical device vulnerability scanning',
+      'Patient data encryption at rest and in transit',
+      'HIPAA-compliant incident response playbooks'
+    ],
+    'financial': [
+      'Predictive Breach Analytics for financial threats',
+      'Automated SOX controls testing',
+      'Real-time transaction security monitoring',
+      'Financial sector threat intelligence feeds'
+    ],
+    'manufacturing': [
+      'Industrial Threat Weather System™',
+      'OT asset discovery and inventory',
+      'Production-aware incident response',
+      'Manufacturing sector threat intelligence'
+    ],
+    'education': [
+      'Educational sector threat intelligence',
+      'Age-appropriate privacy controls',
+      'Academic calendar-aware security',
+      'Student device management'
+    ],
+    'government': [
+      'Government threat intelligence integration',
+      'Critical infrastructure mapping',
+      'Inter-agency coordination tools',
+      'Government-specific incident playbooks'
+    ],
+    'technology': [
+      'Development-integrated threat monitoring',
+      'Automated security testing in CI/CD',
+      'Technology sector threat intelligence',
+      'Developer-friendly security tools'
+    ]
+  },
+  value_proposition_problems: {
+    'healthcare': [
+      { pain: "Complex HIPAA compliance requirements", impact: "Risk of violations and patient trust erosion" },
+      { pain: "Growing ransomware targeting healthcare", impact: "Patient care disruption and data breaches" }
+    ],
+    'financial': [
+      { pain: "Multiple overlapping regulatory requirements", impact: "Complex compliance management and penalty risks" },
+      { pain: "Sophisticated financial cyber threats", impact: "Customer data breaches and financial losses" }
+    ],
+    'manufacturing': [
+      { pain: "IT/OT security integration challenges", impact: "Blind spots in industrial system protection" },
+      { pain: "Production system vulnerability to cyber attacks", impact: "Operational disruption and safety risks" }
+    ],
+    'education': [
+      { pain: "Complex student privacy regulations", impact: "FERPA violations and student data exposure" },
+      { pain: "Remote learning security challenges", impact: "Educational continuity and privacy risks" }
+    ],
+    'government': [
+      { pain: "Complex federal security requirements", impact: "Delayed ATO and operational limitations" },
+      { pain: "Critical infrastructure threat targeting", impact: "National security and public safety risks" }
+    ],
+    'technology': [
+      { pain: "Security slowing down development cycles", impact: "Delayed releases and reduced competitiveness" },
+      { pain: "Complex cloud and container security", impact: "Security gaps in modern infrastructure" }
+    ]
+  },
+  value_proposition_solutions: {
+    'healthcare': [
+      { capability: "Automated HIPAA compliance management", benefit: "Reduce compliance overhead while ensuring full regulatory adherence" },
+      { capability: "Healthcare-specific threat intelligence", benefit: "Proactive protection against medical sector cyber threats" }
+    ],
+    'financial': [
+      { capability: "Unified regulatory compliance platform", benefit: "Single system for GLBA, SOX, PCI DSS, and FFIEC requirements" },
+      { capability: "Financial-specific threat detection", benefit: "AI-powered protection against banking and fintech attacks" }
+    ],
+    'manufacturing': [
+      { capability: "Integrated OT/IT security platform", benefit: "Comprehensive protection across all manufacturing systems" },
+      { capability: "Production-continuity focused security", benefit: "Cyber protection that maintains operational availability" }
+    ],
+    'education': [
+      { capability: "Automated FERPA compliance", benefit: "Ensure student privacy while enabling educational innovation" },
+      { capability: "Secure digital learning environment", benefit: "Safe online education with privacy protection" }
+    ],
+    'government': [
+      { capability: "NIST RMF automation and support", benefit: "Accelerated compliance and ATO processes" },
+      { capability: "Critical infrastructure threat protection", benefit: "Enhanced national security and public safety" }
+    ],
+    'technology': [
+      { capability: "DevSecOps automation and integration", benefit: "Security at the speed of development" },
+      { capability: "Cloud-native security platform", benefit: "Comprehensive protection for modern tech stacks" }
+    ]
+  }
+};
 
-  const scrollToSection = (id: string) => {
-    const element = sectionRefs.current[id];
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveSectionId(id);
+// Updated useEffect for processing data
+useEffect(() => {
+  if (!solutionsLoading && !caseStudiesLoading) {
+    try {
+      if (solutionsData && solutionsData.length > 0) {
+        const processedSolutions = solutionsData.map(solution => {
+          const IconComponent = LucideIcons[solution.icon as keyof typeof LucideIcons] || Building2;
+          
+          return {
+            ...solution,
+            icon: IconComponent,
+            // Use fallback data for missing complex columns
+            compliance_frameworks: solution.compliance_frameworks || fallbackData.compliance_frameworks[solution.solution_id] || [],
+            compliance_features: solution.compliance_features || fallbackData.compliance_features[solution.solution_id] || [],
+            compliance_benefits: solution.compliance_benefits || fallbackData.compliance_benefits[solution.solution_id] || [],
+            features: solution.features || fallbackData.features[solution.solution_id] || [],
+            value_proposition_problems: solution.value_proposition_problems || fallbackData.value_proposition_problems[solution.solution_id] || [],
+            value_proposition_solutions: solution.value_proposition_solutions || fallbackData.value_proposition_solutions[solution.solution_id] || []
+          };
+        });
+        setSolutions(processedSolutions);
+      } else {
+        setSolutions(realSolutions);
+      }
+      
+      // Process case studies with fallback for results array
+      if (caseStudiesData && caseStudiesData.length > 0) {
+        const processedCaseStudies = caseStudiesData.map(study => ({
+          ...study,
+          results: study.results || [
+            'Implementation completed successfully',
+            'Enhanced security posture achieved',
+            'Compliance requirements met',
+            'Stakeholder satisfaction improved'
+          ]
+        }));
+        setCaseStudies(processedCaseStudies);
+      } else {
+        setCaseStudies(capabilityShowcases);
+      }
+      
+    } catch (error) {
+      console.error("Error processing data:", error);
+      setSolutions(realSolutions);
+      setCaseStudies(capabilityShowcases);
     }
-  };
-
+    
+    setLoading(false);
+  }
+}, [solutionsLoading, caseStudiesLoading, solutionsData, caseStudiesData]);
+ 
   // Set up IntersectionObserver to track which section is visible
   useEffect(() => {
     if (solutions.length === 0) return;
