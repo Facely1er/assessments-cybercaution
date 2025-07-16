@@ -141,6 +141,13 @@ function App() {
             <Route path="/tools/nist-csf-wizard" element={<NISTCSFToolkit />} />
             <Route path="/tools/vendor-scorecard" element={<VendorSecurityScorecard />} />
             <Route path="/tools/business-impact" element={<BusinessImpactCalculator />} />
+            
+            {/* Toolkit Tool Routes */}
+            <Route path="/tools/threat-weather" element={<ThreatWeatherDashboard />} />
+            <Route path="/tools/predictive-analytics" element={<PredictiveBreachAnalytics />} />
+            <Route path="/tools/nist-csf-wizard" element={<NISTCSFToolkit />} />
+            <Route path="/tools/vendor-scorecard" element={<VendorSecurityScorecard />} />
+            <Route path="/tools/business-impact" element={<BusinessImpactCalculator />} />
           </Route>
 
           {/* Auth routes */}
