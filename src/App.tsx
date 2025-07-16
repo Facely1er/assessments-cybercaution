@@ -10,6 +10,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Lazy load the OnboardingPage component
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
+// Lazy load the QuickCyberCheck component
+const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
 // Lazy load all page components
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -122,6 +124,7 @@ function App() {
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/toolkit" element={<ToolkitPage />} />
+            <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
             <Route path="/company/privacy" element={<Privacy />} />
             <Route path="/company/terms" element={<Terms />} />
           </Route>
