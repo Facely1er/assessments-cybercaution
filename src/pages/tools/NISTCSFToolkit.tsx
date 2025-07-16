@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Alert, AlertDescription } from '../../components/ui/Alert';
-import { useState } from 'react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Award,
   CheckCircle,
@@ -25,6 +24,7 @@ import {
   Cloud,
   Loader
 } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 
 const NISTCSFToolkit = () => {
   const [currentView, setCurrentView] = useState('overview');
@@ -42,6 +42,22 @@ const NISTCSFToolkit = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const sessionId = "demo-session";
+  
+  const saveAssessment = async (data: any) => {
+    // Mock function implementation
+    console.log('Saving assessment data:', data);
+    setLoading(true);
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return { success: true };
+    } catch (err) {
+      setError('Failed to save assessment');
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
   
   const generateReport = async (options: any) => {
     // Mock implementation
@@ -406,7 +422,7 @@ const NISTCSFToolkit = () => {
       completedFunctions: getCompletedFunctions()
     };
 
-    const result = await saveAssessment(data);
+    const result = await saveAssessment(data as any);
     
     if (result.success) {
       setLastSaved(new Date().toISOString());
