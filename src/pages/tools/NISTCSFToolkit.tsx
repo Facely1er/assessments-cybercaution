@@ -43,12 +43,6 @@ const NISTCSFToolkit = () => {
   const [error, setError] = useState<string | null>(null);
   const sessionId = "demo-session";
   
-  const handleSave = async (showNotification = true) => {
-    // Mock implementation
-    setLastSaved(new Date().toISOString());
-    return { success: true };
-  };
-  
   const generateReport = async (options: any) => {
     // Mock implementation
     console.log("Generating report with options:", options);
