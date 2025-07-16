@@ -390,7 +390,7 @@ const PredictiveBreachAnalytics: React.FC = () => {
                 </CardContent>
               </Card>
               </div>
-            </div>
+            </Card>
 
             {/* Prediction Timeline */}
             <Card>
