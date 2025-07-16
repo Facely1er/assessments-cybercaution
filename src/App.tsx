@@ -13,6 +13,13 @@ const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
 // Lazy load the QuickCyberCheck component
 const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
+// Lazy load tool components
+const ThreatWeatherDashboard = React.lazy(() => import('./pages/tools/ThreatWeatherDashboard'));
+const PredictiveBreachAnalytics = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
+const NISTCSFToolkit = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
+const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
+const BusinessImpactCalculator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
+
 // Lazy load all page components
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Pricing = React.lazy(() => import('./pages/Pricing'));
@@ -127,6 +134,13 @@ function App() {
             <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
             <Route path="/company/privacy" element={<Privacy />} />
             <Route path="/company/terms" element={<Terms />} />
+            
+            {/* Toolkit Tool Routes */}
+            <Route path="/tools/threat-weather" element={<ThreatWeatherDashboard />} />
+            <Route path="/tools/predictive-analytics" element={<PredictiveBreachAnalytics />} />
+            <Route path="/tools/nist-csf-wizard" element={<NISTCSFToolkit />} />
+            <Route path="/tools/vendor-scorecard" element={<VendorSecurityScorecard />} />
+            <Route path="/tools/business-impact" element={<BusinessImpactCalculator />} />
           </Route>
 
           {/* Auth routes */}
