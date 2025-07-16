@@ -246,7 +246,7 @@ const PredictiveBreachAnalytics: React.FC = () => {
                   min="50"
                   max="95"
                   value={confidenceThreshold}
-                  onChange={(e) => setConfidenceThreshold(e.target.value)}
+                  onChange={(e) => setConfidenceThreshold(parseInt(e.target.value))}
                   className="w-full"
                 />
                 <span className="text-sm text-gray-600">{confidenceThreshold}%</span>
@@ -389,8 +389,7 @@ const PredictiveBreachAnalytics: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              </div>
-            </Card>
+            </div>
 
             {/* Prediction Timeline */}
             <Card>
@@ -457,7 +456,7 @@ const PredictiveBreachAnalytics: React.FC = () => {
                   </RadarChart>
                 </ResponsiveContainer>
               </CardContent>
-            </div>
+            </Card>
 
             {/* Risk Factor Details */}
             <Card>
