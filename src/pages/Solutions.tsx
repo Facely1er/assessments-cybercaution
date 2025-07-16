@@ -7,148 +7,359 @@ import AnimatedItem from '../utils/AnimatedItem';
 import { Link } from 'react-router-dom';
 import { useSupabaseQuery } from '../hooks/useSupabase';
 import { 
-  Building2, Globe, Briefcase, ShieldCheck, Server, Building, ArrowRight, CheckCircle, 
-  FileText, Lock, Shield, AlertTriangle, Network, BookOpen, Users, HeartPulse, FileCheck, 
-  Guitar as Hospital, Factory, Landmark, Download, Scale, CloudCog, RefreshCw 
+  Shield, AlertTriangle, Network, Globe, HeartPulse, Briefcase, 
+  Factory, Building2, Landmark, GraduationCap, ArrowRight, CheckCircle, 
+  FileText, Lock, BookOpen, Users, Download, Scale, CloudCog, 
+  RefreshCw, FileCheck, Eye, TrendingUp, Zap, Brain, Activity
 } from 'lucide-react';
 
-// Map of Lucide icon names to components
+// Map of Lucide icon names to components for dynamic icon loading
 const LucideIcons: Record<string, React.FC<any>> = {
-  Building2, Landmark, HeartPulse, Briefcase, Server, Factory, Scale, CloudCog, 
-  RefreshCw, FileCheck, FileText, CheckCircle, Shield, AlertTriangle, Network, 
-  BookOpen, Users, Lock, Globe, ShieldCheck, Building
+  Shield, AlertTriangle, Network, Globe, HeartPulse, Briefcase, Factory, 
+  Building2, Landmark, GraduationCap, CheckCircle, FileText, Lock, BookOpen, 
+  Users, Scale, CloudCog, RefreshCw, FileCheck, Eye, TrendingUp, Zap, Brain, Activity
 };
 
-// Default solutions data for fallback
-const defaultSolutions = [
+// Real CyberCaution solutions based on actual product portfolio
+const realSolutions = [
   {
     solution_id: 'healthcare',
-    title: 'Healthcare',
-    description: 'Security and compliance solutions for healthcare organizations',
+    title: 'Healthcare Security',
+    description: 'HIPAA-aligned compliance toolkit and medical data protection platform for healthcare providers. Complete PHI protection with specialized ransomware defense.',
     icon: HeartPulse,
-    compliance_frameworks: ['HIPAA', 'HITRUST', 'NIST CSF'],
+    tagline: 'Healthcare. Compliance. Simple.',
+    compliance_frameworks: ['HIPAA', 'HITRUST', 'NIST CSF', 'HITECH'],
     compliance_features: [
-      'Patient data protection',
-      'Medical device security',
-      'Telehealth privacy controls',
-      'Business associate management'
+      'HIPAA Risk Assessment automation',
+      'PHI inventory and classification',
+      'Medical device security monitoring',
+      'Business associate management',
+      'Breach notification workflows',
+      'Telehealth privacy controls'
     ],
     compliance_benefits: [
-      'Reduce risk of patient data breaches',
-      'Simplify HIPAA compliance',
-      'Protect medical devices',
-      'Secure telehealth operations'
+      'Streamlined HIPAA compliance with automated controls',
+      'Ransomware protection for patient data systems',
+      'Real-time PHI monitoring and alerting',
+      'Simplified business associate assessments',
+      'Reduced audit preparation time by 80%',
+      'Enhanced patient trust through data protection'
     ],
-    features: [
-      'HIPAA Risk Assessment',
-      'PHI Inventory Management',
-      'Medical Device Security',
-      'Business Associate Assessment'
+    unique_features: [
+      'Threat Weather System™ for healthcare-specific threats',
+      'Medical device vulnerability scanning',
+      'Patient data encryption at rest and in transit',
+      'HIPAA-compliant incident response playbooks'
     ],
     value_proposition_problems: [
       {
-        pain: 'Growing patient data breach risks',
-        impact: 'Potential HIPAA violations and patient trust erosion'
+        pain: 'Complex HIPAA compliance requirements',
+        impact: 'Risk of violations and patient trust erosion'
       },
       {
-        pain: 'Complex regulatory environment',
-        impact: 'Difficulty maintaining compliance across operations'
+        pain: 'Growing ransomware targeting healthcare',
+        impact: 'Patient care disruption and data breaches'
       }
     ],
     value_proposition_solutions: [
       {
-        capability: 'HIPAA-aligned security management',
-        benefit: 'Streamlined compliance with automated controls and assessments'
+        capability: 'Automated HIPAA compliance management',
+        benefit: 'Reduce compliance overhead while ensuring full regulatory adherence'
       },
       {
-        capability: 'Complete PHI protection',
-        benefit: 'End-to-end security for patient data across all systems'
+        capability: 'Healthcare-specific threat intelligence',
+        benefit: 'Proactive protection against medical sector cyber threats'
       }
     ]
   },
   {
     solution_id: 'financial',
     title: 'Financial Services',
-    description: 'Risk management solutions for banks and financial institutions',
-    icon: Briefcase,
-    compliance_frameworks: ['PCI DSS', 'GLBA', 'SOX', 'NIST CSF'],
+    description: 'Solutions for financial compliance, cyber risk modeling, and fraud prevention. Multi-regulatory compliance management for banks and financial institutions.',
+    icon: Scale,
+    tagline: 'Optimize Financial Resilience',
+    compliance_frameworks: ['PCI DSS', 'GLBA', 'SOX', 'NIST CSF', 'FFIEC'],
     compliance_features: [
-      'Financial data protection',
-      'Transaction security',
-      'Fraud prevention',
-      'Regulatory reporting'
+      'Multi-regulatory compliance dashboard',
+      'Financial transaction monitoring',
+      'Customer data protection controls',
+      'Fraud detection and prevention',
+      'Regulatory reporting automation',
+      'Third-party risk assessment'
     ],
     compliance_benefits: [
-      'Maintain regulatory compliance',
-      'Protect customer financial data',
-      'Prevent fraud and financial crime',
-      'Ensure business continuity'
+      'Consolidated compliance across multiple regulations',
+      'Advanced fraud protection with AI detection',
+      'Automated regulatory reporting capabilities',
+      'Enhanced customer financial data security',
+      'Reduced compliance costs by 60%',
+      'Improved audit readiness and results'
     ],
-    features: [
-      'Financial Risk Assessment',
-      'Customer Data Protection',
-      'Fraud Detection',
-      'Regulatory Compliance'
+    unique_features: [
+      'Predictive Breach Analytics for financial threats',
+      'Automated SOX controls testing',
+      'Real-time transaction security monitoring',
+      'Financial sector threat intelligence feeds'
     ],
     value_proposition_problems: [
       {
-        pain: 'Evolving regulatory requirements',
-        impact: 'Risk of non-compliance penalties and reputation damage'
+        pain: 'Multiple overlapping regulatory requirements',
+        impact: 'Complex compliance management and penalty risks'
       },
       {
-        pain: 'Sophisticated financial fraud',
-        impact: 'Financial losses and customer trust erosion'
+        pain: 'Sophisticated financial cyber threats',
+        impact: 'Customer data breaches and financial losses'
       }
     ],
     value_proposition_solutions: [
       {
-        capability: 'Multi-regulation compliance framework',
-        benefit: 'Single platform for GLBA, SOX, PCI DSS, and other requirements'
+        capability: 'Unified regulatory compliance platform',
+        benefit: 'Single system for GLBA, SOX, PCI DSS, and FFIEC requirements'
       },
       {
-        capability: 'Advanced fraud protection',
-        benefit: 'AI-powered detection of suspicious activities and transactions'
+        capability: 'Financial-specific threat detection',
+        benefit: 'AI-powered protection against banking and fintech attacks'
+      }
+    ]
+  },
+  {
+    solution_id: 'manufacturing',
+    title: 'Manufacturing & Industrial',
+    description: 'OT/IT convergence security with industrial control system protection and intellectual property safeguards for manufacturing organizations.',
+    icon: Factory,
+    tagline: 'Secure Operations Technology',
+    compliance_frameworks: ['NIST CSF', 'IEC 62443', 'ISO 27001', 'NERC CIP'],
+    compliance_features: [
+      'OT/IT network security integration',
+      'Industrial control system monitoring',
+      'Supply chain risk assessment',
+      'Intellectual property protection',
+      'Production continuity planning',
+      'Safety system security'
+    ],
+    compliance_benefits: [
+      'Unified IT and OT security management',
+      'Protection of critical production systems',
+      'Supply chain cyber risk visibility',
+      'Intellectual property theft prevention',
+      'Reduced production downtime from cyber incidents',
+      'Enhanced industrial safety through cybersecurity'
+    ],
+    unique_features: [
+      'Industrial Threat Weather System™',
+      'OT asset discovery and inventory',
+      'Production-aware incident response',
+      'Manufacturing sector threat intelligence'
+    ],
+    value_proposition_problems: [
+      {
+        pain: 'IT/OT security integration challenges',
+        impact: 'Blind spots in industrial system protection'
+      },
+      {
+        pain: 'Production system vulnerability to cyber attacks',
+        impact: 'Operational disruption and safety risks'
+      }
+    ],
+    value_proposition_solutions: [
+      {
+        capability: 'Integrated OT/IT security platform',
+        benefit: 'Comprehensive protection across all manufacturing systems'
+      },
+      {
+        capability: 'Production-continuity focused security',
+        benefit: 'Cyber protection that maintains operational availability'
+      }
+    ]
+  },
+  {
+    solution_id: 'education',
+    title: 'Education & Academic',
+    description: 'Privacy education, secure remote learning, and academic compliance for K-12 and higher education institutions.',
+    icon: GraduationCap,
+    tagline: 'Privacy and Security Education for All',
+    compliance_frameworks: ['FERPA', 'COPPA', 'NIST CSF', 'State Privacy Laws'],
+    compliance_features: [
+      'Student data privacy protection',
+      'Secure remote learning platforms',
+      'FERPA compliance automation',
+      'Educational technology security',
+      'Campus network protection',
+      'Research data safeguards'
+    ],
+    compliance_benefits: [
+      'Simplified FERPA compliance management',
+      'Secure online learning environments',
+      'Student privacy protection across systems',
+      'Enhanced campus cybersecurity posture',
+      'Protection of research and academic data',
+      'Improved incident response for educational settings'
+    ],
+    unique_features: [
+      'Educational sector threat intelligence',
+      'Age-appropriate privacy controls',
+      'Academic calendar-aware security',
+      'Student device management'
+    ],
+    value_proposition_problems: [
+      {
+        pain: 'Complex student privacy regulations',
+        impact: 'FERPA violations and student data exposure'
+      },
+      {
+        pain: 'Remote learning security challenges',
+        impact: 'Educational continuity and privacy risks'
+      }
+    ],
+    value_proposition_solutions: [
+      {
+        capability: 'Automated FERPA compliance',
+        benefit: 'Ensure student privacy while enabling educational innovation'
+      },
+      {
+        capability: 'Secure digital learning environment',
+        benefit: 'Safe online education with privacy protection'
+      }
+    ]
+  },
+  {
+    solution_id: 'government',
+    title: 'Government & Critical Infrastructure',
+    description: 'Government-grade security with NIST RMF alignment, ATO support, and critical infrastructure protection for public sector organizations.',
+    icon: Landmark,
+    tagline: 'Securing Critical Infrastructure',
+    compliance_frameworks: ['NIST RMF', 'FISMA', 'FedRAMP', 'CISA Directives'],
+    compliance_features: [
+      'NIST RMF implementation support',
+      'Authority to Operate (ATO) documentation',
+      'Critical infrastructure protection',
+      'Government-specific threat monitoring',
+      'Supply chain risk management (SCRM)',
+      'Incident response coordination'
+    ],
+    compliance_benefits: [
+      'Streamlined ATO processes and documentation',
+      'Enhanced critical infrastructure resilience',
+      'Government-specific threat intelligence',
+      'Improved inter-agency coordination',
+      'Accelerated FISMA compliance',
+      'Robust supply chain security'
+    ],
+    unique_features: [
+      'Government threat intelligence integration',
+      'Critical infrastructure mapping',
+      'Inter-agency coordination tools',
+      'Government-specific incident playbooks'
+    ],
+    value_proposition_problems: [
+      {
+        pain: 'Complex federal security requirements',
+        impact: 'Delayed ATO and operational limitations'
+      },
+      {
+        pain: 'Critical infrastructure threat targeting',
+        impact: 'National security and public safety risks'
+      }
+    ],
+    value_proposition_solutions: [
+      {
+        capability: 'NIST RMF automation and support',
+        benefit: 'Accelerated compliance and ATO processes'
+      },
+      {
+        capability: 'Critical infrastructure threat protection',
+        benefit: 'Enhanced national security and public safety'
+      }
+    ]
+  },
+  {
+    solution_id: 'technology',
+    title: 'Technology & Software',
+    description: 'DevSecOps integration, cloud security, and software supply chain protection for technology companies and software development organizations.',
+    icon: CloudCog,
+    tagline: 'Secure Innovation at Speed',
+    compliance_frameworks: ['SOC 2', 'ISO 27001', 'NIST CSF', 'Cloud Security'],
+    compliance_features: [
+      'DevSecOps pipeline integration',
+      'Cloud security posture management',
+      'Software supply chain security',
+      'API security and monitoring',
+      'Container and Kubernetes security',
+      'Code vulnerability scanning'
+    ],
+    compliance_benefits: [
+      'Security integrated into development lifecycle',
+      'Automated cloud security monitoring',
+      'Enhanced software supply chain protection',
+      'Rapid security feedback for developers',
+      'Scalable security for agile environments',
+      'Improved time-to-market with security'
+    ],
+    unique_features: [
+      'Development-integrated threat monitoring',
+      'Automated security testing in CI/CD',
+      'Technology sector threat intelligence',
+      'Developer-friendly security tools'
+    ],
+    value_proposition_problems: [
+      {
+        pain: 'Security slowing down development cycles',
+        impact: 'Delayed releases and reduced competitiveness'
+      },
+      {
+        pain: 'Complex cloud and container security',
+        impact: 'Security gaps in modern infrastructure'
+      }
+    ],
+    value_proposition_solutions: [
+      {
+        capability: 'DevSecOps automation and integration',
+        benefit: 'Security at the speed of development'
+      },
+      {
+        capability: 'Cloud-native security platform',
+        benefit: 'Comprehensive protection for modern tech stacks'
       }
     ]
   }
 ];
 
-// Default case studies data for fallback
-const defaultCaseStudies = [
+// Real capability showcases based on actual CyberCaution features
+const capabilityShowcases = [
+  {
+    industry: 'Cross-Industry',
+    title: 'Threat Weather System™ Implementation',
+    challenge: 'Organizations need real-time threat intelligence tailored to their specific industry and risk profile.',
+    solution: 'CyberCaution\'s Threat Weather System™ provides industry-specific threat climate monitoring with predictive analytics.',
+    capabilities: [
+      'Real-time threat landscape analysis for your industry',
+      'Predictive threat modeling and early warning systems',
+      'Automated threat intelligence integration',
+      'Industry-specific attack pattern recognition'
+    ]
+  },
   {
     industry: 'Healthcare',
-    company: 'Regional Medical Center',
-    challenge: 'Needed to strengthen HIPAA compliance and protect patient data across 12 facilities',
-    solution: 'Implemented CyberCaution\'s Healthcare Security Suite with specialized PHI protection',
-    results: [
-      'Achieved 98% HIPAA compliance score, up from 65%',
-      'Reduced security incidents by 76%',
-      'Streamlined security assessments, saving 120 hours monthly',
-      'Secured telehealth operations during COVID-19 expansion'
+    title: 'Rapid HIPAA Compliance Achievement',
+    challenge: 'Healthcare organizations struggle with complex HIPAA requirements and need rapid compliance implementation.',
+    solution: 'Deployed CyberCaution\'s Healthcare Security Suite with automated HIPAA compliance management.',
+    capabilities: [
+      'Automated HIPAA risk assessments and gap analysis',
+      'PHI discovery and classification automation',
+      'Medical device security monitoring integration',
+      'Streamlined business associate agreement management'
     ]
   },
   {
     industry: 'Financial',
-    company: 'First National Bank',
-    challenge: 'Struggled with multi-regulatory compliance and third-party risk management',
-    solution: 'Deployed CyberCaution\'s Financial Services platform with vendor risk module',
-    results: [
-      'Consolidated compliance across PCI-DSS, GLBA, and SOX',
-      'Reduced vendor assessment time by 82%',
-      'Identified and remediated critical vulnerabilities in legacy systems',
-      'Achieved clean audit reports for two consecutive years'
-    ]
-  },
-  {
-    industry: 'Manufacturing',
-    company: 'Precision Industrial Products',
-    challenge: 'Needed to secure OT/IT environments and protect intellectual property',
-    solution: 'Implemented CyberCaution\'s Manufacturing Security Solution with OT protection',
-    results: [
-      'Secured industrial control systems without disrupting operations',
-      'Prevented two attempted ransomware attacks',
-      'Reduced mean time to detect threats by 67%',
-      'Achieved compliance with industrial security standards'
+    title: 'Multi-Regulatory Compliance Consolidation',
+    challenge: 'Financial institutions need unified compliance management across multiple overlapping regulatory frameworks.',
+    solution: 'Implemented CyberCaution\'s Financial Services platform with integrated regulatory compliance.',
+    capabilities: [
+      'Unified dashboard for PCI DSS, GLBA, and SOX compliance',
+      'Automated regulatory reporting and documentation',
+      'Financial sector threat intelligence integration',
+      'Advanced fraud detection and prevention systems'
     ]
   }
 ];
@@ -157,55 +368,8 @@ const Solutions = () => {
   const navigate = useNavigate();
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [solutions, setSolutions] = useState<any[]>([]);
-  const [caseStudies, setCaseStudies] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // Fetch solution data from Supabase
-  const { data: solutionsData, loading: solutionsLoading, error: solutionsError } = useSupabaseQuery('solutions', {
-    orderBy: { column: 'order_index', ascending: true }
-  });
-  
-  // Fetch case studies data from Supabase
-  const { data: caseStudiesData, loading: caseStudiesLoading, error: caseStudiesError } = useSupabaseQuery('case_studies', {
-    orderBy: { column: 'order_index', ascending: true }
-  });
-
-  // Process solutions data when it's loaded
-  useEffect(() => {
-    if (!solutionsLoading && !caseStudiesLoading) {
-      // Process solutions data - map icon string to actual Lucide component
-      try {
-        if (solutionsData && solutionsData.length > 0) {
-          const processedSolutions = solutionsData.map(solution => {
-            const IconComponent = LucideIcons[solution.icon as keyof typeof LucideIcons] || Building2;
-            return {
-              ...solution,
-              icon: IconComponent,
-              features: Array.isArray(solution.features) ? solution.features : [],
-              value_proposition_problems: Array.isArray(solution.value_proposition_problems) ? 
-                solution.value_proposition_problems : [],
-              value_proposition_solutions: Array.isArray(solution.value_proposition_solutions) ? 
-                solution.value_proposition_solutions : []
-            };
-          });
-          setSolutions(processedSolutions);
-        } else {
-          setSolutions(defaultSolutions);
-        }
-        
-        // Process case studies data
-        setCaseStudies(caseStudiesData && caseStudiesData.length > 0 ? caseStudiesData : defaultCaseStudies);
-        
-      } catch (error) {
-        console.error("Error processing data:", error);
-        setSolutions(defaultSolutions);
-        setCaseStudies(defaultCaseStudies);
-      }
-      
-      setLoading(false);
-    }
-  }, [solutionsLoading, caseStudiesLoading, solutionsData, caseStudiesData]);
+  const [solutions, setSolutions] = useState<any[]>(realSolutions);
+  const [loading, setLoading] = useState(false);
 
   // Set initial active section
   useEffect(() => {
@@ -240,7 +404,6 @@ const Solutions = () => {
       }
     );
 
-    // Observe all solution sections
     solutions.forEach((solution) => {
       const element = sectionRefs.current[solution.solution_id];
       if (element) {
@@ -251,27 +414,17 @@ const Solutions = () => {
     return () => observer.disconnect();
   }, [solutions]);
 
-  // Show loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="relative">
-            <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-          </div>
-          <p className="text-muted-foreground">Loading solutions...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="py-20">
       {/* Hero Section */}
       <AnimatedSection type="fadeIn" className="mb-16 text-center px-4 md:px-6">
         <h1 className="text-4xl font-bold mb-6 text-foreground">Industry Solutions</h1>
-        <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-8">
-          Tailored security and risk management solutions for your industry challenges
+        <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-4">
+          CyberCaution™ by ERMITS - Your Early Warning Defense System
+        </p>
+        <p className="text-lg text-muted-foreground max-w-4xl mx-auto mb-8">
+          Industry-specific cybersecurity solutions with Threat Weather System™, Rapid Response Playbooks, 
+          and Predictive Breach Analytics tailored to your sector's unique threat landscape.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/ransomware-assessment">
@@ -286,6 +439,60 @@ const Solutions = () => {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
+        </div>
+      </AnimatedSection>
+
+      {/* Core CyberCaution Features */}
+      <AnimatedSection type="fadeIn" className="mb-16 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Core CyberCaution™ Capabilities</h2>
+            <p className="text-lg text-muted-foreground">
+              Advanced cybersecurity intelligence that acts as your organization's immune system
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#FF6B00]/10 flex items-center justify-center mx-auto mb-4">
+                  <Activity className="h-6 w-6 text-[#FF6B00]" />
+                </div>
+                <h3 className="font-semibold mb-2">Threat Weather System™</h3>
+                <p className="text-sm text-muted-foreground">Real-time risk climate for your industry</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#FF6B00]/10 flex items-center justify-center mx-auto mb-4">
+                  <Zap className="h-6 w-6 text-[#FF6B00]" />
+                </div>
+                <h3 className="font-semibold mb-2">Rapid Response Playbooks</h3>
+                <p className="text-sm text-muted-foreground">Reduce response time by 90% with pre-approved plans</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#FF6B00]/10 flex items-center justify-center mx-auto mb-4">
+                  <Eye className="h-6 w-6 text-[#FF6B00]" />
+                </div>
+                <h3 className="font-semibold mb-2">Vendor Risk Radar</h3>
+                <p className="text-sm text-muted-foreground">Continuous monitoring of your entire supply chain</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#FF6B00]/10 flex items-center justify-center mx-auto mb-4">
+                  <Brain className="h-6 w-6 text-[#FF6B00]" />
+                </div>
+                <h3 className="font-semibold mb-2">Predictive Breach Analytics</h3>
+                <p className="text-sm text-muted-foreground">AI identifies vulnerabilities before attackers do</p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </AnimatedSection>
 
@@ -329,7 +536,10 @@ const Solutions = () => {
                     <div className="p-3 bg-[#FF6B00]/10 rounded-lg mr-4">
                       {solution.icon && <solution.icon className="h-8 w-8 text-[#FF6B00]" />}
                     </div>
-                    <h2 className="text-3xl font-bold text-foreground">{solution.title} Solutions</h2>
+                    <div>
+                      <h2 className="text-3xl font-bold text-foreground">{solution.title}</h2>
+                      <p className="text-[#FF6B00] font-medium">{solution.tagline}</p>
+                    </div>
                   </div>
 
                   <p className="text-lg text-muted-foreground mb-8">
@@ -337,9 +547,9 @@ const Solutions = () => {
                   </p>
 
                   <div className="mb-8">
-                    <h3 className="text-xl font-semibold mb-4 text-foreground">Key Features</h3>
+                    <h3 className="text-xl font-semibold mb-4 text-foreground">Core Capabilities</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {solution.features && solution.features.map((feature, idx) => (
+                      {solution.unique_features && solution.unique_features.map((feature: string, idx: number) => (
                         <div key={idx} className="flex items-start">
                           <CheckCircle className="h-5 w-5 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
                           <span className="text-foreground">{feature}</span>
@@ -351,7 +561,7 @@ const Solutions = () => {
                   <div className="mb-8">
                     <h3 className="text-xl font-semibold mb-4 text-foreground">Compliance Frameworks</h3>
                     <div className="flex flex-wrap gap-2 mb-6">
-                      {solution.compliance_frameworks && solution.compliance_frameworks.map((framework, idx) => (
+                      {solution.compliance_frameworks && solution.compliance_frameworks.map((framework: string, idx: number) => (
                         <span key={idx} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary">
                           {framework}
                         </span>
@@ -359,14 +569,14 @@ const Solutions = () => {
                     </div>
                   </div>
 
-                  {/* Value Proposition - Problem/Solution Format */}
+                  {/* Value Proposition */}
                   {solution.value_proposition_problems && solution.value_proposition_solutions && (
                     <div className="mb-8">
-                      <h3 className="text-xl font-semibold mb-6 text-foreground">Why {solution.title} Organizations Choose CyberCaution</h3>
+                      <h3 className="text-xl font-semibold mb-6 text-foreground">Why Choose CyberCaution for {solution.title}?</h3>
                       
                       <div className="space-y-6">
                         <div>
-                          <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">Key Challenges We Solve:</h4>
+                          <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">Industry Challenges We Address:</h4>
                           <div className="space-y-4">
                             {solution.value_proposition_problems.map((problem: any, idx: number) => (
                               <div key={idx} className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-lg p-4">
@@ -378,7 +588,7 @@ const Solutions = () => {
                         </div>
 
                         <div>
-                          <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">How CyberCaution Delivers Value:</h4>
+                          <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">CyberCaution Solutions:</h4>
                           <div className="space-y-4">
                             {solution.value_proposition_solutions.map((solutionItem: any, idx: number) => (
                               <div key={idx} className="bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30 rounded-lg p-4">
@@ -394,7 +604,7 @@ const Solutions = () => {
 
                   <Link to="/demo">
                     <Button variant="orange">
-                      Learn More About {solution.title} Solutions
+                      Explore {solution.title} Solutions
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -421,7 +631,7 @@ const Solutions = () => {
 
                   <Card className="border dark:border-muted">
                     <CardHeader>
-                      <CardTitle>Key Capabilities</CardTitle>
+                      <CardTitle>Compliance Features</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
@@ -441,147 +651,25 @@ const Solutions = () => {
                   <Card className="bg-[#FF6B00]/5 border-[#FF6B00]/20 border">
                     <CardContent className="p-6">
                       <div className="flex items-center mb-4">
-                        {solution.solution_id === 'enterprise' && (
-                          <Building2 className="h-6 w-6 text-[#FF6B00] mr-3" />
-                        )}
-                        {solution.solution_id === 'government' && (
-                          <Landmark className="h-6 w-6 text-[#FF6B00] mr-3" />
-                        )}
-                        {solution.solution_id === 'healthcare' && (
-                          <HeartPulse className="h-6 w-6 text-[#FF6B00] mr-3" />
-                        )}
-                        {solution.solution_id === 'financial' && (
-                          <Scale className="h-6 w-6 text-[#FF6B00] mr-3" />
-                        )}
-                        {solution.solution_id === 'technology' && (
-                          <CloudCog className="h-6 w-6 text-[#FF6B00] mr-3" />
-                        )}
-                        {solution.solution_id === 'manufacturing' && (
-                          <Factory className="h-6 w-6 text-[#FF6B00] mr-3" />
-                        )}
-                        <h3 className="font-semibold text-foreground">Why CyberCaution for {solution.title}?</h3>
+                        {solution.icon && <solution.icon className="h-6 w-6 text-[#FF6B00] mr-3" />}
+                        <h3 className="font-semibold text-foreground">Rapid Deployment</h3>
                       </div>
-
-                      <div className="space-y-3">
-                        {solution.solution_id === 'enterprise' && (
-                          <>
-                            <p className="text-sm text-muted-foreground">Enterprise organizations need comprehensive risk management that scales with complexity. Our solution provides:</p>
-                            <ul className="space-y-2 text-sm">
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Enterprise-wide visibility into security and compliance</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Advanced risk quantification and analysis</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Integrated third-party risk management</span>
-                              </li>
-                            </ul>
-                          </>
-                        )}
-
-                        {solution.solution_id === 'government' && (
-                          <>
-                            <p className="text-sm text-muted-foreground">Government agencies face unique security challenges and strict compliance requirements. We offer:</p>
-                            <ul className="space-y-2 text-sm">
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Complete alignment with NIST RMF and FISMA</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Streamlined ATO documentation and processes</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Supply chain risk management for SCRM compliance</span>
-                              </li>
-                            </ul>
-                          </>
-                        )}
-
-                        {solution.solution_id === 'healthcare' && (
-                          <>
-                            <p className="text-sm text-muted-foreground">Healthcare organizations must protect patient data while ensuring regulatory compliance:</p>
-                            <ul className="space-y-2 text-sm">
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>HIPAA-aligned security controls and assessments</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Ransomware protection for patient data systems</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Business associate security assessment</span>
-                              </li>
-                            </ul>
-                          </>
-                        )}
-
-                        {solution.solution_id === 'financial' && (
-                          <>
-                            <p className="text-sm text-muted-foreground">Financial institutions face stringent regulatory requirements and sophisticated threats:</p>
-                            <ul className="space-y-2 text-sm">
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Multi-regulatory compliance management</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Advanced threat detection and response</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Customer data protection controls</span>
-                              </li>
-                            </ul>
-                          </>
-                        )}
-
-                        {solution.solution_id === 'technology' && (
-                          <>
-                            <p className="text-sm text-muted-foreground">Technology companies need security that moves at the speed of development:</p>
-                            <ul className="space-y-2 text-sm">
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Security built into the CI/CD pipeline</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Container and cloud security controls</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>API security assessment and monitoring</span>
-                              </li>
-                            </ul>
-                          </>
-                        )}
-
-                        {solution.solution_id === 'manufacturing' && (
-                          <>
-                            <p className="text-sm text-muted-foreground">Manufacturing organizations must secure both IT and OT environments:</p>
-                            <ul className="space-y-2 text-sm">
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Integrated IT/OT security management</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Supply chain security assessment</span>
-                              </li>
-                              <li className="flex items-start">
-                                <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                                <span>Industrial control system protection</span>
-                              </li>
-                            </ul>
-                          </>
-                        )}
+                      <p className="text-sm text-muted-foreground mb-4">
+                        CyberCaution deploys in hours, not months, delivering enterprise-grade protection tailored to {solution.title.toLowerCase()} environments.
+                      </p>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                          <span>48-hour initial deployment</span>
+                        </div>
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                          <span>Industry-specific threat intelligence</span>
+                        </div>
+                        <div className="flex items-center">
+                          <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
+                          <span>Automated compliance monitoring</span>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -592,52 +680,52 @@ const Solutions = () => {
         ))}
       </div>
 
-      {/* Case Studies Section */}
+      {/* Capability Showcases Section */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10 mt-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Success Stories</h2>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">CyberCaution in Action</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              See how organizations across industries have strengthened their security posture with CyberCaution
+              Real-world implementations demonstrating CyberCaution's industry-specific capabilities and rapid deployment
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {caseStudies.map((study, index) => (
+            {capabilityShowcases.map((showcase, index) => (
               <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.2}>
                 <Card className="h-full hover:shadow-lg transition-shadow dark:border-muted">
                   <CardContent className="p-6 flex flex-col h-full">
                     <div className="mb-4">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
-                        {study.industry}
+                        {showcase.industry}
                       </span>
                     </div>
-                    <h3 className="text-xl font-semibold mb-3 text-foreground">{study.company}</h3>
+                    <h3 className="text-xl font-semibold mb-3 text-foreground">{showcase.title}</h3>
                     
                     <div className="mb-4">
                       <p className="text-sm font-medium text-foreground">Challenge:</p>
-                      <p className="text-sm text-muted-foreground">{study.challenge}</p>
+                      <p className="text-sm text-muted-foreground">{showcase.challenge}</p>
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm font-medium text-foreground">Solution:</p>
-                      <p className="text-sm text-muted-foreground">{study.solution}</p>
+                      <p className="text-sm font-medium text-foreground">CyberCaution Solution:</p>
+                      <p className="text-sm text-muted-foreground">{showcase.solution}</p>
                     </div>
                     
                     <div className="mb-4 flex-grow">
-                      <p className="text-sm font-medium text-foreground">Results:</p>
+                      <p className="text-sm font-medium text-foreground">Key Capabilities:</p>
                       <ul className="space-y-2 mt-2">
-                        {study.results && study.results.map((result, idx) => (
+                        {showcase.capabilities && showcase.capabilities.map((capability, idx) => (
                           <li key={idx} className="flex items-start text-sm">
                             <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">{result}</span>
+                            <span className="text-muted-foreground">{capability}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                     
                     <Button variant="outline" className="mt-auto">
-                      Read Full Case Study
+                      Learn More
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </CardContent>
@@ -648,70 +736,13 @@ const Solutions = () => {
         </div>
       </AnimatedSection>
 
-      {/* Implementation Methodology */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Our Implementation Approach</h2>
-            <p className="text-lg text-orange-500 max-w-3xl mx-auto">
-              A structured methodology for deploying CyberCaution™ by ERMITS
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              {
-                step: 1,
-                title: "Assessment",
-                description: "Comprehensive evaluation of your current security posture, risks, and requirements",
-                icon: FileCheck
-              },
-              {
-                step: 2,
-                title: "Planning",
-                description: "Detailed implementation plan tailored to your organization's specific needs",
-                icon: FileText
-              },
-              {
-                step: 3,
-                title: "Implementation",
-                description: "Structured deployment with regular checkpoints and validation",
-                icon: CheckCircle
-              },
-              {
-                step: 4,
-                title: "Optimization",
-                description: "Continuous improvement and refinement based on your evolving requirements",
-                icon: RefreshCw
-              }
-            ].map((phase, index) => (
-              <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.2}>
-                <Card className="hover:shadow-lg transition-shadow dark:border-muted h-full">
-                  <CardContent className="p-6 flex flex-col h-full">
-                    <div className="w-12 h-12 rounded-full bg-[#FF6B00]/10 flex items-center justify-center mb-4">
-                      <span className="text-xl font-bold text-[#FF6B00]">{phase.step}</span>
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3 text-foreground">{phase.title}</h3>
-                    <p className="text-muted-foreground">{phase.description}</p>
-                    
-                    <div className="mt-4 flex-grow">
-                      <phase.icon className="h-5 w-5 text-[#FF6B00]" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </AnimatedItem>
-            ))}
-          </div>
-        </div>
-      </AnimatedSection>
-
       {/* Framework Alignment */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
+      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16 text-center">
             <h2 className="text-3xl font-bold mb-4 text-foreground">Framework Alignment</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              All our solutions are built on industry-standard security frameworks
+              CyberCaution is built on industry-standard security frameworks with specialized focus on ransomware protection
             </p>
           </div>
           
@@ -724,11 +755,11 @@ const Solutions = () => {
                     <h3 className="text-xl font-semibold">NIST CSF 2.0</h3>
                   </div>
                   <p className="text-muted-foreground mb-6">
-                    Comprehensive implementation of the NIST Cybersecurity Framework functions: Identify, Protect, Detect, Respond, and Recover.
+                    Comprehensive implementation of the NIST Cybersecurity Framework with enhanced focus on Identify, Protect, Detect, Respond, and Recover functions.
                   </p>
                   <Link to="/demo">
                     <Button variant="orange" className="w-full">
-                      View Framework Details
+                      View Framework Mapping
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -744,7 +775,7 @@ const Solutions = () => {
                     <h3 className="text-xl font-semibold">NIST IR 8374</h3>
                   </div>
                   <p className="text-muted-foreground mb-6">
-                    Specialized controls for ransomware protection following NIST's Ransomware Risk Management guidance.
+                    Specialized controls for ransomware protection following NIST's Ransomware Risk Management guidance with CyberCaution's Ransomware Immunity Suite.
                   </p>
                   <Link to="/ransomware-assessment">
                     <Button variant="orange" className="w-full">
@@ -764,11 +795,11 @@ const Solutions = () => {
                     <h3 className="text-xl font-semibold">NIST SP 800-161</h3>
                   </div>
                   <p className="text-muted-foreground mb-6">
-                    Supply chain security controls aligned with NIST's Supply Chain Risk Management practices.
+                    Supply chain security controls with CyberCaution's Vendor Risk Radar for continuous monitoring of your entire supply chain ecosystem.
                   </p>
                   <Link to="/demo">
                     <Button variant="orange" className="w-full">
-                      Assess Supply Chain Risk
+                      Explore Supply Chain Security
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -779,74 +810,12 @@ const Solutions = () => {
 
           <div className="mt-8 text-center">
             <p className="text-muted-foreground mb-6">
-              We also support other major frameworks including ISO 27001, SOC 2, HIPAA, PCI DSS, GDPR, and more.
+              Additional framework support includes ISO 27001, SOC 2, HIPAA, PCI DSS, FISMA, and other industry-specific standards.
             </p>
             <Button variant="outline">
               <Download className="mr-2 h-4 w-4" />
-              Download Framework Mapping Guide
+              Download Complete Framework Guide
             </Button>
-          </div>
-        </div>
-      </AnimatedSection>
-
-      {/* Resources Section */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Solution Resources</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Explore resources to help you get the most from CyberCaution
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="hover:shadow-lg transition-shadow dark:border-muted">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  <FileText className="h-10 w-10 text-primary mr-3" />
-                  <h3 className="text-xl font-semibold">Solution Briefs</h3>
-                </div>
-                <p className="text-muted-foreground mb-6">
-                  Detailed descriptions of our industry-specific solutions and capabilities.
-                </p>
-                <Button variant="outline" className="w-full">
-                  Download Solution Briefs
-                  <Download className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow dark:border-muted">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  <BookOpen className="h-10 w-10 text-primary mr-3" />
-                  <h3 className="text-xl font-semibold">Implementation Guides</h3>
-                </div>
-                <p className="text-muted-foreground mb-6">
-                  Step-by-step guides for implementing CyberCaution in your environment.
-                </p>
-                <Button variant="outline" className="w-full">
-                  View Implementation Guides
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow dark:border-muted">
-              <CardContent className="p-6">
-                <div className="flex items-center mb-4">
-                  <Users className="h-10 w-10 text-primary mr-3" />
-                  <h3 className="text-xl font-semibold">Customer Stories</h3>
-                </div>
-                <p className="text-muted-foreground mb-6">
-                  See how organizations like yours have succeeded with our solutions.
-                </p>
-                <Button variant="outline" className="w-full">
-                  Read Customer Stories
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </AnimatedSection>
@@ -855,15 +824,14 @@ const Solutions = () => {
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
-            {/* Background glow effect */}
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
             
             <div className="relative z-10">
               <h2 className="text-3xl font-bold text-white mb-6">
-                Ready to See CyberCaution in Action?
+                Ready to Experience CyberCaution?
               </h2>
               <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-                Get a personalized demo of our solution tailored to your industry needs
+                Discover how our Threat Weather System™ and industry-specific solutions can protect your organization
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center"> 
                 <Link to="/demo"> 
