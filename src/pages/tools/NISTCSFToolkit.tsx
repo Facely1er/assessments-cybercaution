@@ -21,6 +21,9 @@ import {
   Clock,
   TrendingUp,
   Save,
+  Loader,
+  Cloud
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Alert, AlertDescription } from '../../components/ui/alert';
