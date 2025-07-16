@@ -137,10 +137,6 @@ const Pricing = () => {
                     ))}
                   </ul>
 
-                  <Button 
-                    className="w-full" 
-                    variant={plan.popular ? "orange" : "outline"}
-                  />
                   <Link to="/solutions#financial">
                     <Button variant="outline" size="sm" className="w-full mt-4">
                       Learn More
