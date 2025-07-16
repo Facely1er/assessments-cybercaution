@@ -44,7 +44,9 @@ import {
   Zap,
   Globe,
   Layers,
-  Monitor
+  Monitor,
+  Calculator,
+  Gauge
 } from 'lucide-react';
 
 // Map of Lucide icon names to components
@@ -53,10 +55,11 @@ const LucideIcons: Record<string, React.FC<any>> = {
   Network, Lock, AlertTriangle, BookOpen, GraduationCap, Wrench, 
   Target, Calendar, Play, ExternalLink, TrendingUp, ClipboardList,
   Building2, Heart, Eye, Bell, Award, Link2, Database, Brain,
-  Activity, Zap, Globe, Layers, Monitor
+  Activity, Zap, Globe, Layers, Monitor, Calculator, Gauge, Search, 
+  Clock, Mail
 };
 
-// CyberCaution Toolkit Categories - This will ALWAYS display
+// INTERACTIVE TOOLS - Assessments, Calculators, Dashboards, Automation Platforms
 const cyberCautionToolCategories = [
   {
     id: 'threat-intelligence',
@@ -69,39 +72,43 @@ const cyberCautionToolCategories = [
     tools: [
       {
         name: 'Threat Weather Dashboard',
-        description: 'Real-time threat climate monitoring for your industry with predictive risk forecasting and early warning alerts',
+        description: 'Real-time threat climate monitoring with predictive risk forecasting and early warning alerts',
         type: 'Intelligence Platform',
-        path: '/threat-weather',
+        path: '/tools/threat-weather',
         icon: TrendingUp,
         frameworks: ['MITRE ATT&CK', 'Threat Intelligence'],
-        time: '5 min setup'
+        time: '5 min setup',
+        interactive: true
       },
       {
         name: 'Predictive Breach Analytics',
         description: 'AI-powered analysis to identify vulnerabilities before attackers exploit them using machine learning algorithms',
         type: 'AI Analytics',
-        path: '/predictive-analytics',
+        path: '/tools/predictive-analytics',
         icon: Brain,
         frameworks: ['NIST CSF', 'AI/ML Security'],
-        time: '15 min analysis'
+        time: '15 min analysis',
+        interactive: true
       },
       {
         name: 'Industry Threat Profiler',
         description: 'Customized threat intelligence specific to your industry sector with actor profiling and attack pattern analysis',
-        type: 'Threat Analysis',
-        path: '/industry-threats',
+        type: 'Threat Analysis Tool',
+        path: '/tools/industry-threats',
         icon: Eye,
         frameworks: ['Sector-Specific Intelligence'],
-        time: '10 min'
+        time: '10 min',
+        interactive: true
       },
       {
-        name: 'Dark Web Monitoring',
-        description: 'Continuous monitoring of dark web activities for credentials, data leaks, and attack planning discussions',
-        type: 'Monitoring Tool',
-        path: '/dark-web-monitor',
+        name: 'Dark Web Monitoring Dashboard',
+        description: 'Continuous monitoring dashboard for dark web activities, credentials, data leaks, and attack planning discussions',
+        type: 'Monitoring Platform',
+        path: '/tools/dark-web-monitor',
         icon: Globe,
         frameworks: ['Threat Intelligence', 'OSINT'],
-        time: 'Continuous'
+        time: 'Continuous',
+        interactive: true
       }
     ]
   },
@@ -116,40 +123,44 @@ const cyberCautionToolCategories = [
     tools: [
       {
         name: 'Ransomware Readiness Assessment',
-        description: 'Comprehensive evaluation of your ransomware preparedness with actionable remediation guidance and NIST alignment',
+        description: 'Interactive assessment tool evaluating your ransomware preparedness with actionable remediation guidance',
         type: 'Assessment Tool',
-        path: '/ransomware-assessment',
+        path: '/tools/ransomware-assessment',
         icon: Shield,
         frameworks: ['NIST CSF', 'NIST IR 8374'],
         time: '15 min',
-        featured: true
+        featured: true,
+        interactive: true
       },
       {
         name: 'Backup Integrity Validator',
-        description: 'Automated testing and validation of backup systems to ensure rapid recovery capabilities during ransomware incidents',
-        type: 'Validation Tool',
-        path: '/backup-validator',
+        description: 'Automated testing platform for validating backup systems to ensure rapid recovery capabilities',
+        type: 'Validation Platform',
+        path: '/tools/backup-validator',
         icon: Database,
         frameworks: ['NIST SP 800-34', 'Business Continuity'],
-        time: '30 min'
-      },
-      {
-        name: 'Incident Response Playbooks',
-        description: 'Pre-built ransomware response playbooks with step-by-step procedures for containment, eradication, and recovery',
-        type: 'Response Kit',
-        path: '/ransomware-playbooks',
-        icon: FileText,
-        frameworks: ['NIST SP 800-61', 'Incident Response'],
-        time: '45 min setup'
+        time: '30 min',
+        interactive: true
       },
       {
         name: 'Recovery Time Calculator',
-        description: 'Calculate and optimize your recovery time objectives (RTO) and recovery point objectives (RPO) for ransomware scenarios',
-        type: 'Planning Tool',
-        path: '/recovery-calculator',
-        icon: Clock,
+        description: 'Interactive calculator to optimize your recovery time objectives (RTO) and recovery point objectives (RPO)',
+        type: 'Planning Calculator',
+        path: '/tools/recovery-calculator',
+        icon: Calculator,
         frameworks: ['Business Continuity', 'Disaster Recovery'],
-        time: '20 min'
+        time: '20 min',
+        interactive: true
+      },
+      {
+        name: 'Incident Response Simulator',
+        description: 'Interactive ransomware incident simulation for response team training and preparedness testing',
+        type: 'Simulation Tool',
+        path: '/tools/incident-simulator',
+        icon: Zap,
+        frameworks: ['NIST SP 800-61', 'Incident Response'],
+        time: '45 min',
+        interactive: true
       }
     ]
   },
@@ -164,39 +175,43 @@ const cyberCautionToolCategories = [
     tools: [
       {
         name: 'Vendor Security Scorecard',
-        description: 'Automated security assessment of vendors and suppliers with continuous monitoring and risk scoring',
-        type: 'Risk Assessment',
-        path: '/vendor-scorecard',
+        description: 'Automated security assessment dashboard for vendors and suppliers with continuous monitoring and risk scoring',
+        type: 'Risk Assessment Platform',
+        path: '/tools/vendor-scorecard',
         icon: BarChart3,
         frameworks: ['NIST SP 800-161', 'Supply Chain Security'],
-        time: '25 min'
+        time: '25 min',
+        interactive: true
       },
       {
-        name: 'Supply Chain Mapper',
-        description: 'Visual mapping of your entire supply chain with risk analysis and critical dependency identification',
-        type: 'Mapping Tool',
-        path: '/supply-chain-map',
-        icon: Network,
+        name: 'Supply Chain Risk Calculator',
+        description: 'Interactive calculator for quantifying supply chain risks and critical dependency identification',
+        type: 'Risk Calculator',
+        path: '/tools/supply-chain-calculator',
+        icon: Calculator,
         frameworks: ['Supply Chain Risk Management'],
-        time: '40 min'
+        time: '30 min',
+        interactive: true
       },
       {
         name: 'Third-Party Breach Monitor',
-        description: 'Real-time monitoring of security incidents affecting your vendors and supply chain partners',
-        type: 'Monitoring System',
-        path: '/vendor-breach-monitor',
+        description: 'Real-time monitoring dashboard for security incidents affecting your vendors and supply chain partners',
+        type: 'Monitoring Dashboard',
+        path: '/tools/vendor-breach-monitor',
         icon: AlertTriangle,
         frameworks: ['Continuous Monitoring'],
-        time: 'Real-time'
+        time: 'Real-time',
+        interactive: true
       },
       {
         name: 'Vendor Onboarding Wizard',
-        description: 'Streamlined security assessment process for new vendors with automated questionnaires and risk evaluation',
-        type: 'Onboarding Tool',
-        path: '/vendor-onboarding',
+        description: 'Interactive workflow system for streamlined security assessment of new vendors with automated questionnaires',
+        type: 'Workflow Platform',
+        path: '/tools/vendor-onboarding',
         icon: Users,
         frameworks: ['Vendor Management'],
-        time: '35 min'
+        time: '35 min',
+        interactive: true
       }
     ]
   },
@@ -210,45 +225,49 @@ const cyberCautionToolCategories = [
     badge: 'Automated',
     tools: [
       {
-        name: 'NIST CSF Implementation Toolkit',
-        description: 'Complete implementation guide for NIST Cybersecurity Framework with templates, procedures, and validation tools',
-        type: 'Implementation Kit',
-        path: '/nist-csf-toolkit',
+        name: 'NIST CSF Implementation Wizard',
+        description: 'Interactive implementation wizard for NIST Cybersecurity Framework with guided workflows and automated setup',
+        type: 'Implementation Platform',
+        path: '/tools/nist-csf-wizard',
         icon: Award,
         frameworks: ['NIST CSF', 'NIST SP 800-53'],
-        time: '60 min setup'
-      },
-      {
-        name: 'Multi-Framework Control Mapper',
-        description: 'Cross-reference security controls between NIST CSF, ISO 27001, SOC 2, and other major frameworks',
-        type: 'Mapping Tool',
-        path: '/control-mapper',
-        icon: Link2,
-        frameworks: ['Multiple Frameworks'],
-        time: '30 min'
+        time: '60 min setup',
+        interactive: true
       },
       {
         name: 'Compliance Gap Analyzer',
-        description: 'Identify compliance gaps and generate remediation roadmaps with prioritized action items',
-        type: 'Analysis Tool',
-        path: '/compliance-gaps',
+        description: 'Interactive analysis tool to identify compliance gaps and generate prioritized remediation roadmaps',
+        type: 'Analysis Platform',
+        path: '/tools/compliance-gaps',
         icon: Target,
         frameworks: ['Compliance Management'],
-        time: '45 min'
+        time: '45 min',
+        interactive: true
+      },
+      {
+        name: 'Multi-Framework Control Mapper',
+        description: 'Interactive mapping platform for cross-referencing security controls between NIST CSF, ISO 27001, SOC 2, and other frameworks',
+        type: 'Mapping Platform',
+        path: '/tools/control-mapper',
+        icon: Link2,
+        frameworks: ['Multiple Frameworks'],
+        time: '30 min',
+        interactive: true
       },
       {
         name: 'Audit Readiness Dashboard',
-        description: 'Real-time compliance posture monitoring with audit trail generation and evidence collection',
-        type: 'Dashboard',
-        path: '/audit-dashboard',
+        description: 'Real-time compliance posture monitoring dashboard with automated audit trail generation and evidence collection',
+        type: 'Monitoring Dashboard',
+        path: '/tools/audit-dashboard',
         icon: Monitor,
         frameworks: ['Audit Management'],
-        time: 'Continuous'
+        time: 'Continuous',
+        interactive: true
       }
     ]
   },
   {
-    id: 'risk-management',
+    id: 'risk-analytics',
     title: 'Advanced Risk Analytics',
     description: 'AI-powered risk assessment and management tools for comprehensive organizational risk visibility',
     icon: BarChart3,
@@ -258,46 +277,50 @@ const cyberCautionToolCategories = [
     tools: [
       {
         name: 'Risk Register Intelligence',
-        description: 'AI-enhanced risk identification and management with automated risk scoring and treatment recommendations',
-        type: 'Risk Platform',
-        path: '/risk-register',
+        description: 'AI-enhanced risk identification and management platform with automated risk scoring and treatment recommendations',
+        type: 'Risk Management Platform',
+        path: '/tools/risk-register',
         icon: ClipboardList,
         frameworks: ['NIST RMF', 'ISO 31000'],
-        time: '50 min'
+        time: '50 min',
+        interactive: true
       },
       {
         name: 'Business Impact Calculator',
-        description: 'Quantify the financial and operational impact of security incidents on critical business functions',
-        type: 'Impact Analysis',
-        path: '/business-impact',
+        description: 'Interactive calculator to quantify the financial and operational impact of security incidents on critical business functions',
+        type: 'Impact Calculator',
+        path: '/tools/business-impact',
         icon: Building2,
         frameworks: ['Business Continuity', 'Risk Assessment'],
-        time: '35 min'
+        time: '35 min',
+        interactive: true
       },
       {
         name: 'Risk Heat Map Generator',
-        description: 'Visual risk mapping with interactive heat maps for executive reporting and decision making',
-        type: 'Visualization Tool',
-        path: '/risk-heatmap',
+        description: 'Interactive risk visualization platform with dynamic heat maps for executive reporting and decision making',
+        type: 'Visualization Platform',
+        path: '/tools/risk-heatmap',
         icon: Activity,
         frameworks: ['Risk Visualization'],
-        time: '20 min'
+        time: '20 min',
+        interactive: true
       },
       {
-        name: 'Scenario Planning Workshop',
-        description: 'Guided scenario planning exercises for testing organizational resilience and response capabilities',
-        type: 'Planning Tool',
-        path: '/scenario-planning',
+        name: 'Scenario Planning Simulator',
+        description: 'Interactive scenario planning platform for testing organizational resilience and response capabilities',
+        type: 'Planning Simulator',
+        path: '/tools/scenario-planning',
         icon: Layers,
         frameworks: ['Scenario Analysis', 'Crisis Management'],
-        time: '90 min'
+        time: '90 min',
+        interactive: true
       }
     ]
   },
   {
     id: 'incident-response',
     title: 'Rapid Response Toolkit',
-    description: 'Pre-configured incident response tools and playbooks for swift containment and recovery',
+    description: 'Pre-configured incident response tools and automated workflow systems for swift containment and recovery',
     icon: Zap,
     color: 'text-orange-500',
     bgColor: 'bg-orange-500/10',
@@ -307,79 +330,86 @@ const cyberCautionToolCategories = [
         name: 'Incident Response Orchestrator',
         description: 'Centralized platform for managing security incidents with automated workflows and team coordination',
         type: 'Orchestration Platform',
-        path: '/incident-orchestrator',
+        path: '/tools/incident-orchestrator',
         icon: Settings,
         frameworks: ['NIST SP 800-61', 'Incident Response'],
-        time: '20 min setup'
-      },
-      {
-        name: 'Crisis Communication Templates',
-        description: 'Pre-approved communication templates for stakeholders, media, and regulatory notifications',
-        type: 'Communication Kit',
-        path: '/crisis-comms',
-        icon: Mail,
-        frameworks: ['Crisis Management'],
-        time: '15 min'
+        time: '20 min setup',
+        interactive: true
       },
       {
         name: 'Tabletop Exercise Builder',
-        description: 'Create and conduct cybersecurity tabletop exercises with realistic scenarios and evaluation metrics',
-        type: 'Training Tool',
-        path: '/tabletop-exercises',
+        description: 'Interactive platform for creating and conducting cybersecurity tabletop exercises with realistic scenarios',
+        type: 'Training Platform',
+        path: '/tools/tabletop-exercises',
         icon: GraduationCap,
         frameworks: ['NIST IR 8374', 'Training'],
-        time: '120 min'
+        time: '120 min',
+        interactive: true
       },
       {
-        name: 'Evidence Collection Toolkit',
-        description: 'Digital forensics tools and procedures for proper evidence collection and chain of custody',
-        type: 'Forensics Kit',
-        path: '/evidence-collection',
+        name: 'Crisis Communication Hub',
+        description: 'Interactive communication platform for stakeholders, media, and regulatory notifications during incidents',
+        type: 'Communication Platform',
+        path: '/tools/crisis-comms',
+        icon: Mail,
+        frameworks: ['Crisis Management'],
+        time: '15 min',
+        interactive: true
+      },
+      {
+        name: 'Evidence Collection Tracker',
+        description: 'Digital forensics platform for evidence collection and chain of custody management',
+        type: 'Forensics Platform',
+        path: '/tools/evidence-collection',
         icon: Search,
         frameworks: ['Digital Forensics', 'Legal'],
-        time: '60 min'
+        time: '60 min',
+        interactive: true
       }
     ]
   }
 ];
 
-// Featured CyberCaution Tools - This will ALWAYS display
+// Featured interactive tools
 const cyberCautionFeaturedTools = [
   {
     title: 'Ransomware Readiness Assessment',
-    description: 'Industry-leading ransomware preparedness evaluation with NIST-aligned recommendations and actionable insights',
+    description: 'Industry-leading interactive ransomware preparedness evaluation with NIST-aligned recommendations and actionable insights',
     icon: Shield,
     color: 'text-critical-red',
-    path: '/ransomware-assessment',
+    path: '/tools/ransomware-assessment',
     badge: 'Most Popular',
     isNew: false,
     isPopular: true,
     isUpdated: false,
-    time: '15 min'
+    time: '15 min',
+    interactive: true
   },
   {
     title: 'Threat Weather Dashboard',
     description: 'Real-time threat intelligence platform providing predictive risk analytics for your industry sector',
     icon: TrendingUp,
     color: 'text-warning-amber',
-    path: '/threat-weather',
+    path: '/tools/threat-weather',
     badge: 'AI-Powered',
     isNew: true,
     isPopular: false,
     isUpdated: false,
-    time: '5 min'
+    time: '5 min',
+    interactive: true
   },
   {
-    title: 'NIST CSF Implementation Toolkit',
-    description: 'Complete cybersecurity framework implementation guide with automated gap analysis and roadmap generation',
+    title: 'NIST CSF Implementation Wizard',
+    description: 'Interactive cybersecurity framework implementation wizard with automated gap analysis and roadmap generation',
     icon: Award,
     color: 'text-electric-blue',
-    path: '/nist-csf-toolkit',
+    path: '/tools/nist-csf-wizard',
     badge: 'Updated',
     isNew: false,
     isPopular: false,
     isUpdated: true,
-    time: '60 min'
+    time: '60 min',
+    interactive: true
   }
 ];
 
@@ -395,12 +425,12 @@ const ToolkitPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Always use the CyberCaution content - guaranteed to work
+  // Always use the CyberCaution interactive tools content
   const displayToolCategories = cyberCautionToolCategories;
   const displayFeaturedTools = cyberCautionFeaturedTools;
 
-  console.log('ToolkitPage: Using CyberCaution fallback content');
-  console.log('Categories:', displayToolCategories.length);
+  console.log('ToolkitPage: Using CyberCaution interactive tools content');
+  console.log('Tool Categories:', displayToolCategories.length);
   console.log('Featured tools:', displayFeaturedTools.length);
 
   // Show loading state
@@ -409,7 +439,7 @@ const ToolkitPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <Loader className="h-12 w-12 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading CyberCaution Toolkit...</p>
+          <p className="text-muted-foreground">Loading CyberCaution Security Toolkit...</p>
         </div>
       </div>
     );
@@ -421,14 +451,19 @@ const ToolkitPage = () => {
         <AnimatedSection type="fadeIn">
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold mb-2 text-foreground">CyberCaution Security Toolkit</h1>
-            <p className="text-xl text-orange-500">Advanced cybersecurity tools and resources<br />powered by threat intelligence and AI analytics</p>
+            <p className="text-xl text-orange-500 mb-4">
+              Interactive cybersecurity tools and assessments<br />powered by threat intelligence and AI analytics
+            </p>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Hands-on security tools, calculators, dashboards, and automation platforms for comprehensive risk management
+            </p>
           </div>
         </AnimatedSection>
 
         {/* Featured Tools */}
         <AnimatedSection type="fadeIn" delay={0.1}>
           <div className="mb-14">
-            <h2 className="text-2xl font-bold mb-6 text-foreground">Featured CyberCaution Tools</h2>
+            <h2 className="text-2xl font-bold mb-6 text-foreground">Featured Interactive Tools</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {displayFeaturedTools.map((tool, index) => (
                 <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.1}>
@@ -440,26 +475,31 @@ const ToolkitPage = () => {
                             className: `h-6 w-6 ${tool.color || 'text-primary'}` 
                           })}
                         </div>
-                        {tool.isNew && (
-                          <span className="bg-secure-green/10 text-secure-green px-2 py-1 rounded-full text-xs font-medium">
-                            New
-                          </span>
-                        )}
-                        {tool.isPopular && (
-                          <span className="bg-warning-amber/10 text-warning-amber px-2 py-1 rounded-full text-xs font-medium">
-                            Popular
-                          </span>
-                        )}
-                        {tool.isUpdated && (
-                          <span className="bg-electric-blue/10 text-electric-blue px-2 py-1 rounded-full text-xs font-medium">
-                            Updated
-                          </span>
-                        )}
+                        <div className="flex flex-col items-end space-y-1">
+                          {tool.isNew && (
+                            <span className="bg-secure-green/10 text-secure-green px-2 py-1 rounded-full text-xs font-medium">
+                              New
+                            </span>
+                          )}
+                          {tool.isPopular && (
+                            <span className="bg-warning-amber/10 text-warning-amber px-2 py-1 rounded-full text-xs font-medium">
+                              Popular
+                            </span>
+                          )}
+                          {tool.isUpdated && (
+                            <span className="bg-electric-blue/10 text-electric-blue px-2 py-1 rounded-full text-xs font-medium">
+                              Updated
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-foreground">{tool.title}</h3>
                       <p className="text-muted-foreground mb-4 flex-1">{tool.description}</p>
                       {tool.time && (
-                        <p className="text-sm text-primary mb-4">⏱️ {tool.time}</p>
+                        <div className="flex items-center text-sm text-primary mb-4">
+                          <Clock className="h-4 w-4 mr-2" />
+                          <span>{tool.time}</span>
+                        </div>
                       )}
                       <Link to={tool.path || '/login'} className="mt-auto">
                         <Button variant="orange" className="w-full">
@@ -506,16 +546,24 @@ const ToolkitPage = () => {
                     <CardHeader>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                          {tool.type || 'Tool'}
+                          {tool.type || 'Interactive Tool'}
                         </span>
-                        {tool.path === '/login' && (
-                          <Lock className="h-4 w-4 text-warning-amber" />
-                        )}
-                        {tool.featured && (
-                          <span className="text-xs bg-secure-green/10 text-secure-green px-2 py-1 rounded-full">
-                            Featured
-                          </span>
-                        )}
+                        <div className="flex items-center space-x-2">
+                          {tool.interactive && (
+                            <div className="flex items-center text-xs text-secure-green">
+                              <Gauge className="h-3 w-3 mr-1" />
+                              Interactive
+                            </div>
+                          )}
+                          {tool.path === '/login' && (
+                            <Lock className="h-4 w-4 text-warning-amber" />
+                          )}
+                          {tool.featured && (
+                            <span className="text-xs bg-secure-green/10 text-secure-green px-2 py-1 rounded-full">
+                              Featured
+                            </span>
+                          )}
+                        </div>
                       </div>
                       <CardTitle className="text-lg flex items-center gap-2">
                         {tool.icon && React.createElement(tool.icon, { className: "h-5 w-5" })}
@@ -545,7 +593,10 @@ const ToolkitPage = () => {
                       
                       {/* Time estimate */}
                       {tool.time && (
-                        <p className="text-sm text-primary mb-4">⏱️ {tool.time}</p>
+                        <div className="flex items-center text-sm text-primary mb-4">
+                          <Clock className="h-4 w-4 mr-2" />
+                          <span>{tool.time}</span>
+                        </div>
                       )}
                       
                       <div className="flex gap-2">
@@ -555,7 +606,7 @@ const ToolkitPage = () => {
                             {tool.path === '/login' ? 'Premium Tool' : 'Launch Tool'}
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" title="Export Results">
                           <Download className="h-4 w-4" />
                         </Button>
                       </div>
@@ -567,31 +618,31 @@ const ToolkitPage = () => {
           </AnimatedSection>
         ))}
 
-        {/* Quick Access */}
+        {/* Quick Launch */}
         <AnimatedSection type="fadeIn" delay={0.6}>
           <Card className="bg-muted/30 dark:bg-muted/10">
             <CardContent className="p-8">
-              <h2 className="text-2xl font-bold mb-6 text-center text-foreground">Quick Launch</h2>
+              <h2 className="text-2xl font-bold mb-6 text-center text-foreground">Quick Launch Tools</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Link to="/ransomware-assessment">
+                <Link to="/tools/ransomware-assessment">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
                     <Shield className="h-5 w-5 mb-2" />
                     <span className="text-xs">Ransomware Check</span>
                   </Button>
                 </Link>
-                <Link to="/threat-weather">
+                <Link to="/tools/threat-weather">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
                     <TrendingUp className="h-5 w-5 mb-2" />
                     <span className="text-xs">Threat Weather</span>
                   </Button>
                 </Link>
-                <Link to="/vendor-scorecard">
+                <Link to="/tools/vendor-scorecard">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
                     <Network className="h-5 w-5 mb-2" />
                     <span className="text-xs">Vendor Risk</span>
                   </Button>
                 </Link>
-                <Link to="/nist-csf-toolkit">
+                <Link to="/tools/nist-csf-wizard">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
                     <Award className="h-5 w-5 mb-2" />
                     <span className="text-xs">NIST CSF</span>
@@ -602,8 +653,54 @@ const ToolkitPage = () => {
           </Card>
         </AnimatedSection>
 
-        {/* CTA Section */}
+        {/* Tool Benefits Section */}
         <AnimatedSection type="fadeIn" delay={0.7}>
+          <Card className="bg-gradient-to-r from-primary/5 to-orange-500/5 border-primary/20">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-4 text-foreground">Why Choose CyberCaution Tools?</h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  Our interactive security tools are designed for immediate impact and continuous improvement
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                    <Gauge className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Interactive & Real-Time</h3>
+                  <p className="text-muted-foreground">
+                    All tools provide immediate results with interactive dashboards, real-time analytics, and actionable insights
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                    <Brain className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">AI-Powered Intelligence</h3>
+                  <p className="text-muted-foreground">
+                    Machine learning algorithms provide predictive analytics, automated risk scoring, and intelligent recommendations
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                    <Award className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Framework-Aligned</h3>
+                  <p className="text-muted-foreground">
+                    Every tool aligns with industry frameworks like NIST CSF, ensuring compliance and best practices
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedSection>
+
+        {/* CTA Section */}
+        <AnimatedSection type="fadeIn" delay={0.8}>
           <div className="text-center mt-16">
             <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
               {/* Background glow effect */}
@@ -611,13 +708,13 @@ const ToolkitPage = () => {
               
               <div className="relative z-10">
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Ready to Deploy CyberCaution?
+                  Ready to Launch Your Security Tools?
                 </h2>
                 <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-                  Start with our most popular assessment tools and build your comprehensive security program
+                  Start with our most popular interactive assessment tools and build your comprehensive security program
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/ransomware-assessment">
+                  <Link to="/tools/ransomware-assessment">
                     <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
                       Start Ransomware Assessment
                       <ArrowRight className="ml-2 h-5 w-5" />
