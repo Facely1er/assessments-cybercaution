@@ -29,20 +29,22 @@ import {
   Phone,
   Mail,
   Clock,
-  Loader
+  Loader,
+  Eye,
+  Link2
 } from 'lucide-react';
 
 // Map of Lucide icon names to components
 const LucideIcons: Record<string, React.FC<any>> = {
   Settings, Shield, FileText, BarChart3, Download, Users, CheckCircle, 
   Network, Lock, AlertTriangle, BookOpen, GraduationCap, Wrench, 
-  Target, Calendar, Play, ExternalLink
+  Target, Calendar, Play, ExternalLink, Eye, Search, Link2
 };
 
 // Fallback data for categories
 const fallbackToolCategories = [
   {
-    id: 'assessment-tools',
+    id: 'assessment-tools', 
     title: 'Assessment Tools',
     description: 'Interactive tools to evaluate your security posture',
     icon: BarChart3,
@@ -73,7 +75,7 @@ const fallbackToolCategories = [
     ]
   },
   {
-    id: 'planning-tools',
+    id: 'planning-tools', 
     title: 'Planning & Strategy',
     description: 'Tools to help plan and implement your security program',
     icon: Target,
@@ -100,6 +102,99 @@ const fallbackToolCategories = [
         type: 'Planning Tool',
         path: '/login',
         icon: FileText
+      }
+    ]
+  },
+  {
+    id: 'monitoring-tools',
+    title: 'Monitoring Tools',
+    description: 'Real-time security monitoring and threat detection tools',
+    icon: Eye,
+    color: 'text-critical-red',
+    bgColor: 'bg-critical-red/10',
+    tools: [
+      {
+        name: 'Security Log Analyzer',
+        description: 'Analyze security logs to identify patterns and anomalies',
+        type: 'Monitoring',
+        path: '/login',
+        icon: BarChart3
+      },
+      {
+        name: 'Threat Intelligence Dashboard',
+        description: 'Real-time dashboard of current threats and vulnerabilities',
+        type: 'Intelligence',
+        path: '/login',
+        icon: AlertTriangle
+      },
+      {
+        name: 'Network Traffic Monitor',
+        description: 'Monitor network traffic for suspicious activities',
+        type: 'Monitoring',
+        path: '/login',
+        icon: Network
+      }
+    ]
+  },
+  {
+    id: 'analysis-tools',
+    title: 'Analysis Tools',
+    description: 'Advanced tools for security data analysis and reporting',
+    icon: BarChart3,
+    color: 'text-electric-blue',
+    bgColor: 'bg-electric-blue/10',
+    tools: [
+      {
+        name: 'Security Metrics Dashboard',
+        description: 'Comprehensive dashboard for tracking security metrics',
+        type: 'Analytics',
+        path: '/login',
+        icon: BarChart3
+      },
+      {
+        name: 'Incident Investigation Toolkit',
+        description: 'Tools for investigating security incidents and breaches',
+        type: 'Analysis',
+        path: '/login',
+        icon: Search
+      },
+      {
+        name: 'Attack Surface Analyzer',
+        description: 'Visualize and analyze your organization\'s attack surface',
+        type: 'Analysis',
+        path: '/login',
+        icon: Target
+      }
+    ]
+  },
+  {
+    id: 'compliance-tools',
+    title: 'Compliance Tools',
+    description: 'Tools to assist with regulatory compliance and security frameworks',
+    icon: CheckCircle,
+    color: 'text-secure-green',
+    bgColor: 'bg-secure-green/10',
+    tools: [
+      {
+        name: 'Compliance Gap Analyzer',
+        description: 'Identify gaps in compliance with various security frameworks',
+        type: 'Compliance',
+        path: '/login',
+        icon: FileText
+      },
+      {
+        name: 'Policy Generator',
+        description: 'Generate security policies aligned with industry standards',
+        type: 'Documentation',
+        path: '/login',
+        icon: FileText
+      },
+      {
+        name: 'Control Mapping Tool',
+        description: 'Map controls across different compliance frameworks',
+        type: 'Compliance',
+        path: '/login',
+        icon: Link2
       }
     ]
   }
