@@ -467,7 +467,7 @@ const HomePage = () => {
                 <Link to="/ransomware-assessment">
                   <Button variant="orange">
                     <Lightbulb className="mr-2 h-5 w-5" />
-                    Start 3-Minute Ransomware Readiness Assessment
+                    Ransomware Readiness Assessment
                   </Button>
                 </Link>
               </AnimatedItem>
