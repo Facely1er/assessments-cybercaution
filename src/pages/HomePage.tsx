@@ -243,14 +243,8 @@ const HomePage = () => {
               {/* CTA Buttons with increased top margin */}
               <AnimatedItem delay={0.4} className="mt-16">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/ransomware-assessment">
-                    <Button variant="orange" className="w-full sm:w-auto">
-                      Full Ransomware Assessment
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
                   <Link to="/quick-cyber-check">
-                    <Button variant="outline" className="w-full sm:w-auto">
+                    <Button variant="orange" className="w-full sm:w-auto">
                       3 minutes Cyber Check
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
