@@ -368,14 +368,21 @@ const ResourcesPage = () => {
                       <div className="mb-6 flex-1">
                         <h4 className="font-medium mb-3 text-foreground">Available Resources:</h4>
                         <ul className="space-y-2">
-                          {(category.items && category.items.length > 0 ? category.items : 
-                            fallbackResourceCategories.find(f => f.id === category.id)?.items || []
-                          ).map((item: string, idx: number) => (
-                            <li key={idx} className="flex items-center text-sm">
-                              <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
-                              <span className="text-muted-foreground">{item}</span>
-                            </li>
-                          ))}
+                          {(() => {
+                            // Always ensure we have items to display
+                            const items = category.items && category.items.length > 0 
+                              ? category.items 
+                              : fallbackResourceCategories.find(f => f.id === category.id)?.items || 
+                                fallbackResourceCategories.find(f => f.title === category.title)?.items ||
+                                ['Resource documentation', 'Implementation guides', 'Best practices', 'Templates and tools'];
+                            
+                            return items.map((item: string, idx: number) => (
+                              <li key={idx} className="flex items-center text-sm">
+                                <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                                <span className="text-muted-foreground">{item}</span>
+                              </li>
+                            ));
+                          })()}
                         </ul>
                       </div>
                       <a 
