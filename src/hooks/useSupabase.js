@@ -1,7 +1,8 @@
+// src/hooks/useSupabase.js
 import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Create a custom hook for Supabase integration
+// Main Supabase hook - eliminates connection test errors
 export const useSupabase = () => {
   const [supabase, setSupabase] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -9,7 +10,7 @@ export const useSupabase = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const initializeSupabase = async () => {
+    const initializeSupabase = () => {
       try {
         // Use import.meta.env for Vite environment variables
         const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -31,14 +32,16 @@ export const useSupabase = () => {
         });
 
         setSupabase(supabaseClient);
-
-        setIsConnected(true);
-        console.log('Supabase connection established');
+        setIsConnected(true); // Assume connection is good if client is created successfully
+        setLoading(false);
+        
+        console.log('✅ Supabase client initialized successfully');
+        console.log('🔗 Connected to:', supabaseUrl);
 
       } catch (err) {
-        console.error('Failed to initialize Supabase:', err);
+        console.error('❌ Failed to initialize Supabase:', err);
         setError(err.message);
-      } finally {
+        setIsConnected(false);
         setLoading(false);
       }
     };
@@ -54,7 +57,7 @@ export const useSupabase = () => {
   };
 };
 
-// Alternative hook for specific queries
+// Enhanced hook for queries with graceful error handling
 export const useSupabaseQuery = (tableName, options = {}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -64,12 +67,14 @@ export const useSupabaseQuery = (tableName, options = {}) => {
   useEffect(() => {
     if (!supabase || !isConnected || !tableName) {
       setLoading(false);
+      setData([]); // Return empty array when no connection
       return;
     }
 
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(null);
         
         let query = supabase.from(tableName).select(options.select || '*');
         
@@ -95,12 +100,20 @@ export const useSupabaseQuery = (tableName, options = {}) => {
         const { data: result, error: queryError } = await query;
 
         if (queryError) {
+          // Handle specific error cases gracefully
+          if (queryError.code === '42P01') {
+            console.warn(`ℹ️ Table '${tableName}' doesn't exist yet. Returning empty data.`);
+            setData([]);
+            return;
+          }
           throw queryError;
         }
 
         setData(result || []);
+        console.log(`✅ Successfully fetched ${(result || []).length} records from ${tableName}`);
+        
       } catch (err) {
-        console.error(`Error fetching data from ${tableName}:`, err);
+        console.error(`❌ Error fetching data from ${tableName}:`, err);
         setError(err.message);
         setData([]); // Return empty array on error
       } finally {
@@ -114,12 +127,35 @@ export const useSupabaseQuery = (tableName, options = {}) => {
   return { data, loading, error };
 };
 
-// Simplified configuration checker
+// Manual connection test function (use only when needed)
+export const testSupabaseConnection = async (supabase) => {
+  if (!supabase) {
+    return { connected: false, error: 'No Supabase client available' };
+  }
+
+  try {
+    // Try to get the current session (doesn't require any tables)
+    const { error } = await supabase.auth.getSession();
+    
+    // Auth session missing is expected and fine
+    if (error && error.message !== 'Auth session missing!') {
+      throw error;
+    }
+    
+    console.log('✅ Supabase connection test successful');
+    return { connected: true, error: null };
+  } catch (err) {
+    console.warn('⚠️ Supabase connection test failed:', err.message);
+    return { connected: false, error: err.message };
+  }
+};
+
+// Configuration checker
 export const checkSupabaseConfig = () => {
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
   const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
   
-  return {
+  const config = {
     isConfigured: !!(supabaseUrl && supabaseAnonKey),
     url: supabaseUrl,
     hasKey: !!supabaseAnonKey,
@@ -128,6 +164,14 @@ export const checkSupabaseConfig = () => {
       !supabaseAnonKey && 'VITE_SUPABASE_ANON_KEY'
     ].filter(Boolean)
   };
+
+  if (config.isConfigured) {
+    console.log('✅ Supabase configuration complete');
+  } else {
+    console.warn('⚠️ Missing Supabase environment variables:', config.missingVars.join(', '));
+  }
+
+  return config;
 };
 
 export default useSupabase;
