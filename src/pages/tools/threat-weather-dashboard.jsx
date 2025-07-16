@@ -7,15 +7,57 @@ import {
 } from 'lucide-react';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 
-const ThreatWeatherDashboard = () => {
-  const [activeView, setActiveView] = useState('global');
-  const [selectedRegion, setSelectedRegion] = useState('global');
-  const [timeRange, setTimeRange] = useState('24h');
-  const [isLive, setIsLive] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState(new Date());
+interface ThreatData {
+  globalThreatLevel: string;
+  activeCampaigns: number;
+  newIOCs: number;
+  affectedRegions: number;
+}
+
+interface Campaign {
+  name: string;
+  severity: string;
+  affectedCountries: number;
+  firstSeen: string;
+  attackVector: string;
+  mitreId: string;
+  confidence: number;
+  trend: string;
+}
+
+interface RegionData {
+  region: string;
+  threats: number;
+  change: number;
+}
+
+interface TimeSeriesData {
+  time: string;
+  threats: number;
+  critical: number;
+}
+
+interface AttackVector {
+  name: string;
+  value: number;
+  color: string;
+}
+
+interface MitreData {
+  technique: string;
+  count: number;
+  change: number;
+}
+
+const ThreatWeatherDashboard: React.FC = () => {
+  const [activeView, setActiveView] = useState<string>('global');
+  const [selectedRegion, setSelectedRegion] = useState<string>('global');
+  const [timeRange, setTimeRange] = useState<string>('24h');
+  const [isLive, setIsLive] = useState<boolean>(true);
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
   // Real-time threat data simulation
-  const [threatData, setThreatData] = useState({
+  const [threatData, setThreatData] = useState<ThreatData>({
     globalThreatLevel: 'ELEVATED',
     activeCampaigns: 47,
     newIOCs: 1,284,
@@ -23,7 +65,7 @@ const ThreatWeatherDashboard = () => {
   });
 
   // Current active threat campaigns based on real threat intelligence patterns
-  const activeCampaigns = [
+  const activeCampaigns: Campaign[] = [
     {
       name: 'AsyncRAT Distribution',
       severity: 'HIGH',
@@ -57,7 +99,7 @@ const ThreatWeatherDashboard = () => {
   ];
 
   // Global threat distribution by region
-  const regionData = [
+  const regionData: RegionData[] = [
     { region: 'North America', threats: 324, change: 12 },
     { region: 'Europe', threats: 298, change: -8 },
     { region: 'Asia-Pacific', threats: 445, change: 23 },
@@ -67,7 +109,7 @@ const ThreatWeatherDashboard = () => {
   ];
 
   // Threat volume over time
-  const timeSeriesData = [
+  const timeSeriesData: TimeSeriesData[] = [
     { time: '00:00', threats: 245, critical: 12 },
     { time: '04:00', threats: 189, critical: 8 },
     { time: '08:00', threats: 298, critical: 15 },
@@ -78,7 +120,7 @@ const ThreatWeatherDashboard = () => {
   ];
 
   // Attack vector distribution
-  const attackVectors = [
+  const attackVectors: AttackVector[] = [
     { name: 'Email Phishing', value: 42, color: '#ef4444' },
     { name: 'Malicious Downloads', value: 28, color: '#f97316' },
     { name: 'Web Exploits', value: 18, color: '#eab308' },
@@ -87,7 +129,7 @@ const ThreatWeatherDashboard = () => {
   ];
 
   // MITRE ATT&CK technique trends
-  const mitreData = [
+  const mitreData: MitreData[] = [
     { technique: 'T1566 Phishing', count: 89, change: 15 },
     { technique: 'T1190 Exploit Public-Facing Application', count: 67, change: -5 },
     { technique: 'T1078 Valid Accounts', count: 54, change: 8 },
@@ -95,7 +137,7 @@ const ThreatWeatherDashboard = () => {
     { technique: 'T1059 Command and Scripting Interpreter', count: 38, change: -3 }
   ];
 
-  const getThreatLevelColor = (level) => {
+  const getThreatLevelColor = (level: string): string => {
     switch (level) {
       case 'CRITICAL': return 'text-red-600 bg-red-100';
       case 'HIGH': return 'text-orange-600 bg-orange-100';
@@ -105,7 +147,7 @@ const ThreatWeatherDashboard = () => {
     }
   };
 
-  const getSeverityIcon = (severity) => {
+  const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case 'CRITICAL': return <AlertTriangle className="w-4 h-4 text-red-600" />;
       case 'HIGH': return <TrendingUp className="w-4 h-4 text-orange-600" />;
@@ -114,7 +156,7 @@ const ThreatWeatherDashboard = () => {
     }
   };
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'increasing': return <ArrowUp className="w-3 h-3 text-red-500" />;
       case 'decreasing': return <ArrowDown className="w-3 h-3 text-green-500" />;
@@ -127,7 +169,7 @@ const ThreatWeatherDashboard = () => {
       const interval = setInterval(() => {
         setLastUpdate(new Date());
         // Simulate real-time updates
-        setThreatData(prev => ({
+        setThreatData((prev: ThreatData) => ({
           ...prev,
           newIOCs: prev.newIOCs + Math.floor(Math.random() * 50),
           activeCampaigns: prev.activeCampaigns + Math.floor(Math.random() * 3) - 1
@@ -144,7 +186,7 @@ const ThreatWeatherDashboard = () => {
         {/* Header */}
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Threat Weather Dashboard</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Threat Weather Dashboard (TypeScript)</h1>
             <p className="text-gray-600">Real-time global threat intelligence monitoring and analysis</p>
           </div>
           <div className="flex items-center space-x-4">
@@ -223,7 +265,7 @@ const ThreatWeatherDashboard = () => {
                 </h3>
               </div>
               <div className="space-y-4">
-                  {activeCampaigns.map((campaign, index) => (
+                  {activeCampaigns.map((campaign: Campaign, index: number) => (
                     <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -282,7 +324,7 @@ const ThreatWeatherDashboard = () => {
                     outerRadius={80}
                     dataKey="value"
                   >
-                    {attackVectors.map((entry, index) => (
+                    {attackVectors.map((entry: AttackVector, index: number) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
@@ -290,7 +332,7 @@ const ThreatWeatherDashboard = () => {
                 </PieChart>
               </ResponsiveContainer>
               <div className="mt-4 space-y-2">
-                {attackVectors.map((vector, index) => (
+                                  {attackVectors.map((vector: AttackVector, index: number) => (
                   <div key={index} className="flex items-center justify-between text-sm">
                     <div className="flex items-center space-x-2">
                       <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: vector.color }}></div>
@@ -336,7 +378,7 @@ const ThreatWeatherDashboard = () => {
               </h3>
             </div>
               <div className="space-y-3">
-                {regionData.map((region, index) => (
+                {regionData.map((region: RegionData, index: number) => (
                   <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <MapPin className="w-4 h-4 text-gray-600" />
