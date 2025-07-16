@@ -1,4 +1,4 @@
-// src/hooks/useSupabase.js
+ // src/hooks/useSupabase.js
 import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
