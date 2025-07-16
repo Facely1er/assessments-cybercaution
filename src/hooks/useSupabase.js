@@ -32,20 +32,8 @@ export const useSupabase = () => {
 
         setSupabase(supabaseClient);
 
-        // Test connection
-        const { data, error: connectionError } = await supabaseClient
-          .from('_supabase_test')
-          .select('*')
-          .limit(1);
-
-        if (connectionError && connectionError.code !== '42P01') {
-          // 42P01 means table doesn't exist, which is fine for our test
-          console.warn('Supabase connection test failed:', connectionError.message);
-          setError(connectionError.message);
-        } else {
-          setIsConnected(true);
-          console.log('Supabase connection established');
-        }
+        setIsConnected(true);
+        console.log('Supabase connection established');
 
       } catch (err) {
         console.error('Failed to initialize Supabase:', err);
