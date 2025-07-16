@@ -267,7 +267,7 @@ const QuickCyberCheck = () => {
     );
   };
 
-  const currentStep = steps[currentStep];
+  const currentStepContent = steps[currentStep];
   
   return (
     <div className="container mx-auto px-4 py-10">
@@ -286,7 +286,7 @@ const QuickCyberCheck = () => {
         ) : currentStep === 6 ? (
           steps[6].content(calculateResults())
         ) : (
-          renderQuestion(steps[currentStep])
+          renderQuestion(currentStepContent)
         )}
       </div>
     </div>
