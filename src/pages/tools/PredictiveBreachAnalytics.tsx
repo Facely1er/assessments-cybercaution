@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { 
   Brain, TrendingUp, AlertTriangle, Shield, Target, Zap,
   BarChart3, Activity, Clock, Users, Server, Lock,
@@ -202,13 +203,14 @@ const PredictiveBreachAnalytics: React.FC = () => {
         </div>
 
         {/* Model Configuration */}
-        <div className="bg-white rounded-lg shadow border p-6">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
               <Settings className="w-5 h-5" />
               <span>Analysis Configuration</span>
-            </h3>
-          </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Prediction Model</label>
@@ -256,8 +258,8 @@ const PredictiveBreachAnalytics: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Tabs */}
         <div className="border-b border-gray-200">
@@ -289,13 +291,14 @@ const PredictiveBreachAnalytics: React.FC = () => {
             {/* Breach Predictions Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
-                <div className="bg-white rounded-lg shadow border p-6">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center space-x-2">
                       <Target className="w-5 h-5" />
                       <span>Breach Probability Predictions</span>
-                    </h3>
-                  </div>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
                     <div className="space-y-4">
                       {predictions.map((prediction: Prediction, index: number) => (
                         <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
@@ -384,18 +387,20 @@ const PredictiveBreachAnalytics: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </CardContent>
+              </Card>
               </div>
             </div>
 
             {/* Prediction Timeline */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
                   <Calendar className="w-5 h-5" />
                   <span>Breach Probability Timeline</span>
-                </h3>
-              </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={timelineData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -455,10 +460,11 @@ const PredictiveBreachAnalytics: React.FC = () => {
             </div>
 
             {/* Risk Factor Details */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Risk Factor Details</h3>
-              </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Risk Factor Details</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="space-y-4">
                   {riskFactors.map((factor: RiskFactor, index: number) => (
                     <div key={index} className="border rounded-lg p-4">
@@ -504,21 +510,22 @@ const PredictiveBreachAnalytics: React.FC = () => {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
         {activeTab === 'model-performance' && (
           <div className="space-y-6">
             {/* Model Performance Metrics */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
                   <BarChart3 className="w-5 h-5" />
                   <span>Model Performance Metrics</span>
-                </h3>
-              </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {modelPerformance.map((metric: ModelPerformance, index: number) => (
                     <div key={index} className="text-center">
@@ -534,13 +541,14 @@ const PredictiveBreachAnalytics: React.FC = () => {
                   ))}
                 </div>
               </CardContent>
-            </div>
+            </Card>
 
             {/* Model Comparison */}
-            <div className="bg-white rounded-lg shadow border p-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Model Comparison</h3>
-              </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Model Comparison</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
@@ -575,8 +583,8 @@ const PredictiveBreachAnalytics: React.FC = () => {
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         )}
 
