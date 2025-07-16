@@ -288,19 +288,55 @@ const Solutions = () => {
           const processedSolutions = solutionsData.map(solution => {
             const IconComponent = LucideIcons[solution.icon as keyof typeof LucideIcons] || Building2;
             
+            // Helper function to ensure we have data (handles null, undefined, and empty arrays)
+            const ensureData = (dbData: any, fallbackData: any) => {
+              if (!dbData || (Array.isArray(dbData) && dbData.length === 0)) {
+                return fallbackData || [];
+              }
+              return dbData;
+            };
+            
             return {
               ...solution,
               icon: IconComponent,
-              // Use fallback data for missing complex columns
-              compliance_frameworks: solution.compliance_frameworks || fallbackData.compliance_frameworks[solution.solution_id] || [],
-              compliance_features: solution.compliance_features || fallbackData.compliance_features[solution.solution_id] || [],
-              compliance_benefits: solution.compliance_benefits || fallbackData.compliance_benefits[solution.solution_id] || [],
-              features: solution.features || fallbackData.features[solution.solution_id] || [],
-              value_proposition_problems: solution.value_proposition_problems || fallbackData.value_proposition_problems[solution.solution_id] || [],
-              value_proposition_solutions: solution.value_proposition_solutions || fallbackData.value_proposition_solutions[solution.solution_id] || []
+              // Always use fallback data if database fields are empty or null
+              compliance_frameworks: ensureData(
+                solution.compliance_frameworks, 
+                fallbackData.compliance_frameworks[solution.solution_id]
+              ),
+              compliance_features: ensureData(
+                solution.compliance_features, 
+                fallbackData.compliance_features[solution.solution_id]
+              ),
+              compliance_benefits: ensureData(
+                solution.compliance_benefits, 
+                fallbackData.compliance_benefits[solution.solution_id]
+              ),
+              features: ensureData(
+                solution.features, 
+                fallbackData.features[solution.solution_id]
+              ),
+              value_proposition_problems: ensureData(
+                solution.value_proposition_problems, 
+                fallbackData.value_proposition_problems[solution.solution_id]
+              ),
+              value_proposition_solutions: ensureData(
+                solution.value_proposition_solutions, 
+                fallbackData.value_proposition_solutions[solution.solution_id]
+              )
             };
           });
           setSolutions(processedSolutions);
+          
+          // Debug: Log the processed solutions to see what data we have
+          console.log('Processed solutions:', processedSolutions.map(s => ({
+            id: s.solution_id,
+            title: s.title,
+            frameworks_count: s.compliance_frameworks?.length || 0,
+            features_count: s.compliance_features?.length || 0,
+            benefits_count: s.compliance_benefits?.length || 0,
+            unique_features_count: s.features?.length || 0
+          })));
         } else {
           // Fallback to static data if no database data
           setSolutions([]);
@@ -527,7 +563,7 @@ const Solutions = () => {
                     <div className="mb-8">
                       <h3 className="text-xl font-semibold mb-4 text-foreground">Core Capabilities</h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {solution.features && solution.features.map((feature: string, idx: number) => (
+                        {(solution.features && solution.features.length > 0 ? solution.features : fallbackData.features[solution.solution_id] || []).map((feature: string, idx: number) => (
                           <div key={idx} className="flex items-start">
                             <CheckCircle className="h-5 w-5 text-[#FF6B00] mr-2 flex-shrink-0 mt-0.5" />
                             <span className="text-foreground">{feature}</span>
@@ -539,7 +575,7 @@ const Solutions = () => {
                     <div className="mb-8">
                       <h3 className="text-xl font-semibold mb-4 text-foreground">Compliance Frameworks</h3>
                       <div className="flex flex-wrap gap-2 mb-6">
-                        {solution.compliance_frameworks && solution.compliance_frameworks.map((framework: string, idx: number) => (
+                        {(solution.compliance_frameworks && solution.compliance_frameworks.length > 0 ? solution.compliance_frameworks : fallbackData.compliance_frameworks[solution.solution_id] || []).map((framework: string, idx: number) => (
                           <span key={idx} className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 dark:bg-primary/20 text-primary">
                             {framework}
                           </span>
@@ -548,37 +584,35 @@ const Solutions = () => {
                     </div>
 
                     {/* Value Proposition */}
-                    {solution.value_proposition_problems && solution.value_proposition_solutions && (
-                      <div className="mb-8">
-                        <h3 className="text-xl font-semibold mb-6 text-foreground">Why Choose CyberCaution for {solution.title}?</h3>
-                        
-                        <div className="space-y-6">
-                          <div>
-                            <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">Industry Challenges We Address:</h4>
-                            <div className="space-y-4">
-                              {solution.value_proposition_problems.map((problem: any, idx: number) => (
-                                <div key={idx} className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-lg p-4">
-                                  <p className="font-medium text-red-900 dark:text-red-200 mb-1">{problem.pain}</p>
-                                  <p className="text-sm text-red-700 dark:text-red-300">{problem.impact}</p>
-                                </div>
-                              ))}
-                            </div>
+                    <div className="mb-8">
+                      <h3 className="text-xl font-semibold mb-6 text-foreground">Why Choose CyberCaution for {solution.title}?</h3>
+                      
+                      <div className="space-y-6">
+                        <div>
+                          <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">Industry Challenges We Address:</h4>
+                          <div className="space-y-4">
+                            {(solution.value_proposition_problems && solution.value_proposition_problems.length > 0 ? solution.value_proposition_problems : fallbackData.value_proposition_problems[solution.solution_id] || []).map((problem: any, idx: number) => (
+                              <div key={idx} className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800/30 rounded-lg p-4">
+                                <p className="font-medium text-red-900 dark:text-red-200 mb-1">{problem.pain}</p>
+                                <p className="text-sm text-red-700 dark:text-red-300">{problem.impact}</p>
+                              </div>
+                            ))}
                           </div>
+                        </div>
 
-                          <div>
-                            <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">CyberCaution Solutions:</h4>
-                            <div className="space-y-4">
-                              {solution.value_proposition_solutions.map((solutionItem: any, idx: number) => (
-                                <div key={idx} className="bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30 rounded-lg p-4">
-                                  <p className="font-medium text-green-900 dark:text-green-200 mb-1">{solutionItem.capability}</p>
-                                  <p className="text-sm text-green-700 dark:text-green-300">{solutionItem.benefit}</p>
-                                </div>
-                              ))}
-                            </div>
+                        <div>
+                          <h4 className="text-lg font-medium mb-4 text-[#FF6B00]">CyberCaution Solutions:</h4>
+                          <div className="space-y-4">
+                            {(solution.value_proposition_solutions && solution.value_proposition_solutions.length > 0 ? solution.value_proposition_solutions : fallbackData.value_proposition_solutions[solution.solution_id] || []).map((solutionItem: any, idx: number) => (
+                              <div key={idx} className="bg-green-50 dark:bg-green-900/10 border border-green-200 dark:border-green-800/30 rounded-lg p-4">
+                                <p className="font-medium text-green-900 dark:text-green-200 mb-1">{solutionItem.capability}</p>
+                                <p className="text-sm text-green-700 dark:text-green-300">{solutionItem.benefit}</p>
+                              </div>
+                            ))}
                           </div>
                         </div>
                       </div>
-                    )}
+                    </div>
 
                     <Link to="/demo">
                       <Button variant="orange">
@@ -595,7 +629,7 @@ const Solutions = () => {
                       </CardHeader>
                       <CardContent>
                         <ul className="space-y-4">
-                          {solution.compliance_benefits && solution.compliance_benefits.map((benefit: string, idx: number) => (
+                          {(solution.compliance_benefits && solution.compliance_benefits.length > 0 ? solution.compliance_benefits : fallbackData.compliance_benefits[solution.solution_id] || []).map((benefit: string, idx: number) => (
                             <li key={idx} className="flex items-start">
                               <div className="bg-[#FF6B00]/10 rounded-full p-1 mr-3 mt-0.5">
                                 <CheckCircle className="h-4 w-4 text-[#FF6B00]" />
@@ -613,7 +647,7 @@ const Solutions = () => {
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-4">
-                          {solution.compliance_features && solution.compliance_features.map((feature: string, idx: number) => (
+                          {(solution.compliance_features && solution.compliance_features.length > 0 ? solution.compliance_features : fallbackData.compliance_features[solution.solution_id] || []).map((feature: string, idx: number) => (
                             <div key={idx} className="flex items-start">
                               <div className="bg-primary/10 rounded-full p-1 mr-3 mt-0.5">
                                 <Shield className="h-4 w-4 text-primary" />
