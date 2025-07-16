@@ -5,11 +5,11 @@
 // Configuration for different environments
 const ASSET_CONFIG = {
   development: {
-    baseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-supabase-url.supabase.co',
+    baseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bzpgnzkjqeczksbqzsba.supabase.co',
     storageBucket: 'cybercaution-assets'
   },
   production: {
-    baseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://your-supabase-url.supabase.co',
+    baseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://bzpgnzkjqeczksbqzsba.supabase.co',
     storageBucket: 'cybercaution-assets'
   }
 };
