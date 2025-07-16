@@ -262,7 +262,7 @@ const ThreatIntelligenceDashboard: React.FC = () => {
                   <span className="font-medium text-sm">{feed.name}</span>
                   {feed.status === 'connected' ? 
                     <Wifi className="w-4 h-4 text-green-600" /> : 
-                    <WifiOff className="w-4 h-4 text-gray-400" />
+                    <WifiOff className="w-4 h-4 text-gray-400" />,
                   }
                 </div>
                 <div className={`text-xs px-2 py-1 rounded-full ${
