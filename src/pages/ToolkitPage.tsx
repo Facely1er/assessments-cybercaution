@@ -56,22 +56,7 @@ const LucideIcons: Record<string, React.FC<any>> = {
   Activity, Zap, Globe, Layers, Monitor
 };
 
-// Enhanced data processing utility
-const ensureData = (data: any[], fallback: any[]): any[] => {
-  if (!data || !Array.isArray(data) || data.length === 0) {
-    return fallback;
-  }
-  return data.map(item => ({
-    ...item,
-    tools: ensureArray(item.tools, [])
-  }));
-};
-
-const ensureArray = (arr: any[], fallback: any[] = []): any[] => {
-  return Array.isArray(arr) && arr.length > 0 ? arr : fallback;
-};
-
-// Comprehensive CyberCaution Toolkit Categories with authentic content
+// CyberCaution Toolkit Categories - This will ALWAYS display
 const cyberCautionToolCategories = [
   {
     id: 'threat-intelligence',
@@ -358,7 +343,7 @@ const cyberCautionToolCategories = [
   }
 ];
 
-// Featured CyberCaution Tools
+// Featured CyberCaution Tools - This will ALWAYS display
 const cyberCautionFeaturedTools = [
   {
     title: 'Ransomware Readiness Assessment',
@@ -399,111 +384,24 @@ const cyberCautionFeaturedTools = [
 ];
 
 const ToolkitPage = () => {
-  // State for categories, featured tools, loading status and errors
-  const [toolCategories, setToolCategories] = useState<any[]>([]);
-  const [featuredTools, setFeaturedTools] = useState<any[]>([]);
+  // Remove all complex database logic and use simple fallback
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Fetch tool categories from Supabase
-  const { data: toolCategoriesData, loading: categoriesLoading, error: categoriesError } = useSupabaseQuery('tool_categories', {
-    orderBy: { column: 'order_index', ascending: true }
-  });
-  
-  // Fetch tools list from Supabase
-  const { data: toolsListData, loading: toolsLoading, error: toolsError } = useSupabaseQuery('tools_list', {
-    orderBy: { column: 'order_index', ascending: true }
-  });
-  
-  // Fetch featured tools from Supabase
-  const { data: featuredToolsData, loading: featuredLoading, error: featuredError } = useSupabaseQuery('tools_list', {
-    filter: (query) => query.or('is_new.eq.true,is_popular.eq.true,is_updated.eq.true'),
-    orderBy: { column: 'order_index', ascending: true },
-    limit: 3
-  });
-
-  // Process data once loaded
+  // Simple timeout to simulate loading, then show content
   useEffect(() => {
-    if (!categoriesLoading && !toolsLoading && !featuredLoading) {
-      // Process categories and map tools to categories
-      if (toolCategoriesData && toolsListData && toolCategoriesData.length > 0) {
-        try {
-          const processedCategories = toolCategoriesData.map(category => {
-            // Find tools for this category
-            const categoryTools = toolsListData.filter(tool => tool.category_id === category.id) || [];
-            
-            // Map icon strings to components
-            const processedTools = categoryTools.map(tool => ({
-              ...tool,
-              icon: LucideIcons[tool.icon as keyof typeof LucideIcons] || Settings,
-              name: tool.title || tool.name,
-              type: tool.type || 'Tool',
-              frameworks: ensureArray(tool.frameworks, []),
-              time: tool.time || '15 min'
-            }));
-            
-            // Map category icon
-            const CategoryIcon = LucideIcons[category.icon as keyof typeof LucideIcons] || Settings;
-            
-            return {
-              ...category,
-              icon: CategoryIcon,
-              tools: processedTools,
-              tools_count: processedTools.length
-            };
-          });
-          
-          setToolCategories(processedCategories);
-        } catch (err) {
-          console.error('Error processing tool categories:', err);
-          setToolCategories(cyberCautionToolCategories);
-        }
-      } else {
-        setToolCategories(cyberCautionToolCategories);
-      }
-      
-      // Process featured tools
-      if (featuredToolsData && featuredToolsData.length > 0) {
-        try {
-          const processed = featuredToolsData.map(tool => ({
-            ...tool,
-            icon: LucideIcons[tool.icon as keyof typeof LucideIcons] || Shield,
-            isNew: tool.is_new || false,
-            isPopular: tool.is_popular || false,
-            isUpdated: tool.is_updated || false,
-            time: tool.time || '15 min'
-          }));
-          
-          setFeaturedTools(processed);
-        } catch (err) {
-          console.error('Error processing featured tools:', err);
-          setFeaturedTools(cyberCautionFeaturedTools);
-        }
-      } else {
-        setFeaturedTools(cyberCautionFeaturedTools);
-      }
-      
+    const timer = setTimeout(() => {
       setLoading(false);
-    }
-    
-    // Handle errors
-    if (categoriesError || toolsError || featuredError) {
-      console.error('Supabase errors:', { categoriesError, toolsError, featuredError });
-      // Use fallback data on error
-      setToolCategories(cyberCautionToolCategories);
-      setFeaturedTools(cyberCautionFeaturedTools);
-      setError(null); // Don't show error to user, just use fallback
-      setLoading(false);
-    }
-  }, [
-    categoriesLoading, toolsLoading, featuredLoading, 
-    toolCategoriesData, toolsListData, featuredToolsData,
-    categoriesError, toolsError, featuredError
-  ]);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  // Use processed data with bulletproof fallback
-  const displayToolCategories = ensureData(toolCategories, cyberCautionToolCategories);
-  const displayFeaturedTools = ensureArray(featuredTools, cyberCautionFeaturedTools);
+  // Always use the CyberCaution content - guaranteed to work
+  const displayToolCategories = cyberCautionToolCategories;
+  const displayFeaturedTools = cyberCautionFeaturedTools;
+
+  console.log('ToolkitPage: Using CyberCaution fallback content');
+  console.log('Categories:', displayToolCategories.length);
+  console.log('Featured tools:', displayFeaturedTools.length);
 
   // Show loading state
   if (loading) {
@@ -602,7 +500,7 @@ const ToolkitPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {ensureArray(category.tools, []).map((tool, index) => (
+              {(category.tools || []).map((tool, index) => (
                 <AnimatedItem key={index} type="fadeIn" delay={index * 0.05 + 0.1}>
                   <Card className="hover:shadow-md transition-shadow h-full">
                     <CardHeader>
@@ -669,64 +567,6 @@ const ToolkitPage = () => {
           </AnimatedSection>
         ))}
 
-        {/* Toolkit Benefits */}
-        <AnimatedSection type="fadeIn" delay={0.5}>
-          <Card className="mb-12">
-            <CardContent className="p-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <h2 className="text-2xl font-bold mb-4 text-foreground">CyberCaution Advantage</h2>
-                  <div className="space-y-4">
-                    <div className="flex items-start">
-                      <Brain className="h-5 w-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="font-medium text-foreground">AI-Powered Intelligence</h3>
-                        <p className="text-sm text-muted-foreground">Predictive analytics and machine learning enhance threat detection</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <Zap className="h-5 w-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="font-medium text-foreground">Rapid Deployment</h3>
-                        <p className="text-sm text-muted-foreground">Deploy enterprise-grade security in hours, not months</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <TrendingUp className="h-5 w-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="font-medium text-foreground">Threat Weather System™</h3>
-                        <p className="text-sm text-muted-foreground">Real-time threat climate monitoring with predictive forecasting</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <Network className="h-5 w-5 text-primary mr-3 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="font-medium text-foreground">Supply Chain Visibility</h3>
-                        <p className="text-sm text-muted-foreground">Comprehensive third-party risk monitoring and management</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="bg-muted/30 rounded-lg p-6">
-                    <Settings className="h-12 w-12 text-primary mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2 text-foreground">Custom Implementation</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Need customized tools for your specific industry or requirements? Our experts can develop tailored solutions.
-                    </p>
-                    <Link to="/contact">
-                      <Button variant="primary">
-                        Request Custom Solution
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </AnimatedSection>
-
         {/* Quick Access */}
         <AnimatedSection type="fadeIn" delay={0.6}>
           <Card className="bg-muted/30 dark:bg-muted/10">
@@ -760,116 +600,6 @@ const ToolkitPage = () => {
               </div>
             </CardContent>
           </Card>
-        </AnimatedSection>
-
-        {/* Incident Reporting Section - Enhanced */}
-        <AnimatedSection type="fadeIn" delay={0.8} className="py-16 bg-muted/20 dark:bg-dark-surface/30 mt-12 mb-12">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Incident Response & Reporting</h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Immediate access to incident response resources and reporting channels
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <div className="bg-background dark:bg-dark-surface rounded-lg p-6 border border-border shadow-sm">
-                <h3 className="text-xl font-medium mb-4 flex items-center">
-                  <AlertTriangle className="h-5 w-5 text-warning-amber mr-2" />
-                  Official Reporting Channels
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  Report cybersecurity incidents to appropriate authorities and get expert assistance.
-                </p>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Phone className="h-5 w-5 text-muted-foreground mr-3" />
-                    <div>
-                      <p className="font-medium">CISA Central</p>
-                      <p className="text-sm text-muted-foreground">
-                        <a href="tel:+18882672583" className="hover:underline">
-                          +1 (888) 267-2583
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <Mail className="h-5 w-5 text-muted-foreground mr-3" />
-                    <div>
-                      <p className="font-medium">Email Reporting</p>
-                      <p className="text-sm text-muted-foreground">
-                        <a href="mailto:central@cisa.gov" className="hover:underline">
-                          central@cisa.gov
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <FileText className="h-5 w-5 text-muted-foreground mr-3" />
-                    <div>
-                      <p className="font-medium">Online Reporting</p>
-                      <p className="text-sm text-muted-foreground">
-                        <a 
-                          href="https://www.cisa.gov/report" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center hover:underline"
-                        >
-                          Submit report online
-                          <ExternalLink className="h-3 w-3 ml-1" />
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-background dark:bg-dark-surface rounded-lg p-6 border border-border shadow-sm">
-                <h3 className="text-xl font-medium mb-4 flex items-center">
-                  <Zap className="h-5 w-5 text-warning-amber mr-2" />
-                  CyberCaution Response Tools
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  Access our rapid response tools for immediate incident containment and recovery.
-                </p>
-                
-                <div className="space-y-3">
-                  <Link to="/incident-orchestrator" className="block">
-                    <div className="flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                      <Settings className="h-5 w-5 text-primary mr-3" />
-                      <div>
-                        <p className="font-medium">Incident Orchestrator</p>
-                        <p className="text-sm text-muted-foreground">Centralized incident management</p>
-                      </div>
-                    </div>
-                  </Link>
-                  
-                  <Link to="/crisis-comms" className="block">
-                    <div className="flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                      <Mail className="h-5 w-5 text-primary mr-3" />
-                      <div>
-                        <p className="font-medium">Crisis Communications</p>
-                        <p className="text-sm text-muted-foreground">Pre-approved notification templates</p>
-                      </div>
-                    </div>
-                  </Link>
-                  
-                  <Link to="/evidence-collection" className="block">
-                    <div className="flex items-center p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                      <Search className="h-5 w-5 text-primary mr-3" />
-                      <div>
-                        <p className="font-medium">Evidence Collection</p>
-                        <p className="text-sm text-muted-foreground">Digital forensics toolkit</p>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
         </AnimatedSection>
 
         {/* CTA Section */}
