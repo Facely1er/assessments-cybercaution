@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useNistCsfAssessment } from '../hooks/useSupabase';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
+import { Alert, AlertDescription } from '../../components/ui/Alert';
+import { useState } from 'react';
 import { 
   Award,
   CheckCircle,
@@ -38,15 +37,23 @@ const NISTCSFToolkit = () => {
   });
 
   // Supabase integration
-  const { 
-    sessionId, 
-    assessment, 
-    loading, 
-    error, 
-    saveAssessment, 
-    loadAssessment,
-    generateReport 
-  } = useNistCsfAssessment();
+  // Replace with local state instead of non-existent hook
+  const [assessment, setAssessment] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const sessionId = "demo-session";
+  
+  const handleSave = async (showNotification = true) => {
+    // Mock implementation
+    setLastSaved(new Date().toISOString());
+    return { success: true };
+  };
+  
+  const generateReport = async (options: any) => {
+    // Mock implementation
+    console.log("Generating report with options:", options);
+    return true;
+  };
 
   const [assessmentData, setAssessmentData] = useState({});
   const [lastSaved, setLastSaved] = useState(null);
