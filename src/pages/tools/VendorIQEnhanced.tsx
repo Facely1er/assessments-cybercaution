@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { 
   Building2,
   Upload,
@@ -47,7 +47,7 @@ import {
   ExternalLink,
   Archive,
   Star
-} from 'lucide-react';
+import { Alert, AlertDescription } from '../../components/ui/alert';
 
 const VendorIQEnhanced = () => {
   // Core state management
