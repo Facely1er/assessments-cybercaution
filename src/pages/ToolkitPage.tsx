@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
@@ -184,14 +184,15 @@ const cyberCautionToolCategories = [
         interactive: true
       },
       {
-        name: 'Supply Chain Risk Calculator',
-        description: 'Interactive calculator for quantifying supply chain risks and critical dependency identification',
-        type: 'Risk Calculator',
-        path: '/tools/supply-chain-calculator',
-        icon: Calculator,
-        frameworks: ['Supply Chain Risk Management'],
-        time: '30 min',
-        interactive: true
+        name: 'VendorIQ Risk Assessment Platform',
+        description: 'NIST-aligned comprehensive vendor risk evaluation with 8-dimensional scoring, AI-powered insights, and enterprise reporting',
+        type: 'Enterprise Platform',
+        path: '/tools/vendoriq-platform',
+        icon: Building2,
+        frameworks: ['NIST CSF', 'NIST SP 800-161', 'NIST SP 800-53'],
+        time: '45 min',
+        interactive: true,
+        featured: true
       },
       {
         name: 'Third-Party Breach Monitor',
@@ -370,7 +371,7 @@ const cyberCautionToolCategories = [
   }
 ];
 
-// Featured interactive tools
+// Featured interactive tools - Updated to include VendorIQ
 const cyberCautionFeaturedTools = [
   {
     title: 'Ransomware Readiness Assessment',
@@ -386,16 +387,16 @@ const cyberCautionFeaturedTools = [
     interactive: true
   },
   {
-    title: 'Threat Weather Dashboard',
-    description: 'Real-time threat intelligence platform providing predictive risk analytics for your industry sector',
-    icon: TrendingUp,
+    title: 'VendorIQ Risk Assessment Platform',
+    description: 'NIST-aligned comprehensive vendor risk evaluation with 8-dimensional scoring, AI insights, and enterprise reporting',
+    icon: Building2,
     color: 'text-warning-amber',
-    path: '/tools/threat-weather',
-    badge: 'AI-Powered',
+    path: '/tools/vendoriq-platform',
+    badge: 'Enterprise',
     isNew: true,
     isPopular: false,
     isUpdated: false,
-    time: '5 min',
+    time: '45 min',
     interactive: true
   },
   {
@@ -630,10 +631,10 @@ const ToolkitPage = () => {
                     <span className="text-xs">Ransomware Check</span>
                   </Button>
                 </Link>
-                <Link to="/tools/threat-weather">
+                <Link to="/tools/vendoriq-platform">
                   <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
-                    <TrendingUp className="h-5 w-5 mb-2" />
-                    <span className="text-xs">Threat Weather</span>
+                    <Building2 className="h-5 w-5 mb-2" />
+                    <span className="text-xs">VendorIQ</span>
                   </Button>
                 </Link>
                 <Link to="/tools/vendor-scorecard">
@@ -711,12 +712,12 @@ const ToolkitPage = () => {
                   Ready to Launch Your Security Tools?
                 </h2>
                 <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-                  Start with our most popular interactive assessment tools and build your comprehensive security program
+                  Start with our NIST-aligned assessment tools and build your comprehensive security program
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/tools/ransomware-assessment">
+                  <Link to="/tools/vendoriq-platform">
                     <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                      Start Ransomware Assessment
+                      Start VendorIQ Assessment
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
