@@ -28,15 +28,6 @@ const ToolkitPage = () => {
       description: "Comprehensive protection against ransomware threats",
       tools: [
         {
-          id: 'threat-weather',
-          title: 'Threat Weather Dashboard',
-          description: 'Real-time threat intelligence monitoring and analysis for your industry',
-          icon: Eye,
-          path: '/tools/threat-weather',
-          color: 'bg-critical-red/10',
-          iconColor: 'text-critical-red'
-        },
-        {
           id: 'predictive-analytics',
           title: 'Predictive Breach Analytics',
           description: 'AI-powered vulnerability prediction and risk forecasting',

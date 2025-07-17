@@ -14,7 +14,6 @@ const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
 const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
 // Lazy load tool components
-const ThreatWeatherDashboard = React.lazy(() => import('./pages/tools/ThreatWeatherDashboard'));
 const PredictiveBreachAnalytics = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
 const NISTCSFToolkit = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
 const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
@@ -143,7 +142,6 @@ function App() {
             <Route path="/company/terms" element={<Terms />} />
             
             {/* Toolkit Tool Routes */}
-            <Route path="/tools/threat-weather" element={<ThreatWeatherDashboard />} />
             <Route path="/tools/predictive-analytics" element={<React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense>} />
             <Route path="/tools/nist-csf-wizard" element={<React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense>} />
             <Route path="/tools/vendor-scorecard" element={<React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense>} />
