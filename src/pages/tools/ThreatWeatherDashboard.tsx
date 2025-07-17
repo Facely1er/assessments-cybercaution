@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, TrendingDown, AlertTriangle, Shield, Globe, 
   Activity, Zap, Eye, Clock, BarChart3, Map, Target,
