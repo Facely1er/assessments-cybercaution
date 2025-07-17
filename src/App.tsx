@@ -132,13 +132,13 @@ function App() {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/demo" element={<DemoPage />} />
-            <Route path="/toolkit" element={<ToolkitPage />} />
+            <Route path="/toolkit" element={<React.Suspense fallback={<LoadingFallback />}><ToolkitPage /></React.Suspense>} />
             <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
             <Route path="/company/privacy" element={<Privacy />} />
             <Route path="/company/terms" element={<Terms />} />
             
             {/* Toolkit Tool Routes */}
-            <Route path="/tools/threat-weather" element={<ThreatWeatherDashboard />} />
+            <Route path="/tools/threat-weather" element={<React.Suspense fallback={<LoadingFallback />}><ThreatWeatherDashboard /></React.Suspense>} />
             <Route path="/tools/predictive-analytics" element={<PredictiveBreachAnalytics />} />
             <Route path="/tools/nist-csf-wizard" element={<NISTCSFToolkit />} />
             <Route path="/tools/vendor-scorecard" element={<VendorSecurityScorecard />} />
