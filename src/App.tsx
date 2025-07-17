@@ -145,6 +145,7 @@ function App() {
             <Route path="/tools/industry-threats" element={<IndustryThreatProfiler />} />
             <Route path="/tools/dark-web-monitor" element={<DarkWebMonitoring />} />
             <Route path="/tools/business-impact" element={<BusinessImpactCalculator />} />
+            
           </Route>
 
           {/* Auth routes */}
