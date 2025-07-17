@@ -60,7 +60,7 @@ const ThreatWeatherDashboard: React.FC = () => {
   const [threatData, setThreatData] = useState<ThreatData>({
     globalThreatLevel: 'ELEVATED',
     activeCampaigns: 47,
-    newIOCs: 1,284,
+    newIOCs: 1284,
     affectedRegions: 23
   });
 
