@@ -1,531 +1,742 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
-import {
-  TrendingUp, TrendingDown, AlertTriangle, Shield, Globe, 
-  Activity, Zap, Eye, Clock, BarChart3, Map, Target,
-  ArrowUp, ArrowDown, Minus, RefreshCw, Download,
-  MapPin, Users, Server, Lock, Settings, Database,
-  Wifi, WifiOff
+ import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
+import { Link } from 'react-router-dom';
+import AnimatedSection from '../utils/AnimatedSection';
+import AnimatedItem from '../utils/AnimatedItem';
+import { useSupabaseQuery } from '../hooks/useSupabase';
+import { 
+  ArrowRight, 
+  Settings, 
+  Shield, 
+  FileText, 
+  BarChart3,
+  Download,
+  Users,
+  CheckCircle,
+  Network,
+  Lock,
+  AlertTriangle,
+  BookOpen,
+  GraduationCap,
+  Wrench,
+  Target,
+  Calendar,
+  Play,
+  ExternalLink,
+  RefreshCw,
+  Search,
+  Phone,
+  Mail,
+  Clock,
+  Loader,
+  TrendingUp,
+  ClipboardList,
+  Building2,
+  Heart,
+  Eye,
+  Bell,
+  Award,
+  Link2,
+  Database,
+  Brain,
+  Activity,
+  Zap,
+  Globe,
+  Layers,
+  Monitor,
+  Calculator,
+  Gauge
 } from 'lucide-react';
-import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 
-// Configuration interfaces for data sources
-interface ThreatFeedConfig {
-  name: string;
-  endpoint: string;
-  apiKey?: string;
-  enabled: boolean;
-  lastSync?: Date;
-  status: 'connected' | 'disconnected' | 'error';
-}
+// Map of Lucide icon names to components
+const LucideIcons: Record<string, React.FC<any>> = {
+  Settings, Shield, FileText, BarChart3, Download, Users, CheckCircle, 
+  Network, Lock, AlertTriangle, BookOpen, GraduationCap, Wrench, 
+  Target, Calendar, Play, ExternalLink, TrendingUp, ClipboardList,
+  Building2, Heart, Eye, Bell, Award, Link2, Database, Brain,
+  Activity, Zap, Globe, Layers, Monitor, Calculator, Gauge, Search, 
+  Clock, Mail
+};
 
-interface ThreatData {
-  globalThreatLevel: string;
-  activeCampaigns: number;
-  newIOCs: number;
-  affectedRegions: number;
-  dataSourcesConnected: number;
-  lastUpdate?: Date;
-}
+// INTERACTIVE TOOLS - Assessments, Calculators, Dashboards, Automation Platforms
+const cyberCautionToolCategories = [
+  {
+    id: 'threat-intelligence',
+    title: 'Threat Weather System™',
+    description: 'Real-time threat intelligence and predictive analytics to forecast security risks before they materialize',
+    icon: TrendingUp,
+    color: 'text-critical-red',
+    bgColor: 'bg-critical-red/10',
+    badge: 'AI-Powered',
+    tools: [
+      {
+        name: 'Threat Weather Dashboard',
+        description: 'Real-time threat climate monitoring with predictive risk forecasting and early warning alerts',
+        type: 'Intelligence Platform',
+        path: '/tools/threat-weather',
+        icon: TrendingUp,
+        frameworks: ['MITRE ATT&CK', 'Threat Intelligence'],
+        time: '5 min setup',
+        interactive: true
+      },
+      {
+        name: 'Predictive Breach Analytics',
+        description: 'AI-powered analysis to identify vulnerabilities before attackers exploit them using machine learning algorithms',
+        type: 'AI Analytics',
+        path: '/tools/predictive-analytics',
+        icon: Brain,
+        frameworks: ['NIST CSF', 'AI/ML Security'],
+        time: '15 min analysis',
+        interactive: true
+      },
+      {
+        name: 'Industry Threat Profiler',
+        description: 'Customized threat intelligence specific to your industry sector with actor profiling and attack pattern analysis',
+        type: 'Threat Analysis Tool',
+        path: '/tools/industry-threats',
+        icon: Eye,
+        frameworks: ['Sector-Specific Intelligence'],
+        time: '10 min',
+        interactive: true
+      },
+      {
+        name: 'Dark Web Monitoring Dashboard',
+        description: 'Continuous monitoring dashboard for dark web activities, credentials, data leaks, and attack planning discussions',
+        type: 'Monitoring Platform',
+        path: '/tools/dark-web-monitor',
+        icon: Globe,
+        frameworks: ['Threat Intelligence', 'OSINT'],
+        time: 'Continuous',
+        interactive: true
+      }
+    ]
+  },
+  {
+    id: 'ransomware-immunity',
+    title: 'Ransomware Immunity Suite',
+    description: 'Comprehensive protection and recovery tools designed to prevent, detect, and recover from ransomware attacks',
+    icon: Shield,
+    color: 'text-secure-green',
+    bgColor: 'bg-secure-green/10',
+    badge: 'Featured',
+    tools: [
+      {
+        name: 'Ransomware Readiness Assessment',
+        description: 'Interactive assessment tool evaluating your ransomware preparedness with actionable remediation guidance',
+        type: 'Assessment Tool',
+        path: '/tools/ransomware-assessment',
+        icon: Shield,
+        frameworks: ['NIST CSF', 'NIST IR 8374'],
+        time: '15 min',
+        featured: true,
+        interactive: true
+      },
+      {
+        name: 'Backup Integrity Validator',
+        description: 'Automated testing platform for validating backup systems to ensure rapid recovery capabilities',
+        type: 'Validation Platform',
+        path: '/tools/backup-validator',
+        icon: Database,
+        frameworks: ['NIST SP 800-34', 'Business Continuity'],
+        time: '30 min',
+        interactive: true
+      },
+      {
+        name: 'Recovery Time Calculator',
+        description: 'Interactive calculator to optimize your recovery time objectives (RTO) and recovery point objectives (RPO)',
+        type: 'Planning Calculator',
+        path: '/tools/recovery-calculator',
+        icon: Calculator,
+        frameworks: ['Business Continuity', 'Disaster Recovery'],
+        time: '20 min',
+        interactive: true
+      },
+      {
+        name: 'Incident Response Simulator',
+        description: 'Interactive ransomware incident simulation for response team training and preparedness testing',
+        type: 'Simulation Tool',
+        path: '/tools/incident-simulator',
+        icon: Zap,
+        frameworks: ['NIST SP 800-61', 'Incident Response'],
+        time: '45 min',
+        interactive: true
+      }
+    ]
+  },
+  {
+    id: 'vendor-risk-radar',
+    title: 'Vendor Risk Radar',
+    description: 'Continuous monitoring and assessment of third-party security risks throughout the vendor lifecycle',
+    icon: Network,
+    color: 'text-warning-amber',
+    bgColor: 'bg-warning-amber/10',
+    badge: 'Supply Chain',
+    tools: [
+      {
+        name: 'Vendor Security Scorecard',
+        description: 'Automated security assessment dashboard for vendors and suppliers with continuous monitoring and risk scoring',
+        type: 'Risk Assessment Platform',
+        path: '/tools/vendor-scorecard',
+        icon: BarChart3,
+        frameworks: ['NIST SP 800-161', 'Supply Chain Security'],
+        time: '25 min',
+        interactive: true
+      },
+      {
+        name: 'VendorIQ Risk Assessment Platform',
+        description: 'NIST-aligned comprehensive vendor risk evaluation with 8-dimensional scoring, AI-powered insights, and enterprise reporting',
+        type: 'Enterprise Platform',
+        path: '/tools/vendoriq-platform',
+        icon: Building2,
+        frameworks: ['NIST CSF', 'NIST SP 800-161', 'NIST SP 800-53'],
+        time: '45 min',
+        interactive: true,
+        featured: true
+      },
+      {
+        name: 'Third-Party Breach Monitor',
+        description: 'Real-time monitoring dashboard for security incidents affecting your vendors and supply chain partners',
+        type: 'Monitoring Dashboard',
+        path: '/tools/vendor-breach-monitor',
+        icon: AlertTriangle,
+        frameworks: ['Continuous Monitoring'],
+        time: 'Real-time',
+        interactive: true
+      },
+      {
+        name: 'Vendor Onboarding Wizard',
+        description: 'Interactive workflow system for streamlined security assessment of new vendors with automated questionnaires',
+        type: 'Workflow Platform',
+        path: '/tools/vendor-onboarding',
+        icon: Users,
+        frameworks: ['Vendor Management'],
+        time: '35 min',
+        interactive: true
+      }
+    ]
+  },
+  {
+    id: 'compliance-automation',
+    title: 'Compliance Automation Center',
+    description: 'Automated compliance management tools for maintaining adherence to security frameworks and regulations',
+    icon: CheckCircle,
+    color: 'text-electric-blue',
+    bgColor: 'bg-electric-blue/10',
+    badge: 'Automated',
+    tools: [
+      {
+        name: 'NIST CSF Implementation Wizard',
+        description: 'Interactive implementation wizard for NIST Cybersecurity Framework with guided workflows and automated setup',
+        type: 'Implementation Platform',
+        path: '/tools/nist-csf-wizard',
+        icon: Award,
+        frameworks: ['NIST CSF', 'NIST SP 800-53'],
+        time: '60 min setup',
+        interactive: true
+      },
+      {
+        name: 'Compliance Gap Analyzer',
+        description: 'Interactive analysis tool to identify compliance gaps and generate prioritized remediation roadmaps',
+        type: 'Analysis Platform',
+        path: '/tools/compliance-gaps',
+        icon: Target,
+        frameworks: ['Compliance Management'],
+        time: '45 min',
+        interactive: true
+      },
+      {
+        name: 'Multi-Framework Control Mapper',
+        description: 'Interactive mapping platform for cross-referencing security controls between NIST CSF, ISO 27001, SOC 2, and other frameworks',
+        type: 'Mapping Platform',
+        path: '/tools/control-mapper',
+        icon: Link2,
+        frameworks: ['Multiple Frameworks'],
+        time: '30 min',
+        interactive: true
+      },
+      {
+        name: 'Audit Readiness Dashboard',
+        description: 'Real-time compliance posture monitoring dashboard with automated audit trail generation and evidence collection',
+        type: 'Monitoring Dashboard',
+        path: '/tools/audit-dashboard',
+        icon: Monitor,
+        frameworks: ['Audit Management'],
+        time: 'Continuous',
+        interactive: true
+      }
+    ]
+  },
+  {
+    id: 'risk-analytics',
+    title: 'Advanced Risk Analytics',
+    description: 'AI-powered risk assessment and management tools for comprehensive organizational risk visibility',
+    icon: BarChart3,
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-500/10',
+    badge: 'Analytics',
+    tools: [
+      {
+        name: 'Risk Register Intelligence',
+        description: 'AI-enhanced risk identification and management platform with automated risk scoring and treatment recommendations',
+        type: 'Risk Management Platform',
+        path: '/tools/risk-register',
+        icon: ClipboardList,
+        frameworks: ['NIST RMF', 'ISO 31000'],
+        time: '50 min',
+        interactive: true
+      },
+      {
+        name: 'Business Impact Calculator',
+        description: 'Interactive calculator to quantify the financial and operational impact of security incidents on critical business functions',
+        type: 'Impact Calculator',
+        path: '/tools/business-impact',
+        icon: Building2,
+        frameworks: ['Business Continuity', 'Risk Assessment'],
+        time: '35 min',
+        interactive: true
+      },
+      {
+        name: 'Risk Heat Map Generator',
+        description: 'Interactive risk visualization platform with dynamic heat maps for executive reporting and decision making',
+        type: 'Visualization Platform',
+        path: '/tools/risk-heatmap',
+        icon: Activity,
+        frameworks: ['Risk Visualization'],
+        time: '20 min',
+        interactive: true
+      },
+      {
+        name: 'Scenario Planning Simulator',
+        description: 'Interactive scenario planning platform for testing organizational resilience and response capabilities',
+        type: 'Planning Simulator',
+        path: '/tools/scenario-planning',
+        icon: Layers,
+        frameworks: ['Scenario Analysis', 'Crisis Management'],
+        time: '90 min',
+        interactive: true
+      }
+    ]
+  },
+  {
+    id: 'incident-response',
+    title: 'Rapid Response Toolkit',
+    description: 'Pre-configured incident response tools and automated workflow systems for swift containment and recovery',
+    icon: Zap,
+    color: 'text-orange-500',
+    bgColor: 'bg-orange-500/10',
+    badge: 'Rapid Deploy',
+    tools: [
+      {
+        name: 'Incident Response Orchestrator',
+        description: 'Centralized platform for managing security incidents with automated workflows and team coordination',
+        type: 'Orchestration Platform',
+        path: '/tools/incident-orchestrator',
+        icon: Settings,
+        frameworks: ['NIST SP 800-61', 'Incident Response'],
+        time: '20 min setup',
+        interactive: true
+      },
+      {
+        name: 'Tabletop Exercise Builder',
+        description: 'Interactive platform for creating and conducting cybersecurity tabletop exercises with realistic scenarios',
+        type: 'Training Platform',
+        path: '/tools/tabletop-exercises',
+        icon: GraduationCap,
+        frameworks: ['NIST IR 8374', 'Training'],
+        time: '120 min',
+        interactive: true
+      },
+      {
+        name: 'Crisis Communication Hub',
+        description: 'Interactive communication platform for stakeholders, media, and regulatory notifications during incidents',
+        type: 'Communication Platform',
+        path: '/tools/crisis-comms',
+        icon: Mail,
+        frameworks: ['Crisis Management'],
+        time: '15 min',
+        interactive: true
+      },
+      {
+        name: 'Evidence Collection Tracker',
+        description: 'Digital forensics platform for evidence collection and chain of custody management',
+        type: 'Forensics Platform',
+        path: '/tools/evidence-collection',
+        icon: Search,
+        frameworks: ['Digital Forensics', 'Legal'],
+        time: '60 min',
+        interactive: true
+      }
+    ]
+  }
+];
 
-interface Campaign {
-  id: string;
-  severity: 'CRITICAL' | 'HIGH' | 'MODERATE' | 'LOW';
-  affectedCountries: number;
-  firstSeen: string;
-  attackVector: string;
-  mitreId: string;
-  confidence: number;
-  trend: 'increasing' | 'decreasing' | 'stable';
-  source: string;
-}
+// Featured interactive tools - Updated to include VendorIQ
+const cyberCautionFeaturedTools = [
+  {
+    title: 'Ransomware Readiness Assessment',
+    description: 'Industry-leading interactive ransomware preparedness evaluation with NIST-aligned recommendations and actionable insights',
+    icon: Shield,
+    color: 'text-critical-red',
+    path: '/tools/ransomware-assessment',
+    badge: 'Most Popular',
+    isNew: false,
+    isPopular: true,
+    isUpdated: false,
+    time: '15 min',
+    interactive: true
+  },
+  {
+    title: 'VendorIQ Risk Assessment Platform',
+    description: 'NIST-aligned comprehensive vendor risk evaluation with 8-dimensional scoring, AI insights, and enterprise reporting',
+    icon: Building2,
+    color: 'text-warning-amber',
+    path: '/tools/vendoriq-platform',
+    badge: 'Enterprise',
+    isNew: true,
+    isPopular: false,
+    isUpdated: false,
+    time: '45 min',
+    interactive: true
+  },
+  {
+    title: 'NIST CSF Implementation Wizard',
+    description: 'Interactive cybersecurity framework implementation wizard with automated gap analysis and roadmap generation',
+    icon: Award,
+    color: 'text-electric-blue',
+    path: '/tools/nist-csf-wizard',
+    badge: 'Updated',
+    isNew: false,
+    isPopular: false,
+    isUpdated: true,
+    time: '60 min',
+    interactive: true
+  }
+];
 
-interface RegionData {
-  region: string;
-  threats: number;
-  change: number;
-}
+const ToolkitPage = () => {
+  // Remove all complex database logic and use simple fallback
+  const [loading, setLoading] = useState(true);
 
-interface TimeSeriesData {
-  time: string;
-  threats: number;
-  critical: number;
-}
-
-interface AttackVector {
-  name: string;
-  value: number;
-  color: string;
-}
-
-interface MitreData {
-  technique: string;
-  count: number;
-  change: number;
-}
-
-const ThreatIntelligenceDashboard: React.FC = () => {
-  const [activeView, setActiveView] = useState<string>('global');
-  const [selectedRegion, setSelectedRegion] = useState<string>('global');
-  const [timeRange, setTimeRange] = useState<string>('24h');
-  const [isLive, setIsLive] = useState<boolean>(false);
-  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
-  const [dataSourcesConfigured, setDataSourcesConfigured] = useState<boolean>(false);
-
-  // Configuration for threat intelligence feeds
-  const [threatFeeds] = useState<ThreatFeedConfig[]>([
-    {
-      name: 'CISA Alerts',
-      endpoint: '/api/feeds/cisa',
-      enabled: false,
-      status: 'disconnected'
-    },
-    {
-      name: 'MITRE ATT&CK',
-      endpoint: '/api/feeds/mitre',
-      enabled: false,
-      status: 'disconnected'
-    },
-    {
-      name: 'Commercial Intel Feed',
-      endpoint: '/api/feeds/commercial',
-      enabled: false,
-      status: 'disconnected',
-      apiKey: 'required'
-    },
-    {
-      name: 'Custom IOC Feed',
-      endpoint: '/api/feeds/custom',
-      enabled: false,
-      status: 'disconnected'
-    }
-  ]);
-
-  // Initialize with empty/placeholder data structure
-  const [threatData, setThreatData] = useState<ThreatData>({
-    globalThreatLevel: 'UNKNOWN',
-    activeCampaigns: 0,
-    newIOCs: 0,
-    affectedRegions: 0,
-    dataSourcesConnected: 0
-  });
-
-  // Empty data structures - will be populated from real feeds
-  const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
-
-  // Placeholder regional data structure
-  const regionData: RegionData[] = [
-    { region: 'North America', threats: 0, change: 0 },
-    { region: 'Europe', threats: 0, change: 0 },
-    { region: 'Asia-Pacific', threats: 0, change: 0 },
-    { region: 'Middle East', threats: 0, change: 0 },
-    { region: 'Africa', threats: 0, change: 0 },
-    { region: 'South America', threats: 0, change: 0 }
-  ];
-
-  // Empty time series data
-  const timeSeriesData: TimeSeriesData[] = Array.from({ length: 7 }, (_, i) => ({
-    time: `${i * 4}:00`,
-    threats: 0,
-    critical: 0
-  }));
-
-  // Standard attack vector categories (not fictional data)
-  const attackVectors: AttackVector[] = [
-    { name: 'Email-based', value: 0, color: '#ef4444' },
-    { name: 'Web-based', value: 0, color: '#f97316' },
-    { name: 'Network-based', value: 0, color: '#eab308' },
-    { name: 'Application', value: 0, color: '#22c55e' },
-    { name: 'Physical', value: 0, color: '#3b82f6' }
-  ];
-
-  // MITRE ATT&CK common techniques (real framework)
-  const mitreData: MitreData[] = [
-    { technique: 'T1566 Phishing', count: 0, change: 0 },
-    { technique: 'T1190 Exploit Public-Facing App', count: 0, change: 0 },
-    { technique: 'T1078 Valid Accounts', count: 0, change: 0 },
-    { technique: 'T1055 Process Injection', count: 0, change: 0 },
-    { technique: 'T1059 Command/Scripting', count: 0, change: 0 }
-  ];
-
-  const getThreatLevelColor = (level: string): string => {
-    switch (level) {
-      case 'CRITICAL': return 'text-red-600 bg-red-100';
-      case 'HIGH': return 'text-orange-600 bg-orange-100';
-      case 'ELEVATED': return 'text-yellow-600 bg-yellow-100';
-      case 'MODERATE': return 'text-blue-600 bg-blue-100';
-      case 'LOW': return 'text-green-600 bg-green-100';
-      default: return 'text-gray-600 bg-gray-100';
-    }
-  };
-
-  const getSeverityIcon = (severity: string) => {
-    switch (severity) {
-      case 'CRITICAL': return <AlertTriangle className="w-4 h-4 text-red-600" />;
-      case 'HIGH': return <TrendingUp className="w-4 h-4 text-orange-600" />;
-      case 'ELEVATED': return <Activity className="w-4 h-4 text-yellow-600" />;
-      case 'MODERATE': return <Shield className="w-4 h-4 text-blue-600" />;
-      default: return <Shield className="w-4 h-4 text-gray-600" />;
-    }
-  };
-
-  const getTrendIcon = (trend: string) => {
-    switch (trend) {
-      case 'increasing': return <ArrowUp className="w-3 h-3 text-red-500" />;
-      case 'decreasing': return <ArrowDown className="w-3 h-3 text-green-500" />;
-      default: return <Minus className="w-3 h-3 text-gray-500" />;
-    }
-  };
-
-  const getDataSourceStatus = () => {
-    const connectedFeeds = threatFeeds.filter(feed => feed.status === 'connected').length;
-    setThreatData(prev => ({ ...prev, dataSourcesConnected: connectedFeeds }));
-    setDataSourcesConfigured(connectedFeeds > 0);
-  };
-
+  // Simple timeout to simulate loading, then show content
   useEffect(() => {
-    getDataSourceStatus();
-  }, [threatFeeds]);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
-  useEffect(() => {
-    if (isLive && dataSourcesConfigured) {
-      const interval = setInterval(() => {
-        setLastUpdate(new Date());
-        // Here you would fetch real data from configured threat intelligence feeds
-        // Example: fetchThreatData(), fetchActiveCampaigns(), etc.
-      }, 30000);
+  // Always use the CyberCaution interactive tools content
+  const displayToolCategories = cyberCautionToolCategories;
+  const displayFeaturedTools = cyberCautionFeaturedTools;
 
-      return () => clearInterval(interval);
-    }
-  }, [isLive, dataSourcesConfigured]);
+  console.log('ToolkitPage: Using CyberCaution interactive tools content');
+  console.log('Tool Categories:', displayToolCategories.length);
+  console.log('Featured tools:', displayFeaturedTools.length);
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <Loader className="h-12 w-12 animate-spin text-primary" />
+          <p className="text-muted-foreground">Loading CyberCaution Security Toolkit...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-background p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">CyberCaution Threat Intelligence Dashboard</h1>
-            <p className="text-gray-600">Real-time threat intelligence monitoring and analysis</p>
+    <div className="py-20">
+      <div className="container mx-auto px-4">
+        <AnimatedSection type="fadeIn">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold mb-2 text-foreground">CyberCaution Security Toolkit</h1>
+            <p className="text-xl text-orange-500 mb-4">
+              Interactive cybersecurity tools and assessments<br />powered by threat intelligence and AI analytics
+            </p>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Hands-on security tools, calculators, dashboards, and automation platforms for comprehensive risk management
+            </p>
           </div>
-          <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
-            <div className="flex items-center space-x-2 text-sm">
-              <Clock className="w-4 h-4" />
-              <span>Last updated: {lastUpdate.toLocaleTimeString()}</span>
-              <button
-                onClick={() => setIsLive(!isLive)}
-                disabled={!dataSourcesConfigured || connectionStatus !== 'connected'}
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  isLive && dataSourcesConfigured ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
-                } ${!dataSourcesConfigured ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                {isLive && dataSourcesConfigured ? 'LIVE' : 'OFFLINE'}
-              </button>
-            </div>
-            <button className="px-3 py-1 border border-gray-300 dark:border-muted rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-dark-surface hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center space-x-2">
-              <Settings className="w-4 h-4" />
-              <span>Configure Sources</span>
-            </button>
-          </div>
-        </div>
+        </AnimatedSection>
 
-        {/* Data Source Configuration Alert */}
-        {!dataSourcesConfigured && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Threat Intelligence Sources Not Configured</h3>
-                <p className="text-sm text-yellow-700 mt-1">
-                  Connect your threat intelligence feeds to begin receiving real-time data. Configure CISA feeds, MITRE ATT&CK data, or custom intelligence sources.
-                </p>
-                <button className="mt-2 px-3 py-1 bg-yellow-600 text-white text-sm rounded-md hover:bg-yellow-700 transition-colors">
-                  Configure Data Sources
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Data Source Status */}
-        <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-              <Database className="w-5 h-5" />
-              <span>Intelligence Feed Status</span>
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {threatFeeds.map((feed, index) => (
-              <div key={index} className="border dark:border-muted rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-medium text-sm">{feed.name}</span>
-                  {feed.status === 'connected' ? 
-                    <Wifi className="w-4 h-4 text-green-600" /> : 
-                    <WifiOff className="w-4 h-4 text-gray-400" />
-                  }
-                </div>
-                <div className={`text-xs px-2 py-1 rounded-full ${
-                  feed.status === 'connected' ? 'bg-green-100 text-green-800' :
-                  feed.status === 'error' ? 'bg-red-100 text-red-800' :
-                  'bg-gray-100 text-gray-600'
-                }`}>
-                  {feed.status.toUpperCase()}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Global Threat Status */}
-        <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-              <Globe className="w-5 h-5" />
-              <span>Global Threat Status</span>
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className={`inline-flex items-center px-4 py-2 rounded-lg font-bold text-lg ${getThreatLevelColor(threatData.globalThreatLevel)} dark:text-dark-text`}>
-                {getSeverityIcon(threatData.globalThreatLevel)}
-                <span className="ml-2">{threatData.globalThreatLevel}</span>
-              </div>
-              <p className="text-sm text-gray-600 mt-2">Current Threat Level</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">{threatData.activeCampaigns}</div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Active Campaigns</p>
-              <div className="flex items-center justify-center mt-1">
-                <Minus className="w-3 h-3 text-gray-500 mr-1" />
-                <span className="text-xs text-gray-500">No data</span>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600">{threatData.newIOCs.toLocaleString()}</div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">New IOCs (24h)</p>
-              <div className="flex items-center justify-center mt-1">
-                <Minus className="w-3 h-3 text-gray-500 mr-1" />
-                <span className="text-xs text-gray-500">No data</span>
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">{threatData.dataSourcesConnected}</div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Connected Sources</p>
-              <div className="flex items-center justify-center mt-1">
-                <span className="text-xs text-gray-500">of {threatFeeds.length} total</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Active Threat Campaigns */}
-          <div className="lg:col-span-2 bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-            <div>
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-                  <Target className="w-5 h-5" />
-                  <span>Active Threat Campaigns</span>
-                </h3>
-              </div>
-              {activeCampaigns.length === 0 ? (
-                <div className="text-center py-8">
-                  <Database className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-                  <p className="text-gray-600 dark:text-gray-400">No threat campaigns detected</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Configure threat intelligence sources to view active campaigns</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {activeCampaigns.map((campaign: Campaign, index: number) => (
-                    <div key={campaign.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-2 text-gray-900 dark:text-dark-text">
-                            <span className="font-semibold">Campaign {campaign.id}</span>
-                            <span className={`px-2 py-1 rounded text-xs font-medium ${
-                              campaign.severity === 'CRITICAL' ? 'bg-red-100 text-red-800' :
-                              campaign.severity === 'HIGH' ? 'bg-orange-100 text-orange-800' :
-                              'bg-yellow-100 text-yellow-800'
-                            } dark:text-dark-text`}>
-                              {campaign.severity}
+        {/* Featured Tools */}
+        <AnimatedSection type="fadeIn" delay={0.1}>
+          <div className="mb-14">
+            <h2 className="text-2xl font-bold mb-6 text-foreground">Featured Interactive Tools</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {displayFeaturedTools.map((tool, index) => (
+                <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.1}>
+                  <Card className="hover:shadow-lg transition-all duration-300 border-2 border-primary/20 h-full">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className={`p-3 rounded-lg bg-muted`}>
+                          {React.createElement(tool.icon, { 
+                            className: `h-6 w-6 ${tool.color || 'text-primary'}` 
+                          })}
+                        </div>
+                        <div className="flex flex-col items-end space-y-1">
+                          {tool.isNew && (
+                            <span className="bg-secure-green/10 text-secure-green px-2 py-1 rounded-full text-xs font-medium">
+                              New
                             </span>
-                            {getTrendIcon(campaign.trend)}
-                          </div>
-                          <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                            <div>
-                              <span className="font-medium dark:text-gray-400">Attack Vector:</span> {campaign.attackVector}
-                            </div>
-                            <div>
-                              <span className="font-medium dark:text-gray-400">MITRE ID:</span> {campaign.mitreId}
-                            </div>
-                            <div>
-                              <span className="font-medium">Source:</span> {campaign.source}
-                            </div>
-                            <div>
-                              <span className="font-medium">Confidence:</span> {campaign.confidence}%
-                            </div>
-                          </div>
+                          )}
+                          {tool.isPopular && (
+                            <span className="bg-warning-amber/10 text-warning-amber px-2 py-1 rounded-full text-xs font-medium">
+                              Popular
+                            </span>
+                          )}
+                          {tool.isUpdated && (
+                            <span className="bg-electric-blue/10 text-electric-blue px-2 py-1 rounded-full text-xs font-medium">
+                              Updated
+                            </span>
+                          )}
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Attack Vector Distribution */}
-          <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-                <Zap className="w-5 h-5" />
-                <span>Attack Vectors (24h)</span>
-              </h3>
-            </div>
-            {dataSourcesConfigured ? (
-              <>
-                <ResponsiveContainer width="100%" height={250}>
-                  <PieChart>
-                    <Pie
-                      data={attackVectors}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={40}
-                      outerRadius={80}
-                      dataKey="value"
-                    >
-                      {attackVectors.map((entry: AttackVector, index: number) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-                <div className="mt-4 space-y-2">
-                  {attackVectors.map((vector: AttackVector, index: number) => (
-                    <div key={index} className="flex items-center justify-between text-sm">
-                      <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
-                        <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: vector.color }}></div>
-                        <span>{vector.name}</span>
-                      </div>
-                      <span className="font-medium">{vector.value}%</span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-8">
-                <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">No vector data</p>
-                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Connect data sources</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Threat Timeline and Regional Analysis */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Threat Volume Timeline */} 
-          <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-                <Activity className="w-5 h-5" />
-                <span>Threat Volume (24h)</span>
-              </h3>
-            </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={timeSeriesData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
-                <Area type="monotone" dataKey="threats" stackId="1" stroke="#3b82f6" fill="#3b82f680" />
-                <Area type="monotone" dataKey="critical" stackId="1" stroke="#ef4444" fill="#ef4444" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Regional Threat Distribution */}
-          <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-                <Map className="w-5 h-5" />
-                <span>Regional Threats</span>
-              </h3>
-            </div>
-            <div className="space-y-3">
-              {regionData.map((region: RegionData, index: number) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-muted/20 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="w-4 h-4 text-gray-600" />
-                    <span className="font-medium">{region.region}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="text-lg font-bold">{region.threats}</span>
-                    <div className="flex items-center space-x-1 text-gray-600">
-                      <Minus className="w-3 h-3" />
-                      <span className="text-sm">-</span>
-                    </div>
-                  </div>
-                </div>
+                      <h3 className="text-lg font-semibold mb-2 text-foreground">{tool.title}</h3>
+                      <p className="text-muted-foreground mb-4 flex-1">{tool.description}</p>
+                      {tool.time && (
+                        <div className="flex items-center text-sm text-primary mb-4">
+                          <Clock className="h-4 w-4 mr-2" />
+                          <span>{tool.time}</span>
+                        </div>
+                      )}
+                      <Link to={tool.path || '/login'} className="mt-auto">
+                        <Button variant="orange" className="w-full">
+                          <Play className="mr-2 h-4 w-4" />
+                          Launch Tool
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </AnimatedItem>
               ))}
             </div>
           </div>
-        </div>
+        </AnimatedSection>
 
-        {/* MITRE ATT&CK Techniques */}
-        <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
-              <BarChart3 className="w-5 h-5" />
-              <span>MITRE ATT&CK Techniques (7 days)</span>
-            </h3>
+        {/* Tool Categories */}
+        {displayToolCategories.map((category, categoryIndex) => (
+          <AnimatedSection key={category.id} type="fadeIn" delay={categoryIndex * 0.1 + 0.2} className="mb-16">
+            <div className="mb-8">
+              <div className="flex items-center mb-4">
+                <div className={`p-3 rounded-lg ${category.bgColor || 'bg-primary/10'} mr-4`}>
+                  {React.createElement(category.icon, { 
+                    className: `h-6 w-6 ${category.color || 'text-primary'}` 
+                  })}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-2xl font-bold text-foreground">{category.title}</h2>
+                    {category.badge && (
+                      <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-sm font-medium">
+                        {category.badge}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-muted-foreground">{category.description}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {(category.tools || []).map((tool, index) => (
+                <AnimatedItem key={index} type="fadeIn" delay={index * 0.05 + 0.1}>
+                  <Card className="hover:shadow-md transition-shadow h-full">
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                          {tool.type || 'Interactive Tool'}
+                        </span>
+                        <div className="flex items-center space-x-2">
+                          {tool.interactive && (
+                            <div className="flex items-center text-xs text-secure-green">
+                              <Gauge className="h-3 w-3 mr-1" />
+                              Interactive
+                            </div>
+                          )}
+                          {tool.path === '/login' && (
+                            <Lock className="h-4 w-4 text-warning-amber" />
+                          )}
+                          {tool.featured && (
+                            <span className="text-xs bg-secure-green/10 text-secure-green px-2 py-1 rounded-full">
+                              Featured
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        {tool.icon && React.createElement(tool.icon, { className: "h-5 w-5" })}
+                        {tool.name || tool.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-1 flex flex-col">
+                      <p className="text-muted-foreground mb-4 flex-1">{tool.description}</p>
+                      
+                      {/* Frameworks */}
+                      {tool.frameworks && tool.frameworks.length > 0 && (
+                        <div className="mb-3">
+                          <div className="flex flex-wrap gap-1">
+                            {tool.frameworks.slice(0, 2).map((framework, idx) => (
+                              <span key={idx} className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
+                                {framework}
+                              </span>
+                            ))}
+                            {tool.frameworks.length > 2 && (
+                              <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
+                                +{tool.frameworks.length - 2} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Time estimate */}
+                      {tool.time && (
+                        <div className="flex items-center text-sm text-primary mb-4">
+                          <Clock className="h-4 w-4 mr-2" />
+                          <span>{tool.time}</span>
+                        </div>
+                      )}
+                      
+                      <div className="flex gap-2">
+                        <Link to={tool.path || '/login'} className="flex-1">
+                          <Button variant="outline" className="w-full">
+                            <Wrench className="mr-2 h-4 w-4" />
+                            {tool.path === '/login' ? 'Premium Tool' : 'Launch Tool'}
+                          </Button>
+                        </Link>
+                        <Button variant="ghost" size="sm" title="Export Results">
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </AnimatedItem>
+              ))}
+            </div>
+          </AnimatedSection>
+        ))}
+
+        {/* Quick Launch */}
+        <AnimatedSection type="fadeIn" delay={0.6}>
+          <Card className="bg-muted/30 dark:bg-muted/10">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-bold mb-6 text-center text-foreground">Quick Launch Tools</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Link to="/tools/ransomware-assessment">
+                  <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
+                    <Shield className="h-5 w-5 mb-2" />
+                    <span className="text-xs">Ransomware Check</span>
+                  </Button>
+                </Link>
+                <Link to="/tools/vendoriq-platform">
+                  <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
+                    <Building2 className="h-5 w-5 mb-2" />
+                    <span className="text-xs">VendorIQ</span>
+                  </Button>
+                </Link>
+                <Link to="/tools/vendor-scorecard">
+                  <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
+                    <Network className="h-5 w-5 mb-2" />
+                    <span className="text-xs">Vendor Risk</span>
+                  </Button>
+                </Link>
+                <Link to="/tools/nist-csf-wizard">
+                  <Button variant="outline" className="w-full h-20 flex flex-col items-center justify-center">
+                    <Award className="h-5 w-5 mb-2" />
+                    <span className="text-xs">NIST CSF</span>
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedSection>
+
+        {/* Tool Benefits Section */}
+        <AnimatedSection type="fadeIn" delay={0.7}>
+          <Card className="bg-gradient-to-r from-primary/5 to-orange-500/5 border-primary/20">
+            <CardContent className="p-8">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-4 text-foreground">Why Choose CyberCaution Tools?</h2>
+                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+                  Our interactive security tools are designed for immediate impact and continuous improvement
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                    <Gauge className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Interactive & Real-Time</h3>
+                  <p className="text-muted-foreground">
+                    All tools provide immediate results with interactive dashboards, real-time analytics, and actionable insights
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                    <Brain className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">AI-Powered Intelligence</h3>
+                  <p className="text-muted-foreground">
+                    Machine learning algorithms provide predictive analytics, automated risk scoring, and intelligent recommendations
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+                    <Award className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">Framework-Aligned</h3>
+                  <p className="text-muted-foreground">
+                    Every tool aligns with industry frameworks like NIST CSF, ensuring compliance and best practices
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedSection>
+
+        {/* CTA Section */}
+        <AnimatedSection type="fadeIn" delay={0.8}>
+          <div className="text-center mt-16">
+            <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
+              {/* Background glow effect */}
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-3xl font-bold text-white mb-4">
+                  Ready to Launch Your Security Tools?
+                </h2>
+                <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
+                  Start with our NIST-aligned assessment tools and build your comprehensive security program
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/tools/vendoriq-platform">
+                    <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
+                      Start VendorIQ Assessment
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                  <Link to="/contact">
+                    <Button 
+                      variant="outline" 
+                      className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
+                    >
+                      Get Expert Consultation
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={mitreData} layout="horizontal">
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="technique" type="category" width={200} />
-              <Tooltip />
-              <Bar dataKey="count" fill="#3b82f6" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="flex justify-center space-x-4 pt-6">
-          <button 
-            disabled={!dataSourcesConfigured}
-            className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center space-x-2 ${
-              dataSourcesConfigured 
-                ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-          >
-            <Eye className="w-4 h-4" />
-            <span>View Detailed Analysis</span>
-          </button>
-          <button className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors flex items-center space-x-2">
-            <Settings className="w-4 h-4" />
-            <span>Configure Data Sources</span>
-          </button>
-          <button 
-            disabled={!dataSourcesConfigured}
-            className={`px-4 py-2 border border-gray-300 rounded-md font-medium transition-colors flex items-center space-x-2 ${
-              dataSourcesConfigured 
-                ? 'text-gray-700 bg-white hover:bg-gray-50' 
-                : 'text-gray-400 bg-gray-100 cursor-not-allowed'
-            }`}
-          >
-            <Download className="w-4 h-4" />
-            <span>Export Intelligence</span>
-          </button>
-        </div>
+        </AnimatedSection>
       </div>
     </div>
   );
 };
 
-export default ThreatIntelligenceDashboard;
+export default ToolkitPage;
