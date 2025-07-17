@@ -16,27 +16,7 @@ import {
   Bar, ScatterChart, Scatter
 } from 'recharts';
 
-// CONFIGURATION - Update these with your actual Supabase credentials
-const SUPABASE_URL = 'https://bzpgnzkjqeczksbqzsba.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6cGduemtqcWVjemtzYnF6c2JhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MTE5NTEsImV4cCI6MjA2NzA4Nzk1MX0.YA73tH3ClmLIUofBg1NQ8xl78LXi7tOM9VSQpYtueKo';
-
-// Supabase client setup (you'll need to install @supabase/supabase-js)
-const createSupabaseClient = () => {
-  if (typeof window !== 'undefined' && window.supabase) {
-    return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  // For development without Supabase, return mock client
-  return {
-    from: (table) => ({
-      select: () => Promise.resolve({ data: [], error: null }),
-      insert: () => Promise.resolve({ data: [], error: null }),
-      update: () => Promise.resolve({ data: [], error: null }),
-      upsert: () => Promise.resolve({ data: [], error: null }),
-      delete: () => Promise.resolve({ data: null, error: null })
-    }),
-    channel: () => ({ on: () => ({ subscribe: () => {} }) })
-  };
-};
+import { supabase } from '../../lib/supabase';
 
 const DarkWebMonitoring = () => {
   // Core State
@@ -68,9 +48,6 @@ const DarkWebMonitoring = () => {
   const [sessionId] = useState(() => `dw_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [lastSaved, setLastSaved] = useState(null);
   
-  // Supabase client
-  const [supabase] = useState(() => createSupabaseClient());
-
   // Initialize component
   useEffect(() => {
     initializeApp();
