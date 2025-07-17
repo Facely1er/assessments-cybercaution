@@ -14,7 +14,9 @@ import {
   Calculator, 
   Database,
   Zap,
-  ArrowRight
+  ArrowRight,
+  CheckCircle,
+  Clock
 } from 'lucide-react';
 import AnimatedSection from '../utils/AnimatedSection';
 
