@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { 
   FileText, AlertTriangle, Shield, Users, Clock, 
-  CheckCircle, Phone, Database, Network, Download,
+  Database, Users, Lock, Key, Mail, CreditCard, ArrowLeft,
   ExternalLink, Play, Pause, RotateCcw, ChevronRight,
   AlertCircle, Info, Eye, Settings, BookOpen, Flag,
   Loader2, WifiOff, Wifi, X, Plus, Save, Timer,
@@ -1039,6 +1040,12 @@ const IncidentResponsePlaybooks = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
       <div className="container mx-auto px-4 py-8">
+        {/* Back to Toolkit Button */}
+        <Link to="/toolkit" className="inline-flex items-center px-4 py-2 rounded-md bg-white border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mb-4">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Toolkit
+        </Link>
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

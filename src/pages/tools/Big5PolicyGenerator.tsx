@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
+import { ArrowLeft } from 'lucide-react';
 
 // Supabase configuration - replace with your actual credentials
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://your-project-ref.supabase.co';
@@ -475,6 +477,12 @@ const Big5PolicyGenerator: React.FC = () => {
   return (
     <>
       <ConnectionStatus />
+      <div className="bg-gradient-to-br from-blue-900 to-purple-900 p-5 pt-4">
+        <Link to="/toolkit" className="inline-flex items-center px-4 py-2 rounded-md bg-white border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mb-2">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Toolkit
+        </Link>
+      </div>
       <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 p-5">
         <div className="max-w-6xl mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl">
           {/* Header */}

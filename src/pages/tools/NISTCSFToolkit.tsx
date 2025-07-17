@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -12,6 +13,7 @@ import {
   BarChart3,
   Settings,
   Shield,
+  ArrowLeft,
   Eye,
   Users,
   Database,
@@ -790,6 +792,12 @@ const NISTCSFToolkit = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
+        {/* Back to Toolkit Button */}
+        <Link to="/toolkit" className="inline-flex items-center px-4 py-2 rounded-md bg-white border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 mb-4">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Toolkit
+        </Link>
+
         {renderHeader()}
 
         {/* Navigation */}
