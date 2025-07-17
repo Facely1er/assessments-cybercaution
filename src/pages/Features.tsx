@@ -1,372 +1,531 @@
-import React, { useState } from 'react';
-import { Card, CardContent } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { useSupabaseQuery } from '../hooks/useSupabase';
-import AnimatedSection from '../utils/AnimatedSection';
-import AnimatedItem from '../utils/AnimatedItem';
-import { Link } from 'react-router-dom';
-import { 
-  Shield, 
-  Lock, 
-  FileText, 
-  BarChart3, 
-  CheckCircle, 
-  Zap,
-  Users,
-  Bell,
-  Database,
-  LineChart,
-  Link2,
-  ShieldAlert,
-  Building2,
-  AlertTriangle,
-  ClipboardList,
-  Network,
-  BookOpen,
-  CalendarCheck,
-  ArrowRight,
-  Eye,
-  GraduationCap,
-  Settings,
-  Heart,
-  RefreshCw,
-  Target,
-  Clock,
-  Gauge,
-  TrendingUp,
-  Smartphone
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
+import {
+  TrendingUp, TrendingDown, AlertTriangle, Shield, Globe, 
+  Activity, Zap, Eye, Clock, BarChart3, Map, Target,
+  ArrowUp, ArrowDown, Minus, RefreshCw, Download,
+  MapPin, Users, Server, Lock, Settings, Database,
+  Wifi, WifiOff
 } from 'lucide-react';
+import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar } from 'recharts';
 
-const Features = () => {
-  const [imageError, setImageError] = useState(false);
+// Configuration interfaces for data sources
+interface ThreatFeedConfig {
+  name: string;
+  endpoint: string;
+  apiKey?: string;
+  enabled: boolean;
+  lastSync?: Date;
+  status: 'connected' | 'disconnected' | 'error';
+}
 
-  // Map of Lucide icon names to components
-  const LucideIcons = {
-    ShieldAlert, Users, FileText, Database, ClipboardList, BarChart3, Building2, Heart, Network, 
-    Eye, Link2, CheckCircle, Shield, Lock, GraduationCap, BookOpen, CalendarCheck, RefreshCw,
-    Zap, Target, Clock, Gauge, TrendingUp
-  };
+interface ThreatData {
+  globalThreatLevel: string;
+  activeCampaigns: number;
+  newIOCs: number;
+  affectedRegions: number;
+  dataSourcesConnected: number;
+  lastUpdate?: Date;
+}
 
-  // Fetch feature categories from Supabase
-  const { data: featureCategoriesData, loading: categoriesLoading, error: categoriesError } = useSupabaseQuery('feature_categories', {
-    orderBy: { column: 'order_index', ascending: true }
+interface Campaign {
+  id: string;
+  severity: 'CRITICAL' | 'HIGH' | 'MODERATE' | 'LOW';
+  affectedCountries: number;
+  firstSeen: string;
+  attackVector: string;
+  mitreId: string;
+  confidence: number;
+  trend: 'increasing' | 'decreasing' | 'stable';
+  source: string;
+}
+
+interface RegionData {
+  region: string;
+  threats: number;
+  change: number;
+}
+
+interface TimeSeriesData {
+  time: string;
+  threats: number;
+  critical: number;
+}
+
+interface AttackVector {
+  name: string;
+  value: number;
+  color: string;
+}
+
+interface MitreData {
+  technique: string;
+  count: number;
+  change: number;
+}
+
+const ThreatIntelligenceDashboard: React.FC = () => {
+  const [activeView, setActiveView] = useState<string>('global');
+  const [selectedRegion, setSelectedRegion] = useState<string>('global');
+  const [timeRange, setTimeRange] = useState<string>('24h');
+  const [isLive, setIsLive] = useState<boolean>(false);
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const [dataSourcesConfigured, setDataSourcesConfigured] = useState<boolean>(false);
+
+  // Configuration for threat intelligence feeds
+  const [threatFeeds] = useState<ThreatFeedConfig[]>([
+    {
+      name: 'CISA Alerts',
+      endpoint: '/api/feeds/cisa',
+      enabled: false,
+      status: 'disconnected'
+    },
+    {
+      name: 'MITRE ATT&CK',
+      endpoint: '/api/feeds/mitre',
+      enabled: false,
+      status: 'disconnected'
+    },
+    {
+      name: 'Commercial Intel Feed',
+      endpoint: '/api/feeds/commercial',
+      enabled: false,
+      status: 'disconnected',
+      apiKey: 'required'
+    },
+    {
+      name: 'Custom IOC Feed',
+      endpoint: '/api/feeds/custom',
+      enabled: false,
+      status: 'disconnected'
+    }
+  ]);
+
+  // Initialize with empty/placeholder data structure
+  const [threatData, setThreatData] = useState<ThreatData>({
+    globalThreatLevel: 'UNKNOWN',
+    activeCampaigns: 0,
+    newIOCs: 0,
+    affectedRegions: 0,
+    dataSourcesConnected: 0
   });
 
-  // Fetch features list from Supabase
-  const { data: featuresListData, loading: featuresLoading, error: featuresError } = useSupabaseQuery('features_list', {
-    orderBy: { column: 'order_index', ascending: true }
-  });
+  // Empty data structures - will be populated from real feeds
+  const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
 
-  // Enhanced loading state
-  if (categoriesLoading || featuresLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <h2 className="text-2xl font-semibold text-foreground mb-2">Loading CyberCaution Features</h2>
-          <p className="text-muted-foreground">Preparing your security toolkit...</p>
-        </div>
-      </div>
-    );
-  }
+  // Placeholder regional data structure
+  const regionData: RegionData[] = [
+    { region: 'North America', threats: 0, change: 0 },
+    { region: 'Europe', threats: 0, change: 0 },
+    { region: 'Asia-Pacific', threats: 0, change: 0 },
+    { region: 'Middle East', threats: 0, change: 0 },
+    { region: 'Africa', threats: 0, change: 0 },
+    { region: 'South America', threats: 0, change: 0 }
+  ];
 
-  // Enhanced error handling
-  if (categoriesError || featuresError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background px-4">
-        <div className="text-center max-w-md">
-          <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-foreground mb-2">Unable to Load Features</h2>
-          <p className="text-muted-foreground mb-6">
-            We're experiencing technical difficulties. Please try refreshing the page.
-          </p>
-          <Button 
-            variant="orange" 
-            onClick={() => window.location.reload()}
-            className="mr-4"
-          >
-            Refresh Page
-          </Button>
-          <Link to="/contact">
-            <Button variant="outline">Contact Support</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // Empty time series data
+  const timeSeriesData: TimeSeriesData[] = Array.from({ length: 7 }, (_, i) => ({
+    time: `${i * 4}:00`,
+    threats: 0,
+    critical: 0
+  }));
 
-  // Process the data - map icon strings to actual components
-  const featureCategories = featureCategoriesData?.map(category => {
-    const IconComponent = LucideIcons[category.icon as keyof typeof LucideIcons] || Shield;
-    return {
-      ...category,
-      icon: IconComponent,
-      features: featuresListData?.filter(feature => feature.category_id === category.id).map(feature => {
-        const FeatureIconComponent = LucideIcons[feature.icon as keyof typeof LucideIcons] || FileText;
-        return {
-          ...feature,
-          icon: FeatureIconComponent
-        };
-      }) || []
-    };
-  }) || [];
+  // Standard attack vector categories (not fictional data)
+  const attackVectors: AttackVector[] = [
+    { name: 'Email-based', value: 0, color: '#ef4444' },
+    { name: 'Web-based', value: 0, color: '#f97316' },
+    { name: 'Network-based', value: 0, color: '#eab308' },
+    { name: 'Application', value: 0, color: '#22c55e' },
+    { name: 'Physical', value: 0, color: '#3b82f6' }
+  ];
 
-  // Safe image loading
-  const getMobileDashboardImage = () => {
-    try {
-      const { appAssets } = require('../utils/supabaseAssets');
-      return appAssets?.mobileDashboard || 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1024&q=80';
-    } catch (error) {
-      console.warn('Asset loading error:', error);
-      return 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1024&q=80';
+  // MITRE ATT&CK common techniques (real framework)
+  const mitreData: MitreData[] = [
+    { technique: 'T1566 Phishing', count: 0, change: 0 },
+    { technique: 'T1190 Exploit Public-Facing App', count: 0, change: 0 },
+    { technique: 'T1078 Valid Accounts', count: 0, change: 0 },
+    { technique: 'T1055 Process Injection', count: 0, change: 0 },
+    { technique: 'T1059 Command/Scripting', count: 0, change: 0 }
+  ];
+
+  const getThreatLevelColor = (level: string): string => {
+    switch (level) {
+      case 'CRITICAL': return 'text-red-600 bg-red-100';
+      case 'HIGH': return 'text-orange-600 bg-orange-100';
+      case 'ELEVATED': return 'text-yellow-600 bg-yellow-100';
+      case 'MODERATE': return 'text-blue-600 bg-blue-100';
+      case 'LOW': return 'text-green-600 bg-green-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
-  // If no categories found, show setup message
-  if (!featureCategories || featureCategories.length === 0) {
-    return (
-      <div className="py-20">
-        <AnimatedSection type="fadeIn" className="mb-16 text-center px-4 md:px-6">
-          <h1 className="text-4xl font-bold mb-6 text-foreground">CyberCaution Security Platform</h1>
-          <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-8">
-            Your comprehensive cybersecurity solution
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/ransomware-assessment">
-              <Button variant="orange">
-                Start Ransomware Assessment
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Link to="/demo">
-              <Button variant="outline">
-                Request Demo
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </AnimatedSection>
+  const getSeverityIcon = (severity: string) => {
+    switch (severity) {
+      case 'CRITICAL': return <AlertTriangle className="w-4 h-4 text-red-600" />;
+      case 'HIGH': return <TrendingUp className="w-4 h-4 text-orange-600" />;
+      case 'ELEVATED': return <Activity className="w-4 h-4 text-yellow-600" />;
+      case 'MODERATE': return <Shield className="w-4 h-4 text-blue-600" />;
+      default: return <Shield className="w-4 h-4 text-gray-600" />;
+    }
+  };
 
-        <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-blue-50 dark:bg-blue-900/10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Setting Up Your Features</h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Your database is ready! Please add your feature categories and features to see them displayed here.
-            </p>
-            <Link to="/contact">
-              <Button variant="orange">Contact Support for Setup</Button>
-            </Link>
-          </div>
-        </AnimatedSection>
-      </div>
-    );
-  }
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case 'increasing': return <ArrowUp className="w-3 h-3 text-red-500" />;
+      case 'decreasing': return <ArrowDown className="w-3 h-3 text-green-500" />;
+      default: return <Minus className="w-3 h-3 text-gray-500" />;
+    }
+  };
+
+  const getDataSourceStatus = () => {
+    const connectedFeeds = threatFeeds.filter(feed => feed.status === 'connected').length;
+    setThreatData(prev => ({ ...prev, dataSourcesConnected: connectedFeeds }));
+    setDataSourcesConfigured(connectedFeeds > 0);
+  };
+
+  useEffect(() => {
+    getDataSourceStatus();
+  }, [threatFeeds]);
+
+  useEffect(() => {
+    if (isLive && dataSourcesConfigured) {
+      const interval = setInterval(() => {
+        setLastUpdate(new Date());
+        // Here you would fetch real data from configured threat intelligence feeds
+        // Example: fetchThreatData(), fetchActiveCampaigns(), etc.
+      }, 30000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isLive, dataSourcesConfigured]);
 
   return (
-    <div className="py-20">
-      {/* Hero Section */}
-      <AnimatedSection type="fadeIn" className="mb-16 text-center px-4 md:px-6">
-        <h1 className="text-4xl font-bold mb-6 text-foreground">Comprehensive Security & Risk Management</h1>
-        <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-8">
-          All the tools you need to protect your organization from ransomware and other security threats
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <Link to="/ransomware-assessment">
-            <Button variant="orange">
-              Start Ransomware Assessment
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-          <Link to="/demo">
-            <Button variant="outline">
-              See the Demo
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-background p-6">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">CyberCaution Threat Intelligence Dashboard</h1>
+            <p className="text-gray-600">Real-time threat intelligence monitoring and analysis</p>
+          </div>
+          <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
+            <div className="flex items-center space-x-2 text-sm">
+              <Clock className="w-4 h-4" />
+              <span>Last updated: {lastUpdate.toLocaleTimeString()}</span>
+              <button
+                onClick={() => setIsLive(!isLive)}
+                disabled={!dataSourcesConfigured || connectionStatus !== 'connected'}
+                className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  isLive && dataSourcesConfigured ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+                } ${!dataSourcesConfigured ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                {isLive && dataSourcesConfigured ? 'LIVE' : 'OFFLINE'}
+              </button>
+            </div>
+            <button className="px-3 py-1 border border-gray-300 dark:border-muted rounded-md text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-dark-surface hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center space-x-2">
+              <Settings className="w-4 h-4" />
+              <span>Configure Sources</span>
+            </button>
+          </div>
         </div>
-      </AnimatedSection>
 
-      {/* Feature Categories - Now from Database */}
-      {featureCategories.map((category, categoryIndex) => (
-        <AnimatedSection 
-          key={category.id} 
-          type="fadeIn" 
-          className="mb-24 px-4 md:px-6"
-          delay={categoryIndex * 0.1}
-        >
-          <div className="mb-12 text-center">
-            <div className="inline-block p-2 bg-muted mb-4 rounded-xl">
-              <div className={`rounded-lg bg-orange-100 dark:bg-orange-900/20 text-orange-600 p-3`}>
-                {category.icon && <category.icon className="h-8 w-8" />}
+        {/* Data Source Configuration Alert */}
+        {!dataSourcesConfigured && (
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="flex items-start space-x-3">
+              <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">Threat Intelligence Sources Not Configured</h3>
+                <p className="text-sm text-yellow-700 mt-1">
+                  Connect your threat intelligence feeds to begin receiving real-time data. Configure CISA feeds, MITRE ATT&CK data, or custom intelligence sources.
+                </p>
+                <button className="mt-2 px-3 py-1 bg-yellow-600 text-white text-sm rounded-md hover:bg-yellow-700 transition-colors">
+                  Configure Data Sources
+                </button>
               </div>
             </div>
-            <h2 className="text-3xl font-bold mb-3 text-foreground">{category.title}</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              {category.description}
-            </p>
           </div>
+        )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
-            {category.features.map((feature, index) => (
-              <AnimatedItem key={feature.id} type="scaleIn" delay={index * 0.05 + 0.2} className="card-hover">
-                <Link to={feature.path}>
-                  <Card className="hover:shadow-lg transition-shadow h-full dark:border-muted flex flex-col">
-                    <CardContent className="p-6 flex-1 flex flex-col">
-                      {feature.icon && <feature.icon className="h-12 w-12 text-[#FF6B00] mb-4" />}
-                      
-                      <div className="flex items-center gap-2 mb-3 flex-wrap">
-                        {feature.frameworks?.map((framework, i) => (
-                          <span key={i} className="text-xs bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-2 py-1 rounded-full">
-                            {framework}
-                          </span>
-                        ))}
-                      </div>
-
-                      <h3 className="text-xl font-semibold mb-2 text-foreground">{feature.title}</h3>
-                      <p className="text-muted-foreground mb-4 flex-1">{feature.description}</p>
-
-                      <Button variant="orange" className="mt-auto w-full">
-                        Explore Feature
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </AnimatedItem>
+        {/* Data Source Status */}
+        <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+              <Database className="w-5 h-5" />
+              <span>Intelligence Feed Status</span>
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {threatFeeds.map((feed, index) => (
+              <div key={index} className="border dark:border-muted rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium text-sm">{feed.name}</span>
+                  {feed.status === 'connected' ? 
+                    <Wifi className="w-4 h-4 text-green-600" /> : 
+                    <WifiOff className="w-4 h-4 text-gray-400" />
+                  }
+                </div>
+                <div className={`text-xs px-2 py-1 rounded-full ${
+                  feed.status === 'connected' ? 'bg-green-100 text-green-800' :
+                  feed.status === 'error' ? 'bg-red-100 text-red-800' :
+                  'bg-gray-100 text-gray-600'
+                }`}>
+                  {feed.status.toUpperCase()}
+                </div>
+              </div>
             ))}
           </div>
-          
-          {/* Category-specific CTA */}
-          <div className="flex justify-center mt-12">
-            <Link to={category.features[0]?.path || "/demo"}>
-              <Button variant="outline">
-                Explore All {category.title} Features
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </AnimatedSection>
-      ))}
+        </div>
 
-      {/* Final CTA */}
-      <AnimatedSection type="fadeIn" className="py-12 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Get Started?</h2>
-          <p className="text-lg text-orange-500 mb-8 max-w-2xl mx-auto">
-            Start your ransomware protection journey with CyberCaution™ by ERMITS today
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/onboarding">
-              <Button variant="orange">
-                Start Free Assessment
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link to="/pricing">
-              <Button variant="outline">
-                Request Personalized Demo
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+        {/* Global Threat Status */}
+        <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+              <Globe className="w-5 h-5" />
+              <span>Global Threat Status</span>
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className={`inline-flex items-center px-4 py-2 rounded-lg font-bold text-lg ${getThreatLevelColor(threatData.globalThreatLevel)} dark:text-dark-text`}>
+                {getSeverityIcon(threatData.globalThreatLevel)}
+                <span className="ml-2">{threatData.globalThreatLevel}</span>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">Current Threat Level</p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600">{threatData.activeCampaigns}</div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Active Campaigns</p>
+              <div className="flex items-center justify-center mt-1">
+                <Minus className="w-3 h-3 text-gray-500 mr-1" />
+                <span className="text-xs text-gray-500">No data</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-orange-600">{threatData.newIOCs.toLocaleString()}</div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">New IOCs (24h)</p>
+              <div className="flex items-center justify-center mt-1">
+                <Minus className="w-3 h-3 text-gray-500 mr-1" />
+                <span className="text-xs text-gray-500">No data</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600">{threatData.dataSourcesConnected}</div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Connected Sources</p>
+              <div className="flex items-center justify-center mt-1">
+                <span className="text-xs text-gray-500">of {threatFeeds.length} total</span>
+              </div>
+            </div>
           </div>
         </div>
-      </AnimatedSection>
 
-      {/* Mobile Support */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        {/* Main Dashboard Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Active Threat Campaigns */}
+          <div className="lg:col-span-2 bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
             <div>
-              <div className="inline-block mb-6">
-                <span className="bg-primary/10 text-primary px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
-                  <Smartphone className="mr-2 h-4 w-4" />
-                  Anywhere Access
-                </span>
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+                  <Target className="w-5 h-5" />
+                  <span>Active Threat Campaigns</span>
+                </h3>
               </div>
-              <h2 className="text-3xl font-bold mb-6 text-foreground">Access Your Security Data Anywhere</h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                CyberCaution by ERMITS® provides mobile-optimized interfaces, allowing you to:
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Monitor security status on the go</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Respond to security alerts from anywhere</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Access incident response plans during emergencies</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-[#FF6B00] mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-foreground">Review and approve security actions remotely</span>
-                </li>
-              </ul>
-              <Link to="/demo">
-                <Button variant="orange">
-                  Explore Dashboard
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-            <div className="flex justify-center">
-              <div className="relative max-w-xs">
-                <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-blue-500/20 rounded-3xl transform rotate-6"></div>
-                <img 
-                  src={getMobileDashboardImage()}
-                  alt="Mobile dashboard" 
-                  className="relative rounded-3xl shadow-xl z-10 border border-white dark:border-gray-800"
-                  onError={(e) => {
-                    if (!imageError) {
-                      setImageError(true);
-                      e.currentTarget.src = 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1024&q=80';
-                    }
-                  }}
-                />
-              </div>
+              {activeCampaigns.length === 0 ? (
+                <div className="text-center py-8">
+                  <Database className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
+                  <p className="text-gray-600 dark:text-gray-400">No threat campaigns detected</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Configure threat intelligence sources to view active campaigns</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {activeCampaigns.map((campaign: Campaign, index: number) => (
+                    <div key={campaign.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-2 text-gray-900 dark:text-dark-text">
+                            <span className="font-semibold">Campaign {campaign.id}</span>
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${
+                              campaign.severity === 'CRITICAL' ? 'bg-red-100 text-red-800' :
+                              campaign.severity === 'HIGH' ? 'bg-orange-100 text-orange-800' :
+                              'bg-yellow-100 text-yellow-800'
+                            } dark:text-dark-text`}>
+                              {campaign.severity}
+                            </span>
+                            {getTrendIcon(campaign.trend)}
+                          </div>
+                          <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                            <div>
+                              <span className="font-medium dark:text-gray-400">Attack Vector:</span> {campaign.attackVector}
+                            </div>
+                            <div>
+                              <span className="font-medium dark:text-gray-400">MITRE ID:</span> {campaign.mitreId}
+                            </div>
+                            <div>
+                              <span className="font-medium">Source:</span> {campaign.source}
+                            </div>
+                            <div>
+                              <span className="font-medium">Confidence:</span> {campaign.confidence}%
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </AnimatedSection>
 
-      {/* CTA Section */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
-            {/* Background glow effect */}
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Ready to Transform Your Security Program?
-              </h2>
-              <p className="text-white/90 mb-8 max-w-2xl mx-auto text-lg">
-                Get started with CyberCaution™ by ERMITS today and take control of your security and compliance
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/ransomware-assessment">
-                  <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                    Start 3-Minute Ransomware Readiness Assessment
-                  </Button>
-                </Link>
-                <Link to="/contact">
-                  <Button 
-                    variant="outline" 
-                    className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
-                  >
-                    Schedule Demo
-                  </Button>
-                </Link>
+          {/* Attack Vector Distribution */}
+          <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+                <Zap className="w-5 h-5" />
+                <span>Attack Vectors (24h)</span>
+              </h3>
+            </div>
+            {dataSourcesConfigured ? (
+              <>
+                <ResponsiveContainer width="100%" height={250}>
+                  <PieChart>
+                    <Pie
+                      data={attackVectors}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={80}
+                      dataKey="value"
+                    >
+                      {attackVectors.map((entry: AttackVector, index: number) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="mt-4 space-y-2">
+                  {attackVectors.map((vector: AttackVector, index: number) => (
+                    <div key={index} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-400">
+                        <div className={`w-3 h-3 rounded-full`} style={{ backgroundColor: vector.color }}></div>
+                        <span>{vector.name}</span>
+                      </div>
+                      <span className="font-medium">{vector.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-8">
+                <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600">No vector data</p>
+                <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">Connect data sources</p>
               </div>
+            )}
+          </div>
+        </div>
+
+        {/* Threat Timeline and Regional Analysis */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Threat Volume Timeline */} 
+          <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+                <Activity className="w-5 h-5" />
+                <span>Threat Volume (24h)</span>
+              </h3>
+            </div>
+            <ResponsiveContainer width="100%" height={250}>
+              <AreaChart data={timeSeriesData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
+                <YAxis />
+                <Tooltip />
+                <Area type="monotone" dataKey="threats" stackId="1" stroke="#3b82f6" fill="#3b82f680" />
+                <Area type="monotone" dataKey="critical" stackId="1" stroke="#ef4444" fill="#ef4444" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Regional Threat Distribution */}
+          <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+                <Map className="w-5 h-5" />
+                <span>Regional Threats</span>
+              </h3>
+            </div>
+            <div className="space-y-3">
+              {regionData.map((region: RegionData, index: number) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-muted/20 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <MapPin className="w-4 h-4 text-gray-600" />
+                    <span className="font-medium">{region.region}</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className="text-lg font-bold">{region.threats}</span>
+                    <div className="flex items-center space-x-1 text-gray-600">
+                      <Minus className="w-3 h-3" />
+                      <span className="text-sm">-</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-      </AnimatedSection>
+
+        {/* MITRE ATT&CK Techniques */}
+        <div className="bg-white dark:bg-dark-surface rounded-lg shadow border dark:border-muted p-6">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-dark-text flex items-center space-x-2">
+              <BarChart3 className="w-5 h-5" />
+              <span>MITRE ATT&CK Techniques (7 days)</span>
+            </h3>
+          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={mitreData} layout="horizontal">
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" />
+              <YAxis dataKey="technique" type="category" width={200} />
+              <Tooltip />
+              <Bar dataKey="count" fill="#3b82f6" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="flex justify-center space-x-4 pt-6">
+          <button 
+            disabled={!dataSourcesConfigured}
+            className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center space-x-2 ${
+              dataSourcesConfigured 
+                ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            <Eye className="w-4 h-4" />
+            <span>View Detailed Analysis</span>
+          </button>
+          <button className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 font-medium transition-colors flex items-center space-x-2">
+            <Settings className="w-4 h-4" />
+            <span>Configure Data Sources</span>
+          </button>
+          <button 
+            disabled={!dataSourcesConfigured}
+            className={`px-4 py-2 border border-gray-300 rounded-md font-medium transition-colors flex items-center space-x-2 ${
+              dataSourcesConfigured 
+                ? 'text-gray-700 bg-white hover:bg-gray-50' 
+                : 'text-gray-400 bg-gray-100 cursor-not-allowed'
+            }`}
+          >
+            <Download className="w-4 h-4" />
+            <span>Export Intelligence</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Features;
+export default ThreatIntelligenceDashboard;
