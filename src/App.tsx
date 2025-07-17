@@ -132,19 +132,21 @@ function App() {
             <Route path="/faq" element={<FAQ />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/demo" element={<DemoPage />} />
-            <Route path="/toolkit" element={<React.Suspense fallback={<LoadingFallback />}><ToolkitPage /></React.Suspense>} />
+          <Route path="/toolkit" element={<ToolkitPage />} />
             <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
             <Route path="/company/privacy" element={<Privacy />} />
             <Route path="/company/terms" element={<Terms />} />
             
             {/* Toolkit Tool Routes */}
-            <Route path="/tools/threat-weather" element={<React.Suspense fallback={<LoadingFallback />}><ThreatWeatherDashboard /></React.Suspense>} />
-            <Route path="/tools/predictive-analytics" element={<PredictiveBreachAnalytics />} />
-            <Route path="/tools/nist-csf-wizard" element={<NISTCSFToolkit />} />
-            <Route path="/tools/vendor-scorecard" element={<VendorSecurityScorecard />} />
-            <Route path="/tools/industry-threats" element={<IndustryThreatProfiler />} />
-            <Route path="/tools/dark-web-monitor" element={<DarkWebMonitoring />} />
-            <Route path="/tools/business-impact" element={<BusinessImpactCalculator />} />
+            <Route path="/tools/threat-weather" element={<ThreatWeatherDashboard />} />
+            <Route path="/tools/predictive-analytics" element={<React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense>} />
+            <Route path="/tools/nist-csf-wizard" element={<React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense>} />
+            <Route path="/tools/vendor-scorecard" element={<React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense>} />
+            <Route path="/tools/industry-threats" element={<React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense>} />
+            <Route path="/tools/dark-web-monitor" element={<React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense>} />
+            <Route path="/tools/business-impact" element={<React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense>} />
+            <Route path="/tools/policy-generator" element={<React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense>} />
+            <Route path="/tools/incident-orchestrator" element={<React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense>} />
             
           </Route>
 
