@@ -19,87 +19,112 @@ import {
 import AnimatedSection from '../utils/AnimatedSection';
 
 const ToolkitPage = () => {
-  const tools = [
+  // Tool categories and their associated tools
+  const toolCategories = [
     {
-      id: 'threat-weather',
-      title: 'Threat Weather Dashboard',
-      description: 'Real-time threat intelligence monitoring and analysis for your industry',
-      icon: Eye,
-      path: '/tools/threat-weather',
-      color: 'bg-critical-red/10',
-      iconColor: 'text-critical-red'
+      name: "Ransomware Suite",
+      description: "Comprehensive protection against ransomware threats",
+      tools: [
+        {
+          id: 'threat-weather',
+          title: 'Threat Weather Dashboard',
+          description: 'Real-time threat intelligence monitoring and analysis for your industry',
+          icon: Eye,
+          path: '/tools/threat-weather',
+          color: 'bg-critical-red/10',
+          iconColor: 'text-critical-red'
+        },
+        {
+          id: 'predictive-analytics',
+          title: 'Predictive Breach Analytics',
+          description: 'AI-powered vulnerability prediction and risk forecasting',
+          icon: Brain,
+          path: '/tools/predictive-analytics',
+          color: 'bg-electric-blue/10',
+          iconColor: 'text-electric-blue'
+        },
+        {
+          id: 'dark-web-monitor',
+          title: 'Dark Web Monitoring',
+          description: 'Continuous surveillance for credential leaks and organizational threats',
+          icon: Eye,
+          path: '/tools/dark-web-monitor',
+          color: 'bg-indigo-500/10',
+          iconColor: 'text-indigo-500'
+        },
+      ]
     },
     {
-      id: 'predictive-analytics',
-      title: 'Predictive Breach Analytics',
-      description: 'AI-powered vulnerability prediction and risk forecasting',
-      icon: Brain,
-      path: '/tools/predictive-analytics',
-      color: 'bg-electric-blue/10',
-      iconColor: 'text-electric-blue'
+      name: "Vendor Risk Radar",
+      description: "Monitor and manage third-party security risks",
+      tools: [
+        {
+          id: 'vendor-scorecard',
+          title: 'Vendor Security Scorecard',
+          description: 'Assess and monitor third-party security risks',
+          icon: Building2,
+          path: '/tools/vendor-scorecard',
+          color: 'bg-warning-amber/10',
+          iconColor: 'text-warning-amber'
+        },
+        {
+          id: 'industry-threats',
+          title: 'Industry Threat Profiler',
+          description: 'Sector-specific threat intelligence and attack pattern analysis',
+          icon: Network,
+          path: '/tools/industry-threats',
+          color: 'bg-pink-500/10',
+          iconColor: 'text-pink-500'
+        }
+      ]
     },
     {
-      id: 'nist-csf-wizard',
-      title: 'NIST CSF Toolkit',
-      description: 'Comprehensive framework implementation guidance and tracking',
-      icon: Shield,
-      path: '/tools/nist-csf-wizard',
-      color: 'bg-secure-green/10',
-      iconColor: 'text-secure-green'
+      name: "Compliance & Governance",
+      description: "Framework implementation and policy management",
+      tools: [
+        {
+          id: 'nist-csf-wizard',
+          title: 'NIST CSF Toolkit',
+          description: 'Comprehensive framework implementation guidance and tracking',
+          icon: Shield,
+          path: '/tools/nist-csf-wizard',
+          color: 'bg-secure-green/10',
+          iconColor: 'text-secure-green'
+        },
+        {
+          id: 'policy-generator',
+          title: 'Big 5 Policy Generator',
+          description: 'Create customized cybersecurity policies for your organization',
+          icon: FileText,
+          path: '/tools/policy-generator',
+          color: 'bg-teal-500/10',
+          iconColor: 'text-teal-500'
+        },
+        {
+          id: 'business-impact',
+          title: 'Business Impact Calculator',
+          description: 'Quantify financial impact of cybersecurity incidents',
+          icon: Calculator,
+          path: '/tools/business-impact',
+          color: 'bg-purple-500/10',
+          iconColor: 'text-purple-500'
+        }
+      ]
     },
     {
-      id: 'vendor-scorecard',
-      title: 'Vendor Security Scorecard',
-      description: 'Assess and monitor third-party security risks',
-      icon: Building2,
-      path: '/tools/vendor-scorecard',
-      color: 'bg-warning-amber/10',
-      iconColor: 'text-warning-amber'
-    },
-    {
-      id: 'business-impact',
-      title: 'Business Impact Calculator',
-      description: 'Quantify financial impact of cybersecurity incidents',
-      icon: Calculator,
-      path: '/tools/business-impact',
-      color: 'bg-purple-500/10',
-      iconColor: 'text-purple-500'
-    },
-    {
-      id: 'industry-threats',
-      title: 'Industry Threat Profiler',
-      description: 'Sector-specific threat intelligence and attack pattern analysis',
-      icon: Network,
-      path: '/tools/industry-threats',
-      color: 'bg-pink-500/10',
-      iconColor: 'text-pink-500'
-    },
-    {
-      id: 'dark-web-monitor',
-      title: 'Dark Web Monitoring',
-      description: 'Continuous surveillance for credential leaks and organizational threats',
-      icon: Eye,
-      path: '/tools/dark-web-monitor',
-      color: 'bg-indigo-500/10',
-      iconColor: 'text-indigo-500'
-    },
-    {
-      id: 'policy-generator',
-      title: 'Big 5 Policy Generator',
-      description: 'Create customized cybersecurity policies for your organization',
-      icon: FileText,
-      path: '/tools/policy-generator',
-      color: 'bg-teal-500/10',
-      iconColor: 'text-teal-500'
-    },
-    {
-      id: 'incident-orchestrator',
-      title: 'Incident Response Playbooks',
-      description: 'NIST-based ransomware response procedures with real-time tracking',
-      icon: Zap,
-      path: '/tools/incident-orchestrator',
-      color: 'bg-orange-500/10',
-      iconColor: 'text-orange-500'
+      name: "Incident Response & Analytics",
+      description: "Automated playbooks and recovery procedures",
+      tools: [
+        {
+          id: 'incident-orchestrator',
+          title: 'Incident Response Playbooks',
+          description: 'NIST-based ransomware response procedures with real-time tracking',
+          icon: Zap,
+          path: '/tools/incident-orchestrator',
+          color: 'bg-orange-500/10',
+          iconColor: 'text-orange-500'
+        }
+      ]
     }
   ];
 
@@ -119,27 +144,34 @@ const ToolkitPage = () => {
       </AnimatedSection>
 
       <AnimatedSection type="fadeIn" delay={0.1}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {tools.map((tool) => (
-            <Link to={tool.path} key={tool.id}>
-              <Card className="h-full hover:shadow-lg transition-shadow border dark:border-muted">
-                <CardContent className="p-6">
-                  <div className={`w-12 h-12 rounded-lg ${tool.color} flex items-center justify-center mb-4`}>
-                    <tool.icon className={`h-6 w-6 ${tool.iconColor}`} />
-                  </div>
-                  <h3 className="text-lg font-medium mb-2 text-foreground">{tool.title}</h3>
-                  <p className="text-muted-foreground mb-4">{tool.description}</p>
-                  <div className="flex justify-end">
-                    <Button variant="ghost" size="sm" className="mt-auto">
-                      Open Tool
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+        {toolCategories.map((category, categoryIndex) => (
+          <div key={categoryIndex} className="mb-12">
+            <h2 className="text-2xl font-bold mb-4 text-foreground">{category.name}</h2>
+            <p className="text-muted-foreground mb-6">{category.description}</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {category.tools.map((tool) => (
+                <Link to={tool.path} key={tool.id}>
+                  <Card className="h-full hover:shadow-lg transition-shadow border dark:border-muted">
+                    <CardContent className="p-6">
+                      <div className={`w-12 h-12 rounded-lg ${tool.color} flex items-center justify-center mb-4`}>
+                        <tool.icon className={`h-6 w-6 ${tool.iconColor}`} />
+                      </div>
+                      <h3 className="text-lg font-medium mb-2 text-foreground">{tool.title}</h3>
+                      <p className="text-muted-foreground mb-4">{tool.description}</p>
+                      <div className="flex justify-end">
+                        <Button variant="ghost" size="sm" className="mt-auto">
+                          Open Tool
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
       </AnimatedSection>
 
       <AnimatedSection type="fadeIn" delay={0.2}>
