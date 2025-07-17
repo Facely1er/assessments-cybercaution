@@ -21,6 +21,8 @@ const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSec
 const BusinessImpactCalculator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
 const IndustryThreatProfiler = React.lazy(() => import('./pages/tools/IndustryThreatProfiler'));
 const DarkWebMonitoring = React.lazy(() => import('./pages/tools/DarkWebMonitoring'));
+const Big5PolicyGenerator = React.lazy(() => import('./pages/tools/Big5PolicyGenerator'));
+const IncidentResponsePlaybooks = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
 
 // Lazy load all page components
 const HomePage = React.lazy(() => import('./pages/HomePage'));
