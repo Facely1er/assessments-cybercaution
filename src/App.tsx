@@ -17,7 +17,11 @@ const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 const ThreatWeatherDashboard = React.lazy(() => import('./pages/tools/ThreatWeatherDashboard'));
 const PredictiveBreachAnalytics = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
 const NISTCSFToolkit = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
+const VendorIQEnhanced = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
 const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
+const ComplianceGapChecker = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
+const RecoveryTimeCalculator = React.lazy(() => import('./pages/tools/RecoveryTimeCalculator'));
+const BackupIntegrityValidator = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
 const BusinessImpactCalculator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
 const IndustryThreatProfiler = React.lazy(() => import('./pages/tools/IndustryThreatProfiler'));
 const DarkWebMonitoring = React.lazy(() => import('./pages/tools/DarkWebMonitoring'));
@@ -143,9 +147,13 @@ function App() {
             <Route path="/tools/threat-weather" element={<ThreatWeatherDashboard />} />
             <Route path="/tools/predictive-analytics" element={<React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense>} />
             <Route path="/tools/nist-csf-wizard" element={<React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense>} />
+            <Route path="/tools/vendor-iq-enhanced" element={<React.Suspense fallback={<LoadingFallback />}><VendorIQEnhanced /></React.Suspense>} />
             <Route path="/tools/vendor-scorecard" element={<React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense>} />
+            <Route path="/tools/compliance-gap-checker" element={<React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense>} />
             <Route path="/tools/industry-threats" element={<React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense>} />
             <Route path="/tools/dark-web-monitor" element={<React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense>} />
+            <Route path="/tools/recovery-time-calculator" element={<React.Suspense fallback={<LoadingFallback />}><RecoveryTimeCalculator /></React.Suspense>} />
+            <Route path="/tools/backup-integrity-validator" element={<React.Suspense fallback={<LoadingFallback />}><BackupIntegrityValidator /></React.Suspense>} />
             <Route path="/tools/business-impact" element={<React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense>} />
             <Route path="/tools/policy-generator" element={<React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense>} />
             <Route path="/tools/incident-orchestrator" element={<React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense>} />

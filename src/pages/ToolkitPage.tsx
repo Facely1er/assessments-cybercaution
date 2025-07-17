@@ -59,6 +59,15 @@ const ToolkitPage = () => {
       description: "Monitor and manage third-party security risks",
       tools: [
         {
+          id: 'vendor-iq-enhanced',
+          title: 'VendorIQ Enterprise Platform',
+          description: 'NIST-aligned vendor risk management with real-time collaboration',
+          icon: Building2,
+          path: '/tools/vendor-iq-enhanced',
+          color: 'bg-warning-amber/10',
+          iconColor: 'text-warning-amber'
+        },
+        {
           id: 'vendor-scorecard',
           title: 'Vendor Security Scorecard',
           description: 'Assess and monitor third-party security risks',
@@ -82,6 +91,15 @@ const ToolkitPage = () => {
       name: "Compliance & Governance",
       description: "Framework implementation and policy management",
       tools: [
+        {
+          id: 'compliance-gap-checker',
+          title: 'Compliance Gap Checker',
+          description: 'Identify and remediate compliance gaps across frameworks',
+          icon: CheckCircle,
+          path: '/tools/compliance-gap-checker',
+          color: 'bg-secure-green/10',
+          iconColor: 'text-secure-green'
+        },
         {
           id: 'nist-csf-wizard',
           title: 'NIST CSF Toolkit',
@@ -108,6 +126,30 @@ const ToolkitPage = () => {
           path: '/tools/business-impact',
           color: 'bg-purple-500/10',
           iconColor: 'text-purple-500'
+        }
+      ]
+    },
+    {
+      name: "Recovery & Resilience",
+      description: "Business continuity and data recovery tools",
+      tools: [
+        {
+          id: 'recovery-time-calculator',
+          title: 'Recovery Time Calculator',
+          description: 'Estimate recovery time objectives and business continuity metrics',
+          icon: Clock,
+          path: '/tools/recovery-time-calculator',
+          color: 'bg-blue-500/10',
+          iconColor: 'text-blue-500'
+        },
+        {
+          id: 'backup-integrity-validator',
+          title: 'Backup Integrity Validator',
+          description: 'Verify backup integrity and restoration readiness',
+          icon: Database,
+          path: '/tools/backup-integrity-validator',
+          color: 'bg-green-500/10',
+          iconColor: 'text-green-500'
         }
       ]
     },
