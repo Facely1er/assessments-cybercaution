@@ -10,8 +10,7 @@ import { useSupabaseQuery } from '../hooks/useSupabase';
 const Pricing = () => {
   // Fetch dynamic pricing data from database
   const { data: pricingPlans, loading: plansLoading } = useSupabaseQuery('pricing_plans', {
-    filter: (query) => query.eq('active', true),
-    orderBy: { column: 'order_index', ascending: true }
+    filter: (query) => query.eq('active', true)
   });
 
   // Fallback pricing plans if database is not available
