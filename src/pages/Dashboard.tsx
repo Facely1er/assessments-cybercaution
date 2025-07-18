@@ -16,10 +16,30 @@ import {
   ArrowRight,
   Download,
   RefreshCw,
-  Loader2
+  Loader2,
+  LogIn,
+  UserPlus,
+  Star,
+  Zap,
+  Brain,
+  Network,
+  Database,
+  Lock,
+  Globe,
+  Activity,
+  Award,
+  Building2,
+  Lightbulb,
+  HeartPulse,
+  Landmark,
+  Factory,
+  GraduationCap
 } from 'lucide-react';
 import { supabase, assessmentSubmissions } from '../lib/supabase';
 import { toast } from '../components/ui/Toaster';
+import { useAuth } from '../hooks/useAuth';
+import AnimatedSection from '../utils/AnimatedSection';
+import AnimatedItem from '../utils/AnimatedItem';
 
 interface AssessmentData {
   id: string;
@@ -31,6 +51,7 @@ interface AssessmentData {
 }
 
 const Dashboard = () => {
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [recentAssessments, setRecentAssessments] = useState<AssessmentData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +59,98 @@ const Dashboard = () => {
   const [completedCount, setCompletedCount] = useState(0);
   const [criticalIssues, setCriticalIssues] = useState(0);
   const [riskLevel, setRiskLevel] = useState('Medium');
+
+  // Features data
+  const featuredTools = [
+    {
+      title: 'Ransomware Readiness Assessment',
+      description: 'CISA-aligned assessment to evaluate your ransomware defense posture',
+      icon: AlertTriangle,
+      path: '/ransomware-assessment',
+      color: 'text-red-600',
+      bgColor: 'bg-red-100',
+      category: 'Assessment'
+    },
+    {
+      title: 'NIST CSF Alignment',
+      description: 'Align your security program with the NIST Cybersecurity Framework',
+      icon: Shield,
+      path: '/nist-csf-alignment',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-100',
+      category: 'Compliance'
+    },
+    {
+      title: 'Vendor Risk Management',
+      description: 'Assess and monitor third-party security risks in your supply chain',
+      icon: Network,
+      path: '/tools/vendor-iq-enhanced',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-100',
+      category: 'Risk Management'
+    },
+    {
+      title: 'Dark Web Monitoring',
+      description: 'Continuous surveillance for credential leaks and organizational threats',
+      icon: Eye,
+      path: '/tools/dark-web-monitor',
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-100',
+      category: 'Monitoring'
+    },
+    {
+      title: 'Predictive Analytics',
+      description: 'AI-powered vulnerability prediction and risk forecasting',
+      icon: Brain,
+      path: '/tools/predictive-analytics',
+      color: 'text-green-600',
+      bgColor: 'bg-green-100',
+      category: 'Analytics'
+    },
+    {
+      title: 'Business Impact Calculator',
+      description: 'Quantify financial impact of cybersecurity incidents',
+      icon: BarChart3,
+      path: '/tools/business-impact',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-100',
+      category: 'Planning'
+    }
+  ];
+
+  const industryFeatures = [
+    {
+      industry: 'Healthcare',
+      icon: HeartPulse,
+      description: 'HIPAA-compliant security solutions',
+      color: 'text-red-500'
+    },
+    {
+      industry: 'Financial',
+      icon: Landmark,
+      description: 'Regulatory-compliant financial security',
+      color: 'text-green-500'
+    },
+    {
+      industry: 'Manufacturing',
+      icon: Factory,
+      description: 'Industrial cybersecurity protection',
+      color: 'text-blue-500'
+    },
+    {
+      industry: 'Education',
+      icon: GraduationCap,
+      description: 'Student data protection solutions',
+      color: 'text-purple-500'
+    }
+  ];
+
+  const securityStats = [
+    { label: 'CISA Compliance Ready', value: '98%', icon: Shield, color: 'text-green-600' },
+    { label: 'Threat Detection', value: '24/7', icon: Eye, color: 'text-blue-600' },
+    { label: 'Response Time', value: '<2h', icon: Zap, color: 'text-orange-600' },
+    { label: 'Success Rate', value: '99.9%', icon: Award, color: 'text-purple-600' }
+  ];
 
   // Mapping of assessment types to user-friendly names
   const assessmentTypeNames: Record<string, string> = {
@@ -51,20 +164,21 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (!authLoading) {
+      if (isAuthenticated) {
+        fetchDashboardData();
+      } else {
+        setIsLoading(false);
+      }
+    }
+  }, [isAuthenticated, authLoading]);
 
   const fetchDashboardData = async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      // Get current user
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      
-      if (userError || !user) {
-        // User not authenticated, show guest data
-        setRecentAssessments([]);
+      if (!user) {
         setIsLoading(false);
         return;
       }
@@ -156,6 +270,185 @@ const Dashboard = () => {
     }
   };
 
+  // If not authenticated, show feature showcase with login prompts
+  if (!isAuthenticated && !authLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        {/* Hero Section */}
+        <AnimatedSection type="fadeIn">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+              Welcome to CyberCaution™ Dashboard
+            </h1>
+            <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-8">
+              Your comprehensive cybersecurity command center powered by CISA and NIST frameworks
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Link to="/login">
+                <Button variant="orange" size="lg" className="w-full sm:w-auto">
+                  <LogIn className="mr-2 h-5 w-5" />
+                  Sign In to Dashboard
+                </Button>
+              </Link>
+              <Link to="/login">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <UserPlus className="mr-2 h-5 w-5" />
+                  Create Account
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Security Stats */}
+        <AnimatedSection type="fadeIn" delay={0.1}>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+            {securityStats.map((stat, index) => (
+              <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.2}>
+                <Card className="text-center hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-muted/30 mb-4`}>
+                      <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                    </div>
+                    <div className={`text-3xl font-bold ${stat.color} mb-2`}>{stat.value}</div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  </CardContent>
+                </Card>
+              </AnimatedItem>
+            ))}
+          </div>
+        </AnimatedSection>
+
+        {/* Featured Tools */}
+        <AnimatedSection type="fadeIn" delay={0.2}>
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
+              Powerful Security Tools & Assessments
+            </h2>
+            <p className="text-lg text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+              Access professional-grade cybersecurity tools aligned with CISA and NIST frameworks
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredTools.map((tool, index) => (
+                <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.3}>
+                  <Card className="h-full hover:shadow-lg transition-all duration-300 group">
+                    <CardContent className="p-6">
+                      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${tool.bgColor} mb-4 group-hover:scale-110 transition-transform`}>
+                        <tool.icon className={`h-6 w-6 ${tool.color}`} />
+                      </div>
+                      <div className="mb-2">
+                        <span className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground">
+                          {tool.category}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-semibold mb-2 text-foreground">{tool.title}</h3>
+                      <p className="text-muted-foreground mb-4">{tool.description}</p>
+                      <div className="flex items-center justify-between">
+                        <Link to={tool.path} className="text-primary hover:underline text-sm font-medium">
+                          Learn More →
+                        </Link>
+                        <div className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">
+                          Sign In Required
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </AnimatedItem>
+              ))}
+            </div>
+          </div>
+        </AnimatedSection>
+
+        {/* Industry Solutions */}
+        <AnimatedSection type="fadeIn" delay={0.3} className="bg-muted/30 dark:bg-muted/10 rounded-lg p-8 mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Industry-Specific Solutions</h2>
+            <p className="text-lg text-muted-foreground">
+              Tailored cybersecurity solutions for your industry's unique challenges
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {industryFeatures.map((industry, index) => (
+              <AnimatedItem key={index} type="fadeIn" delay={index * 0.1 + 0.4}>
+                <Card className="text-center hover:shadow-md transition-shadow">
+                  <CardContent className="p-6">
+                    <industry.icon className={`h-8 w-8 ${industry.color} mx-auto mb-3`} />
+                    <h3 className="font-semibold mb-2">{industry.industry}</h3>
+                    <p className="text-sm text-muted-foreground">{industry.description}</p>
+                  </CardContent>
+                </Card>
+              </AnimatedItem>
+            ))}
+          </div>
+        </AnimatedSection>
+
+        {/* Call to Action */}
+        <AnimatedSection type="fadeIn" delay={0.4}>
+          <Card className="bg-gradient-to-r from-orange-500 to-red-600 text-white">
+            <CardContent className="p-8 text-center">
+              <h2 className="text-3xl font-bold mb-4">Ready to Secure Your Organization?</h2>
+              <p className="text-xl mb-8 opacity-90">
+                Join thousands of organizations using CyberCaution for comprehensive cybersecurity
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/login">
+                  <Button variant="white" size="lg" className="w-full sm:w-auto bg-white text-orange-600 hover:bg-white/90">
+                    <LogIn className="mr-2 h-5 w-5" />
+                    Access Your Dashboard
+                  </Button>
+                </Link>
+                <Link to="/demo">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto border-white text-white hover:bg-white/10">
+                    Schedule Demo
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedSection>
+
+        {/* Quick Start */}
+        <AnimatedSection type="fadeIn" delay={0.5} className="mt-16">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-6 text-foreground">Get Started in Minutes</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+                <h3 className="font-semibold mb-2">Create Account</h3>
+                <p className="text-sm text-muted-foreground">Sign up for free and access your personalized dashboard</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
+                <h3 className="font-semibold mb-2">Run Assessment</h3>
+                <p className="text-sm text-muted-foreground">Complete your first CISA-aligned security assessment</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
+                <h3 className="font-semibold mb-2">Implement Security</h3>
+                <p className="text-sm text-muted-foreground">Follow personalized recommendations to strengthen your defenses</p>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
+    );
+  }
+
+  if (authLoading || isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-muted-foreground">Loading your dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -172,13 +465,16 @@ const Dashboard = () => {
     );
   }
 
+  // Authenticated user dashboard
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">Security Assessment Dashboard</h1>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Welcome back, {user?.email?.split('@')[0]}
+            </h1>
             <p className="text-muted-foreground">Track your organization's cybersecurity posture and assessment progress</p>
           </div>
           <Button variant="outline" onClick={fetchDashboardData} disabled={isLoading}>
@@ -195,13 +491,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Overall Security Score</p>
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <p className={`text-2xl font-bold ${getScoreColor(overallScore)}`}>{overallScore}%</p>
-                )}
+                <p className={`text-2xl font-bold ${getScoreColor(overallScore)}`}>{overallScore}%</p>
               </div>
               <div className="h-12 w-12 bg-electric-blue/10 rounded-lg flex items-center justify-center">
                 <Shield className="h-6 w-6 text-electric-blue" />
@@ -221,13 +511,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Assessments Completed</p>
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <p className="text-2xl font-bold text-foreground">{completedCount}</p>
-                )}
+                <p className="text-2xl font-bold text-foreground">{completedCount}</p>
               </div>
               <div className="h-12 w-12 bg-secure-green/10 rounded-lg flex items-center justify-center">
                 <CheckCircle className="h-6 w-6 text-secure-green" />
@@ -247,13 +531,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Areas Needing Attention</p>
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <p className="text-2xl font-bold text-critical-red">{criticalIssues}</p>
-                )}
+                <p className="text-2xl font-bold text-critical-red">{criticalIssues}</p>
               </div>
               <div className="h-12 w-12 bg-critical-red/10 rounded-lg flex items-center justify-center">
                 <AlertTriangle className="h-6 w-6 text-critical-red" />
@@ -273,13 +551,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Risk Level</p>
-                {isLoading ? (
-                  <div className="flex items-center">
-                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <p className={`text-2xl font-bold ${getRiskColor(riskLevel)}`}>{riskLevel}</p>
-                )}
+                <p className={`text-2xl font-bold ${getRiskColor(riskLevel)}`}>{riskLevel}</p>
               </div>
               <div className="h-12 w-12 bg-warning-amber/10 rounded-lg flex items-center justify-center">
                 <BarChart3 className="h-6 w-6 text-warning-amber" />
@@ -310,12 +582,7 @@ const Dashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                <span className="ml-2 text-muted-foreground">Loading assessments...</span>
-              </div>
-            ) : recentAssessments.length === 0 ? (
+            {recentAssessments.length === 0 ? (
               <div className="text-center py-8">
                 <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-foreground mb-2">No Assessments Yet</h3>
@@ -385,6 +652,13 @@ const Dashboard = () => {
                 </Button>
               </Link>
               
+              <Link to="/toolkit">
+                <Button className="w-full justify-start" variant="outline">
+                  <Lightbulb className="mr-2 h-4 w-4" />
+                  Explore Security Toolkit
+                </Button>
+              </Link>
+              
               <Button 
                 className="w-full justify-start" 
                 variant="outline" 
@@ -406,53 +680,46 @@ const Dashboard = () => {
             <CardTitle>Security Posture Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            {isLoading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                <span className="ml-2 text-muted-foreground">Loading overview...</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="mx-auto w-16 h-16 bg-secure-green/10 rounded-full flex items-center justify-center mb-4">
+                  <CheckCircle className="h-8 w-8 text-secure-green" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">Strong Areas</h3>
+                <p className="text-sm text-muted-foreground">
+                  {completedCount > 0 
+                    ? `${recentAssessments.filter(a => a.score >= 80).length} assessments show strong performance`
+                    : 'Complete assessments to identify your strong areas'
+                  }
+                </p>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="mx-auto w-16 h-16 bg-secure-green/10 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="h-8 w-8 text-secure-green" />
-                  </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">Strong Areas</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {completedCount > 0 
-                      ? `${recentAssessments.filter(a => a.score >= 80).length} assessments show strong performance`
-                      : 'Complete assessments to identify your strong areas'
-                    }
-                  </p>
+              
+              <div className="text-center">
+                <div className="mx-auto w-16 h-16 bg-warning-amber/10 rounded-full flex items-center justify-center mb-4">
+                  <AlertTriangle className="h-8 w-8 text-warning-amber" />
                 </div>
-                
-                <div className="text-center">
-                  <div className="mx-auto w-16 h-16 bg-warning-amber/10 rounded-full flex items-center justify-center mb-4">
-                    <AlertTriangle className="h-8 w-8 text-warning-amber" />
-                  </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">Areas for Improvement</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {criticalIssues > 0 
-                      ? `${criticalIssues} assessment${criticalIssues !== 1 ? 's' : ''} need${criticalIssues === 1 ? 's' : ''} attention`
-                      : 'All completed assessments show good performance'
-                    }
-                  </p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="mx-auto w-16 h-16 bg-electric-blue/10 rounded-full flex items-center justify-center mb-4">
-                    <Target className="h-8 w-8 text-electric-blue" />
-                  </div>
-                  <h3 className="text-lg font-medium text-foreground mb-2">Next Steps</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {recentAssessments.length === 0 
-                      ? 'Start with a ransomware readiness assessment'
-                      : 'Continue with additional assessments and implement recommendations'
-                    }
-                  </p>
-                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">Areas for Improvement</h3>
+                <p className="text-sm text-muted-foreground">
+                  {criticalIssues > 0 
+                    ? `${criticalIssues} assessment${criticalIssues !== 1 ? 's' : ''} need${criticalIssues === 1 ? 's' : ''} attention`
+                    : 'All completed assessments show good performance'
+                  }
+                </p>
               </div>
-            )}
+              
+              <div className="text-center">
+                <div className="mx-auto w-16 h-16 bg-electric-blue/10 rounded-full flex items-center justify-center mb-4">
+                  <Target className="h-8 w-8 text-electric-blue" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">Next Steps</h3>
+                <p className="text-sm text-muted-foreground">
+                  {recentAssessments.length === 0 
+                    ? 'Start with a ransomware readiness assessment'
+                    : 'Continue with additional assessments and implement recommendations'
+                  }
+                </p>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
