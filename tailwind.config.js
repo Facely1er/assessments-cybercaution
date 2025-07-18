@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+ /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -50,6 +50,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        chart: {
+          '1': "hsl(var(--chart-1))",
+          '2': "hsl(var(--chart-2))",
+          '3': "hsl(var(--chart-3))",
+          '4': "hsl(var(--chart-4))",
+          '5': "hsl(var(--chart-5))",
+        },
         // New strategic color palette
         'electric-blue': '#2563EB',
         'dark-navy': '#1E3A8A',
@@ -57,6 +64,8 @@ export default {
         'warning-amber': '#F59E0B',
         'critical-red': '#EF4444',
         'secure-green': '#84CC16',
+        'cyber-black': '#0F172A',
+        'neural-gray': '#6B7280',
         // Dark mode colors
         'dark-electric': '#3B82F6',
         'dark-background': '#0F172A',
@@ -94,6 +103,8 @@ export default {
         "fade-out": "fadeOut 0.3s ease-in-out",
         "slide-in": "slideIn 0.3s ease-in-out",
         "slide-out": "slideOut 0.3s ease-in-out",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       keyframes: {
         fadeIn: {
@@ -111,6 +122,14 @@ export default {
         slideOut: {
           "0%": { transform: "translateY(0)", opacity: 1 },
           "100%": { transform: "translateY(10px)", opacity: 0 },
+        },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       boxShadow: {
