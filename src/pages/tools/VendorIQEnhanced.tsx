@@ -262,30 +262,45 @@ const VendorIQEnhanced = () => {
     }
   };
 
-  const syncWithBreachMonitor = async () => {
-    try {
-      // Get breach alerts for all vendors
-      const response = await fetch('/api/breach-monitor/vendor-alerts');
-      const breachData = await response.json();
-      
-      // Update vendor risk scores based on recent breaches
-      for (const alert of breachData) {
-        const vendor = vendors.find(v => v.name.toLowerCase().includes(alert.vendorName.toLowerCase()));
-        if (vendor) {
-          const riskIncrease = alert.severity === 'Critical' ? 0.5 : alert.severity === 'High' ? 0.3 : 0.1;
-          await supabaseClient.vendors.update(vendor.id, {
-            current_risk_adjustment: riskIncrease,
-            last_breach_alert: alert.date,
-            breach_alert_count: (vendor.breach_alert_count || 0) + 1
-          });
-        }
-      }
-      
-      setIntegrationData(prev => ({ ...prev, breachAlerts: breachData }));
-    } catch (error) {
-      console.error('Breach monitor sync error:', error);
+const syncWithBreachMonitor = async () => {
+  try {
+    // Get breach alerts for all vendors
+    const response = await fetch('/api/breach-monitor/vendor-alerts');
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+    let breachData = [];
+
+    try {
+      breachData = await response.json();
+    } catch (parseError) {
+      console.warn('No breach data available or invalid JSON response:', parseError);
+      // Handle the case when the response is not a valid JSON or empty
+      // You can set a default value for breachData or update the state accordingly
+      setIntegrationData(prev => ({ ...prev, breachAlerts: [] }));
+      return;
+    }
+
+    // Update vendor risk scores based on recent breaches
+    for (const alert of breachData) {
+      const vendor = vendors.find(v => v.name.toLowerCase().includes(alert.vendorName.toLowerCase()));
+      if (vendor) {
+        const riskIncrease = alert.severity === 'Critical' ? 0.5 : alert.severity === 'High' ? 0.3 : 0.1;
+        await supabaseClient.vendors.update(vendor.id, {
+          current_risk_adjustment: riskIncrease,
+          last_breach_alert: alert.date,
+          breach_alert_count: (vendor.breach_alert_count || 0) + 1
+        });
+      }
+    }
+
+    setIntegrationData(prev => ({ ...prev, breachAlerts: breachData }));
+  } catch (error) {
+    console.error('Breach monitor sync error:', error);
+  }
+};
 
   // Advanced analytics functions
   const calculatePortfolioAnalytics = () => {
