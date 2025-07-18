@@ -53,6 +53,14 @@ const ToolkitPage = () => {
       tools: [
         {
           id: 'vendor-iq-enhanced',
+          title: 'VendorIQ Enhanced',
+          description: 'NIST-aligned vendor risk management with real-time collaboration and advanced analytics',
+          icon: Building2,
+          path: '/tools/vendor-iq-enhanced',
+          color: 'bg-warning-amber/10',
+          iconColor: 'text-warning-amber'
+        },
+        {
           id: 'vendor-scorecard',
           title: 'Vendor Security Scorecard',
           description: 'Assess and monitor third-party security risks',
