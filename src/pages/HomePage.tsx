@@ -82,43 +82,11 @@ const HomePage = () => {
     {
       title: (
         <>
-          Proactive <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Ransomware</span> Risk Management
+          Proactive <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Cyber Risk Orchestration &amp; Governance</span>
         </>
       ),
-      subtitle: "Comprehensive ransomware defense aligned with CISA and NIST recommendations"
+      subtitle: "An Integrated Platform Aligned with NIST Frameworks"
     },
-    {
-      title: (
-        <>
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">CISA-Aligned</span> Security Framework
-        </>
-      ),
-      subtitle: "Official #StopRansomware alignment providing government-grade protection"
-    },
-    {
-      title: (
-        <>
-          Enterprise <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Risk Management</span>
-        </>
-      ),
-      subtitle: "Complete visibility and control over your organization's security posture"
-    },
-    {
-      title: (
-        <>
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Business Continuity</span> Protection
-        </>
-      ),
-      subtitle: "Ensure operational resilience against evolving cyber threats"
-    },
-    {
-      title: (
-        <>
-          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">NIST CSF</span> Implementation
-        </>
-      ),
-      subtitle: "Streamlined compliance with industry-standard security frameworks"
-    }
   ];
 
   // Process carousel texts from database or use fallback
@@ -174,19 +142,19 @@ const HomePage = () => {
   // Additional dynamic statistics for value proposition section
   const valueStats = [
     {
-      label: 'CISA',
-      value: 'Compliance Ready',
-      description: 'Official #StopRansomware Alignment'
+      label: 'Not SIEM/EDR',
+      value: 'Security Orchestration',
+      description: 'CyberCaution integrates existing tools'
     },
     {
-      label: '24/7',
-      value: 'Monitoring Available',
-      description: 'Continuous threat detection'
+      label: 'Human-Centric',
+      value: 'Training Integration',
+      description: 'Combines human and technical controls'
     },
     {
-      label: 'Enterprise',
-      value: 'Grade Security',
-      description: 'Fortune 500 trusted'
+      label: 'Analytics',
+      value: 'Overlay Existing Tools',
+      description: 'Aggregate data for comprehensive visibility'
     }
   ];
 
@@ -227,8 +195,8 @@ const HomePage = () => {
               {/* CISA Badge */}
               <AnimatedItem delay={0.1}>
                 <div className="inline-block mb-8">
-                  <span className="bg-warning-amber/10 text-warning-amber px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
-                    🛡️ CISA #StopRansomware Alignment
+                  <span className="bg-success/10 text-success px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
+                    🛡️ NIST CSF 2.0 Aligned Platform
                   </span>
                 </div>
               </AnimatedItem>
@@ -245,7 +213,7 @@ const HomePage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link to="/quick-cyber-check">
                     <Button variant="orange" className="w-full sm:w-auto">
-                      3 minutes Cyber Check
+                      Start 3-Minute Cyber Check
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
@@ -280,85 +248,50 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Problem/Solution Section */}
+      {/* CyberCaution™ Platform Section */}
       <section className="py-20">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <AnimatedSection direction="left">
-              <div>
-                <h2 className="text-4xl font-bold mb-6">Don't Wait for the Next Attack</h2>
-                <p className="text-xl text-muted-foreground mb-6">
-                  Proactive protection saves time, money, and reputation damage from ransomware attacks
-                </p>
-                <div className="space-y-6">
-                  <AnimatedItem delay={0.1} direction="left">
-                    <div className="flex items-start space-x-4 p-4 rounded-lg bg-destructive/5 border-l-4 border-destructive">
-                      <div className="w-8 h-8 bg-destructive/10 rounded-full flex items-center justify-center">
-                        <AlertTriangle className="h-5 w-5 text-destructive" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2 text-foreground">Ransomware Attacks Continue Rising</h3>
-                        <p className="text-muted-foreground">Organizations face increasing sophisticated threats requiring proactive defense strategies.</p>
-                      </div>
-                    </div>
-                  </AnimatedItem>
-                  
-                  <AnimatedItem delay={0.2} direction="left">
-                    <div className="flex items-start space-x-4 p-4 rounded-lg bg-warning/5 border-l-4 border-warning">
-                      <div className="w-8 h-8 bg-warning/10 rounded-full flex items-center justify-center">
-                        <Network className="h-5 w-5 text-warning" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2 text-foreground">CISA Warns of Increasing Threats</h3>
-                        <p className="text-muted-foreground">The Cybersecurity and Infrastructure Security Agency has elevated the ransomware threat level for critical infrastructure.</p>
-                      </div>
-                    </div>
-                  </AnimatedItem>
-                  
-                  <AnimatedItem delay={0.3} direction="left">
-                    <div className="flex items-start space-x-4 p-4 rounded-lg bg-success/5 border-l-4 border-success">
-                      <div className="w-8 h-8 bg-success/10 rounded-full flex items-center justify-center">
-                        <Shield className="h-5 w-5 text-success" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg mb-2 text-foreground">Our Solution: CISA-Aligned Defense</h3>
-                        <p className="text-muted-foreground">Comprehensive framework that prevents, detects, and responds to threats before damage occurs.</p>
-                      </div>
-                    </div>
-                  </AnimatedItem>
-                </div>
-              </div>
-            </AnimatedSection>
-            
-            <AnimatedSection direction="right" delay={0.2}>
-              <Card className="shadow-2xl overflow-hidden">
-                <CardContent className="p-8">
-                  <div className="mb-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="font-semibold text-foreground">CISA Compliance Dashboard</h4>
-                      <span className="bg-success/10 text-success px-3 py-1 rounded-full text-sm font-medium">
-                        🟢 Compliant
-                      </span>
-                    </div>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between p-4 bg-success/5 rounded-lg border border-success/20">
-                        <span className="text-sm font-medium">Email Security</span>
-                        <span className="text-success font-bold">Protected</span>
-                      </div>
-                      <div className="flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
-                        <span className="text-sm font-medium">Network Monitoring</span>
-                        <span className="text-primary font-bold">Active</span>
-                      </div>
-                      <div className="flex items-center justify-between p-4 bg-accent/5 rounded-lg border border-accent/20">
-                        <span className="text-sm font-medium">Backup Status</span>
-                        <span className="text-accent font-bold">Verified</span>
-                      </div>
-                    </div>
+          <AnimatedSection>
+            <div className="text-center">
+              <h2 className="text-4xl font-bold mb-6 text-foreground">CyberCaution™ Platform</h2>
+              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
+                Our platform integrates security tools, orchestrates workflows, provides a governance framework, aggregates analytics, and enables human-centric training.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <AnimatedItem delay={0.1}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <img src="integrate-icon.png" alt="Integration Icon" className="h-16 w-16 mb-4" />
+                    <h3 className="text-xl font-semibold mb-2">Integration Hub</h3>
+                    <p className="text-muted-foreground text-center">Connect your existing security tools into a unified ecosystem.</p>
                   </div>
-                </CardContent>
-              </Card>
-            </AnimatedSection>
-          </div>
+                </AnimatedItem>
+                {/* ... Other platform features ... */}
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Professional Services Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container">
+          <AnimatedSection>
+            <div className="text-center">
+              <h2 className="text-4xl font-bold mb-6 text-foreground">Professional Services</h2>
+              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
+                Our team of experts provides end-to-end support to maximize the value of your CyberCaution implementation.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <AnimatedItem delay={0.1}>
+                  <div className="bg-card p-6 rounded-lg shadow-md">
+                    <h3 className="text-xl font-semibold mb-2">Assessment Interpretation &amp; Analysis</h3>
+                    <p className="text-muted-foreground">Gain actionable insights from your assessment results with expert analysis and recommendations.</p>
+                  </div>
+                </AnimatedItem>
+                {/* ... Other professional services ... */}
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
@@ -367,11 +300,11 @@ const HomePage = () => {
         <div className="container relative z-10">
           <AnimatedSection>
             <div className="text-center">
-              <h2 className="text-4xl font-bold mb-6 text-foreground">Comprehensive Ransomware Defense</h2>
-              <p className="text-xl mb-12 text-orange-500 max-w-2xl mx-auto">
-                Protect your organization with enterprise-grade security aligned to CISA standards
+              <h2 className="text-4xl font-bold mb-6 text-foreground">Integrated Cyber Risk Platform</h2>
+              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
+                CyberCaution is not a SIEM/EDR replacement, but a Security Orchestration & Governance Platform that complements your existing tools:
               </p>
-              
+
               <AnimatedItem delay={0.1}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
                   {valueStats.map((stat, index) => (
@@ -383,175 +316,74 @@ const HomePage = () => {
                   ))}
                 </div>
               </AnimatedItem>
-              
+
               {/* Additional features grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-12">
                 <AnimatedItem delay={0.2} direction="left">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
-                    <Shield className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
+                    <CheckCircle className="h-6 w-6 flex-shrink-0 mt-1 text-success" />
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">CISA #StopRansomware Alignment</h3>
-                      <p className="text-sm text-muted-foreground">Fully aligned with the latest CISA guidance for preventing and responding to ransomware attacks.</p>
+                      <h3 className="font-semibold text-lg mb-1 text-foreground">Web-Based Assessment Portal</h3>
+                      <p className="text-sm text-muted-foreground">Interactive assessment questionnaires with automated scoring and analysis.</p>
                     </div>
                   </div>
                 </AnimatedItem>
-                
-                <AnimatedItem delay={0.3} direction="right">
+
+                <AnimatedItem delay={0.3} direction="right">  
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
-                    <Link2 className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
+                    <CheckCircle className="h-6 w-6 flex-shrink-0 mt-1 text-success" />
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">Supply Chain Risk Mapping</h3>
-                      <p className="text-sm text-muted-foreground">Advanced risk mapping to identify third-party and supply chain vulnerabilities.</p>
+                      <h3 className="font-semibold text-lg mb-1 text-foreground">CISA/NIST-Aligned Frameworks</h3>  
+                      <p className="text-sm text-muted-foreground">Industry-specific customizations and regulatory compliance mappings.</p>
+                    </div>
+                  </div>
+                </AnimatedItem>CISA/NIST-Aligned Frameworks</h3>
+                      <p className="text-sm text-muted-foreground">Industry-specific customizations and regulatory compliance mappings.</p>
                     </div>
                   </div>
                 </AnimatedItem>
                 
                 <AnimatedItem delay={0.4} direction="left">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
-                    <Users className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
+                    <CheckCircle className="h-6 w-6 flex-shrink-0 mt-1 text-success" />
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">Employee Security Training</h3>
-                      <p className="text-sm text-muted-foreground">CISA-recommended security awareness training for your entire organization.</p>
+                      <h3 className="font-semibold text-lg mb-1 text-foreground">Professional Reporting System</h3>
+                      <p className="text-sm text-muted-foreground">Generate executive-level reports and dashboards from assessment data.</p>
                     </div>
-                  </div>
+                  </div>  
                 </AnimatedItem>
                 
                 <AnimatedItem delay={0.5} direction="right">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
-                    <FileText className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
+                    <CheckCircle className="h-6 w-6 flex-shrink-0 mt-1 text-success" />  
                     <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">Ransomware Playbooks</h3>
-                      <p className="text-sm text-muted-foreground">Generate customized incident response playbooks based on CISA recommendations.</p>
-                    </div>
-                  </div>
-                </AnimatedItem>
-                
-                <AnimatedItem delay={0.6} direction="left">
-                  <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
-                    <Lock className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">Proactive Defense</h3>
-                      <p className="text-sm text-muted-foreground">Transform from reactive incident response to proactive threat prevention strategies.</p>
-                    </div>
-                  </div>
-                </AnimatedItem>
-                
-                <AnimatedItem delay={0.7} direction="right">
-                  <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
-                    <Building2 className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">Critical Infrastructure Protection</h3>
-                      <p className="text-sm text-muted-foreground">Specialized security controls for organizations operating critical infrastructure.</p>
-                    </div>
-                  </div>
-                </AnimatedItem>
-                
-                <AnimatedItem delay={0.8} direction="up" className="md:col-span-2">
-                  <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left md:col-span-2">
-                    <BarChart3 className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
-                    <div>
-                      <h3 className="font-semibold text-lg mb-1 text-foreground">CISA Compliance Reporting</h3>
-                      <p className="text-sm text-muted-foreground">Generate comprehensive compliance reports aligned with CISA requirements for executives and regulators.</p>
+                      <h3 className="font-semibold text-lg mb-1 text-foreground">API for Integrations</h3>
+                      <p className="text-sm text-muted-foreground">Integrate security data into existing enterprise systems and workflows.</p>
                     </div>
                   </div>
                 </AnimatedItem>
               </div>
               
-              <AnimatedItem delay={0.9} scale={true}>
-                <Link to="/ransomware-assessment">
+              <AnimatedItem delay={0.6} scale={true}>
+                <Link to="/free-trial">
                   <Button variant="orange">
                     <Lightbulb className="mr-2 h-5 w-5" />
-                    Ransomware Readiness Assessment
+                    Start Free Trial
                   </Button>
                 </Link>
               </AnimatedItem>
             </div>
-          </AnimatedSection>
+          </AnimatedSection>  
         </div>
       </section>
 
-   
-           {/* NIST Compliance Section */}
-      <AnimatedSection type="fadeIn" className="bg-muted/30 dark:bg-muted/10 py-16 px-4 md:px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block mb-4">
-              <span className="bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 px-4 py-2 rounded-full inline-flex items-center text-sm font-medium">
-                Framework-Aligned Security
-              </span>
-            </div>
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Built on NIST Standards</h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              All features are aligned with NIST frameworks and industry best practices to ensure comprehensive and effective security
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <AnimatedItem type="slideInLeft" delay={0.1}>
-              <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
-                <CardContent className="p-6">
-                  <Shield className="h-10 w-10 text-[#FF6B00] mb-4" />
-                  <h3 className="text-xl font-semibold mb-3 text-foreground">NIST CSF 2.0</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Align your security program with the NIST Cybersecurity Framework to build a comprehensive security foundation.
-                  </p>
-                  <Link to="/features#compliance">
-                    <Button variant="orange" className="w-full">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </AnimatedItem>
-            
-            <AnimatedItem type="slideInLeft" delay={0.2}>
-              <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
-                <CardContent className="p-6">
-                  <AlertTriangle className="h-10 w-10 text-[#FF6B00] mb-4" />
-                  <h3 className="text-xl font-semibold mb-3 text-foreground">NIST IR 8374</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Implement specific controls to protect against ransomware following NIST's specialized guidance.
-                  </p>
-                  <Link to="/features#ransomware">
-                    <Button variant="orange" className="w-full">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </AnimatedItem>
-            
-            <AnimatedItem type="slideInLeft" delay={0.3}>
-              <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
-                <CardContent className="p-6">
-                  <Network className="h-10 w-10 text-[#FF6B00] mb-4" />
-                  <h3 className="text-xl font-semibold mb-3 text-foreground">NIST SP 800-161</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Secure your supply chain following NIST's supply chain risk management practices.
-                  </p>
-                  <Link to="/features#supply-chain">
-                    <Button variant="orange" className="w-full">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </AnimatedItem>
-          </div>
-        </div>
-      </AnimatedSection>
-
-
-  {/* Key Benefits Section */}
+      {/* Key Benefits Section */}
       <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Key Benefits of CyberCaution</h2>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Why CyberCaution?</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Discover why security professionals choose CyberCaution by ERMITS® for comprehensive protection
+              Discover why security professionals choose CyberCaution by ERMITS® for comprehensive cyber risk management
             </p>
           </div>
 
@@ -563,24 +395,23 @@ const HomePage = () => {
                     <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
                       <Shield className="h-6 w-6 text-[#FF6B00]" />
                     </div>
-                    <h3 className="text-xl font-semibold text-foreground">CISA Compliance Ready</h3>
+                    <h3 className="text-xl font-semibold text-foreground">NIST CSF 2.0 Alignment</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    #StopRansomware #comprehensive alignment with CISA recommendations. 
-                    Our platform ensures you meet government cybersecurity standards and guidelines.
+                    Align your security program with the latest NIST Cybersecurity Framework.
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>CISA #StopRansomware alignment</span>
+                      <span>Framework-based assessments</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Government-grade security controls</span>
+                      <span>Tailored implementation guidance</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Regulatory compliance reporting</span>
+                      <span>Compliance status tracking</span>
                     </div>
                   </div>
                 </CardContent>
@@ -592,26 +423,25 @@ const HomePage = () => {
                 <CardContent className="p-6 flex flex-col h-full">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
-                      <Target className="h-6 w-6 text-[#FF6B00]" />
+                      <TrendingUp className="h-6 w-6 text-[#FF6B00]" />
                     </div>
-                    <h3 className="text-xl font-semibold text-foreground">Proactive Defense Strategy</h3>
+                    <h3 className="text-xl font-semibold text-foreground">Measurable Risk Reduction</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Move beyond reactive security measures with predictive threat analysis and prevention. 
-                    Our proactive approach helps organizations prevent incidents before they occur.
+                    Demonstrate clear ROI with quantifiable security improvements.
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Predictive threat intelligence</span>
+                      <span>Security KPI dashboards</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Automated risk detection</span>
+                      <span>Risk reduction analytics</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Continuous monitoring</span>
+                      <span>Executive reporting</span>
                     </div>
                   </div>
                 </CardContent>
@@ -623,129 +453,33 @@ const HomePage = () => {
                 <CardContent className="p-6 flex flex-col h-full">
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
-                      <Building2 className="h-6 w-6 text-[#FF6B00]" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-foreground">Critical Infrastructure Focus</h3>
-                  </div>
-                  <p className="text-muted-foreground mb-4 flex-1">
-                    Specialized protection designed for organizations that maintain critical infrastructure. 
-                    Enhanced security measures to protect vital systems and ensure operational continuity.
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Critical system protection</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Operational resilience planning</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Business continuity assurance</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </AnimatedItem>
-
-            <AnimatedItem type="fadeIn" delay={0.4}>
-              <Card className="dark:border-muted h-full">
-                <CardContent className="p-6 flex flex-col h-full">
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
-                      <Gauge className="h-6 w-6 text-[#FF6B00]" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-foreground">Rapid Implementation</h3>
-                  </div>
-                  <p className="text-muted-foreground mb-4 flex-1">
-                    Get up and running quickly with our streamlined implementation process. 
-                    Pre-configured templates and automated workflows reduce deployment time significantly.
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Quick-start templates</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Automated configuration</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Expert implementation support</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </AnimatedItem>
-
-            <AnimatedItem type="fadeIn" delay={0.5}>
-              <Card className="dark:border-muted h-full">
-                <CardContent className="p-6 flex flex-col h-full">
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
-                      <TrendingUp className="h-6 w-6 text-[#FF6B00]" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-foreground">Measurable ROI</h3>
-                  </div>
-                  <p className="text-muted-foreground mb-4 flex-1">
-                    Demonstrate clear return on investment with quantifiable security improvements. 
-                    Track metrics that matter to your business and show tangible security value.
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Cost reduction analytics</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Risk reduction measurement</span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Executive reporting</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </AnimatedItem>
-
-            <AnimatedItem type="fadeIn" delay={0.6}>
-              <Card className="dark:border-muted h-full">
-                <CardContent className="p-6 flex flex-col h-full">
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 bg-[#FF6B00]/10 rounded-full flex items-center justify-center mr-4">
                       <Users className="h-6 w-6 text-[#FF6B00]" />
                     </div>
-                    <h3 className="text-xl font-semibold text-foreground">Expert Support</h3>
+                    <h3 className="text-xl font-semibold text-foreground">Human-Centric Approach</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Access to certified cybersecurity professionals and industry experts. 
-                    Get guidance from experienced practitioners who understand real-world security challenges.
+                    Integrate security training and awareness into technical controls.
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Certified security experts</span>
+                      <span>User-focused training modules</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>24/7 support availability</span>
+                      <span>Behavior-driven analytics</span>
                     </div>
                     <div className="flex items-center text-sm">
                       <CheckCircle className="h-4 w-4 text-[#FF6B00] mr-2" />
-                      <span>Strategic consulting services</span>
+                      <span>Tailored awareness campaigns</span>
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card>  
             </AnimatedItem>
           </div>
         </div>
       </AnimatedSection>
-
-         {/* Incident Reporting Section */}
 
       {/* CTA Section */}
       <section className="py-20">
@@ -757,20 +491,20 @@ const HomePage = () => {
               
               <div className="relative z-10">
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Ready to Strengthen Your Ransomware Defense?
+                  Ready to Uplevel Your Cyber Risk Management?
                 </h2>
                 <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-                  Get a free CISA-aligned ransomware readiness assessment and detailed recommendations
+                  Get a free NIST CSF assessment and detailed recommendations tailored to your organization
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/ransomware-assessment">
+                  <Link to="/free-trial">
                     <Button variant="white" className="w-full sm:w-auto bg-white text-[#FF6B00] hover:bg-white/90">
-                      Start 3-Minute Readiness Assessment
+                      Start Free Trial  
                     </Button>
                   </Link>
                   <Link to="/contact">
                     <Button 
-                      variant="outline" 
+                      variant="outline"
                       className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
                     >
                       Contact Sales
@@ -780,7 +514,7 @@ const HomePage = () => {
               </div>
             </div>
           </AnimatedSection>
-        </div>
+        </div>  
       </section>
     </div>
   );
