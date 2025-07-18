@@ -16,227 +16,391 @@ import {
   Zap,
   ArrowRight,
   CheckCircle,
-  Clock
+  Clock,
+  GitBranch,
+  Workflow,
+  BarChart3,
+  Link2,
+  Settings,
+  BookOpen,
+  UserCheck,
+  ClipboardCheck,
+  TrendingUp,
+  Gauge,
+  Globe,
+  Lock,
+  Activity
 } from 'lucide-react';
-import AnimatedSection from '../utils/AnimatedSection';
 
 const ToolkitPage = () => {
-  // Tool categories and their associated tools
+  // Simple fade-in animation component
+  const AnimatedSection = ({ children, delay = 0 }) => (
+    <div 
+      className="opacity-0 animate-[fadeIn_0.6s_ease-in-out_forwards]"
+      style={{ 
+        animationDelay: `${delay}s`,
+        animation: `fadeIn 0.6s ease-in-out ${delay}s forwards`
+      }}
+    >
+      {children}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </div>
+  );
+
+  // Tool categories aligned with CyberCaution's core capabilities
   const toolCategories = [
     {
-      name: "Ransomware Suite",
-      description: "Comprehensive protection against ransomware threats",
+      name: "Security Tool Integration Hub",
+      description: "Connect and orchestrate your existing security infrastructure",
       tools: [
         {
-          id: 'predictive-analytics',
-          title: 'Predictive Breach Analytics',
-          description: 'AI-powered vulnerability prediction and risk forecasting',
-          icon: Brain,
-          path: '/tools/predictive-analytics',
-          color: 'bg-electric-blue/10',
-          iconColor: 'text-electric-blue'
+          id: 'integration-manager',
+          title: 'Integration Manager',
+          description: 'Connect SIEM, EDR, vulnerability scanners, and other security tools into a unified platform',
+          icon: Link2,
+          path: '/tools/integration-manager',
+          color: 'bg-blue-500/10',
+          iconColor: 'text-blue-500'
         },
         {
-          id: 'dark-web-monitor',
-          title: 'Dark Web Monitoring',
-          description: 'Continuous surveillance for credential leaks and organizational threats',
-          icon: Eye,
-          path: '/tools/dark-web-monitor',
+          id: 'api-connector',
+          title: 'API Connector Studio',
+          description: 'Build custom integrations with your security tools using our visual API builder',
+          icon: GitBranch,
+          path: '/tools/api-connector',
           color: 'bg-indigo-500/10',
           iconColor: 'text-indigo-500'
         },
-      ]
-    },
-    {
-      name: "Vendor Risk Radar",
-      description: "Monitor and manage third-party security risks",
-      tools: [
         {
-          id: 'vendor-iq-enhanced',
-          title: 'VendorIQ Enhanced',
-          description: 'NIST-aligned vendor risk management with real-time collaboration and advanced analytics',
-          icon: Building2,
-          path: '/tools/vendor-iq-enhanced',
-          color: 'bg-warning-amber/10',
-          iconColor: 'text-warning-amber'
-        },
-        {
-          id: 'vendor-scorecard',
-          title: 'Vendor Security Scorecard',
-          description: 'Assess and monitor third-party security risks',
-          icon: Building2,
-          path: '/tools/vendor-scorecard',
-          color: 'bg-warning-amber/10',
-          iconColor: 'text-warning-amber'
-        },
-        {
-          id: 'industry-threats',
-          title: 'Industry Threat Profiler',
-          description: 'Sector-specific threat intelligence and attack pattern analysis',
-          icon: Network,
-          path: '/tools/industry-threats',
-          color: 'bg-pink-500/10',
-          iconColor: 'text-pink-500'
-        }
-      ]
-    },
-    {
-      name: "Compliance & Governance",
-      description: "Framework implementation and policy management",
-      tools: [
-        {
-          id: 'compliance-gap-checker',
-          title: 'Compliance Gap Checker',
-          description: 'Identify and remediate compliance gaps across frameworks',
-          icon: CheckCircle,
-          path: '/tools/compliance-gap-checker',
-          color: 'bg-secure-green/10',
-          iconColor: 'text-secure-green'
-        },
-        {
-          id: 'nist-csf-wizard',
-          title: 'NIST CSF Toolkit',
-          description: 'Comprehensive framework implementation guidance and tracking',
-          icon: Shield,
-          path: '/tools/nist-csf-wizard',
-          color: 'bg-secure-green/10',
-          iconColor: 'text-secure-green'
-        },
-        {
-          id: 'policy-generator',
-          title: 'Big 5 Policy Generator',
-          description: 'Create customized cybersecurity policies for your organization',
-          icon: FileText,
-          path: '/tools/policy-generator',
-          color: 'bg-teal-500/10',
-          iconColor: 'text-teal-500'
-        },
-        {
-          id: 'business-impact',
-          title: 'Business Impact Calculator',
-          description: 'Quantify financial impact of cybersecurity incidents',
-          icon: Calculator,
-          path: '/tools/business-impact',
+          id: 'data-normalizer',
+          title: 'Data Normalization Engine',
+          description: 'Standardize data formats across different security tools for unified analytics',
+          icon: Database,
+          path: '/tools/data-normalizer',
           color: 'bg-purple-500/10',
           iconColor: 'text-purple-500'
         }
       ]
     },
     {
-      name: "Recovery & Resilience",
-      description: "Business continuity and data recovery tools",
+      name: "Workflow Orchestration",
+      description: "Automate and streamline security operations",
       tools: [
         {
-          id: 'recovery-time-calculator',
-          title: 'Recovery Time Calculator',
-          description: 'Estimate recovery time objectives and business continuity metrics',
-          icon: Clock,
-          path: '/tools/recovery-time-calculator',
-          color: 'bg-blue-500/10',
-          iconColor: 'text-blue-500'
+          id: 'workflow-designer',
+          title: 'Security Workflow Designer',
+          description: 'Visual workflow builder for automated incident response and security operations',
+          icon: Workflow,
+          path: '/tools/workflow-designer',
+          color: 'bg-orange-500/10',
+          iconColor: 'text-orange-500'
         },
         {
-          id: 'backup-integrity-validator',
-          title: 'Backup Integrity Validator',
-          description: 'Verify backup integrity and restoration readiness',
-          icon: Database,
-          path: '/tools/backup-integrity-validator',
+          id: 'playbook-automation',
+          title: 'Playbook Automation Engine',
+          description: 'Pre-built and customizable security playbooks aligned with NIST incident response',
+          icon: Zap,
+          path: '/tools/playbook-automation',
+          color: 'bg-amber-500/10',
+          iconColor: 'text-amber-500'
+        },
+        {
+          id: 'orchestration-dashboard',
+          title: 'Orchestration Dashboard',
+          description: 'Real-time monitoring and control of automated security workflows',
+          icon: Activity,
+          path: '/tools/orchestration-dashboard',
           color: 'bg-green-500/10',
           iconColor: 'text-green-500'
         }
       ]
     },
     {
-      name: "Incident Response & Analytics",
-      description: "Automated playbooks and recovery procedures",
+      name: "Governance & Compliance Framework",
+      description: "Policy management and regulatory compliance tools",
       tools: [
         {
-          id: 'incident-orchestrator',
-          title: 'Incident Response Playbooks',
-          description: 'NIST-based ransomware response procedures with real-time tracking',
-          icon: Zap,
-          path: '/tools/incident-orchestrator',
+          id: 'policy-orchestrator',
+          title: 'Policy Orchestrator',
+          description: 'Centralized policy creation, distribution, and enforcement across your organization',
+          icon: FileText,
+          path: '/tools/policy-orchestrator',
+          color: 'bg-teal-500/10',
+          iconColor: 'text-teal-500'
+        },
+        {
+          id: 'compliance-mapper',
+          title: 'Compliance Mapping Engine',
+          description: 'Map controls across NIST, ISO, SOC2, HIPAA, and other frameworks',
+          icon: CheckCircle,
+          path: '/tools/compliance-mapper',
+          color: 'bg-green-500/10',
+          iconColor: 'text-green-500'
+        },
+        {
+          id: 'governance-scorecard',
+          title: 'Governance Scorecard',
+          description: 'Track policy adherence and compliance metrics across your security program',
+          icon: Gauge,
+          path: '/tools/governance-scorecard',
+          color: 'bg-blue-500/10',
+          iconColor: 'text-blue-500'
+        },
+        {
+          id: 'audit-automation',
+          title: 'Audit Automation Suite',
+          description: 'Automated evidence collection and audit preparation across integrated tools',
+          icon: ClipboardCheck,
+          path: '/tools/audit-automation',
+          color: 'bg-pink-500/10',
+          iconColor: 'text-pink-500'
+        }
+      ]
+    },
+    {
+      name: "Analytics & Intelligence Overlay",
+      description: "Aggregate and analyze data from all connected security tools",
+      tools: [
+        {
+          id: 'unified-analytics',
+          title: 'Unified Security Analytics',
+          description: 'Cross-platform analytics dashboard aggregating data from all integrated tools',
+          icon: BarChart3,
+          path: '/tools/unified-analytics',
+          color: 'bg-blue-500/10',
+          iconColor: 'text-blue-500'
+        },
+        {
+          id: 'threat-correlation',
+          title: 'Threat Correlation Engine',
+          description: 'AI-powered correlation of threats across multiple security data sources',
+          icon: Brain,
+          path: '/tools/threat-correlation',
+          color: 'bg-indigo-500/10',
+          iconColor: 'text-indigo-500'
+        },
+        {
+          id: 'risk-aggregator',
+          title: 'Risk Score Aggregator',
+          description: 'Consolidated risk scoring across vulnerabilities, threats, and compliance gaps',
+          icon: TrendingUp,
+          path: '/tools/risk-aggregator',
+          color: 'bg-amber-500/10',
+          iconColor: 'text-amber-500'
+        },
+        {
+          id: 'executive-reporting',
+          title: 'Executive Reporting Suite',
+          description: 'Automated board-ready reports with data from all integrated security tools',
+          icon: FileText,
+          path: '/tools/executive-reporting',
+          color: 'bg-purple-500/10',
+          iconColor: 'text-purple-500'
+        }
+      ]
+    },
+    {
+      name: "Human-Centric Security Training",
+      description: "Integrated training aligned with technical controls",
+      tools: [
+        {
+          id: 'training-orchestrator',
+          title: 'Training Orchestrator',
+          description: 'Automated security awareness training triggered by security events and policy changes',
+          icon: BookOpen,
+          path: '/tools/training-orchestrator',
+          color: 'bg-green-500/10',
+          iconColor: 'text-green-500'
+        },
+        {
+          id: 'phishing-simulator',
+          title: 'Phishing Simulation Platform',
+          description: 'Integrated phishing tests with automated training for failed attempts',
+          icon: Eye,
+          path: '/tools/phishing-simulator',
           color: 'bg-orange-500/10',
           iconColor: 'text-orange-500'
+        },
+        {
+          id: 'role-based-training',
+          title: 'Role-Based Training Engine',
+          description: 'Customized security training paths based on job roles and access levels',
+          icon: UserCheck,
+          path: '/tools/role-based-training',
+          color: 'bg-teal-500/10',
+          iconColor: 'text-teal-500'
+        }
+      ]
+    },
+    {
+      name: "Assessment & Benchmarking",
+      description: "Professional assessment tools with industry benchmarks",
+      tools: [
+        {
+          id: 'maturity-assessment',
+          title: 'Security Maturity Assessment',
+          description: 'NIST CSF-aligned maturity assessment with industry benchmarking',
+          icon: Shield,
+          path: '/tools/maturity-assessment',
+          color: 'bg-green-500/10',
+          iconColor: 'text-green-500'
+        },
+        {
+          id: 'gap-analysis',
+          title: 'Gap Analysis Engine',
+          description: 'Automated gap identification across technical controls and governance',
+          icon: Calculator,
+          path: '/tools/gap-analysis',
+          color: 'bg-blue-500/10',
+          iconColor: 'text-blue-500'
+        },
+        {
+          id: 'vendor-assessment',
+          title: 'Vendor Risk Assessment',
+          description: 'Third-party risk assessment integrated with your vendor management systems',
+          icon: Building2,
+          path: '/tools/vendor-assessment',
+          color: 'bg-pink-500/10',
+          iconColor: 'text-pink-500'
         }
       ]
     }
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <AnimatedSection type="fadeIn">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-4 text-foreground">CyberCaution Security Toolkit</h1>
-          <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-4">
-            Professional-grade cybersecurity tools for every organization
-          </p>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            This comprehensive toolkit provides powerful security assessment, monitoring, 
-            and planning capabilities aligned with NIST and CISA frameworks.
-          </p>
-        </div>
-      </AnimatedSection>
-
-      <AnimatedSection type="fadeIn" delay={0.1}>
-        {toolCategories.map((category, categoryIndex) => (
-          <div key={categoryIndex} className="mb-12">
-            <h2 className="text-2xl font-bold mb-4 text-foreground">{category.name}</h2>
-            <p className="text-muted-foreground mb-6">{category.description}</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {category.tools.map((tool) => (
-                <Link to={tool.path} key={tool.id}>
-                  <Card className="h-full hover:shadow-lg transition-shadow border dark:border-muted">
-                    <CardContent className="p-6">
-                      <div className={`w-12 h-12 rounded-lg ${tool.color} flex items-center justify-center mb-4`}>
-                        <tool.icon className={`h-6 w-6 ${tool.iconColor}`} />
-                      </div>
-                      <h3 className="text-lg font-medium mb-2 text-foreground">{tool.title}</h3>
-                      <p className="text-muted-foreground mb-4">{tool.description}</p>
-                      <div className="flex justify-end">
-                        <Button variant="ghost" size="sm" className="mt-auto">
-                          Open Tool
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
-      </AnimatedSection>
-
-      <AnimatedSection type="fadeIn" delay={0.2}>
-        <Card className="bg-primary/5 border border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center mb-4">
-              <AlertTriangle className="h-6 w-6 text-primary mr-3" />
-              <h3 className="text-xl font-medium">CISA-Aligned Security Tools</h3>
-            </div>
-            <p className="text-muted-foreground mb-4">
-              These tools are aligned with CISA's Cross-Sector Cybersecurity Performance Goals (CPGs) 
-              and NIST frameworks to help organizations improve their security posture against evolving threats.
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <AnimatedSection delay={0}>
+          <div className="text-center mb-12">
+            <h1 className="text-3xl font-bold mb-4 text-foreground">CyberCaution Security Orchestration Toolkit</h1>
+            <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-4">
+              Orchestrate, Govern, and Optimize Your Security Infrastructure
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div className="p-4 border border-border rounded-lg">
-                <h4 className="font-medium mb-2 text-foreground">Assessment</h4>
-                <p className="text-sm text-muted-foreground">Evaluate your current security posture and identify gaps</p>
-              </div>
-              <div className="p-4 border border-border rounded-lg">
-                <h4 className="font-medium mb-2 text-foreground">Monitoring</h4>
-                <p className="text-sm text-muted-foreground">Real-time threat detection and intelligence gathering</p>
-              </div>
-              <div className="p-4 border border-border rounded-lg">
-                <h4 className="font-medium mb-2 text-foreground">Response</h4>
-                <p className="text-sm text-muted-foreground">Preparation and planning for security incidents</p>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              CyberCaution is not a SIEM/EDR replacement - it's the orchestration layer that unifies your existing 
+              security tools, automates workflows, enforces governance, and provides actionable analytics across 
+              your entire security ecosystem.
+            </p>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.1}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+            <Card className="bg-primary/5 border border-primary/20">
+              <CardContent className="p-4 text-center">
+                <Link2 className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium text-sm">Integration Hub</h4>
+                <p className="text-xs text-muted-foreground mt-1">Connect all tools</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-primary/5 border border-primary/20">
+              <CardContent className="p-4 text-center">
+                <Workflow className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium text-sm">Workflow Engine</h4>
+                <p className="text-xs text-muted-foreground mt-1">Automate operations</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-primary/5 border border-primary/20">
+              <CardContent className="p-4 text-center">
+                <Shield className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium text-sm">Governance</h4>
+                <p className="text-xs text-muted-foreground mt-1">Policy & compliance</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-primary/5 border border-primary/20">
+              <CardContent className="p-4 text-center">
+                <BarChart3 className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium text-sm">Analytics</h4>
+                <p className="text-xs text-muted-foreground mt-1">Unified insights</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-primary/5 border border-primary/20">
+              <CardContent className="p-4 text-center">
+                <Users className="h-8 w-8 mx-auto mb-2 text-primary" />
+                <h4 className="font-medium text-sm">Training</h4>
+                <p className="text-xs text-muted-foreground mt-1">Human-centric</p>
+              </CardContent>
+            </Card>
+          </div>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.2}>
+          {toolCategories.map((category, categoryIndex) => (
+            <div key={categoryIndex} className="mb-12">
+              <h2 className="text-2xl font-bold mb-4 text-foreground">{category.name}</h2>
+              <p className="text-muted-foreground mb-6">{category.description}</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.tools.map((tool) => (
+                  <div key={tool.id} className="cursor-pointer" onClick={() => console.log(`Navigate to ${tool.path}`)}>
+                    <Card className="h-full hover:shadow-lg transition-shadow border dark:border-muted">
+                      <CardContent className="p-6">
+                        <div className={`w-12 h-12 rounded-lg ${tool.color} flex items-center justify-center mb-4`}>
+                          <tool.icon className={`h-6 w-6 ${tool.iconColor}`} />
+                        </div>
+                        <h3 className="text-lg font-medium mb-2 text-foreground">{tool.title}</h3>
+                        <p className="text-muted-foreground mb-4">{tool.description}</p>
+                        <div className="flex justify-end">
+                          <Button variant="ghost" size="sm" className="mt-auto">
+                            Open Tool
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </AnimatedSection>
+          ))}
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.3}>
+          <Card className="bg-gradient-to-r from-primary/5 to-orange-500/5 border border-primary/20">
+            <CardContent className="p-8">
+              <div className="flex items-center mb-4">
+                <AlertTriangle className="h-6 w-6 text-primary mr-3" />
+                <h3 className="text-xl font-medium">Why CyberCaution?</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2 text-foreground">What We Are NOT:</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• Not another SIEM or EDR solution</li>
+                    <li>• Not a replacement for your security tools</li>
+                    <li>• Not just another dashboard</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2 text-foreground">What We ARE:</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• The orchestration layer for your security stack</li>
+                    <li>• Your automated workflow engine</li>
+                    <li>• Your governance and compliance hub</li>
+                    <li>• Your unified analytics platform</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 pt-6 border-t border-border">
+                <p className="text-sm text-muted-foreground mb-4">
+                  <strong className="text-foreground">Integration Partners:</strong> Seamlessly connect with Splunk, 
+                  CrowdStrike, Palo Alto Networks, Microsoft Sentinel, Qualys, Rapid7, ServiceNow, and 100+ other 
+                  security tools through our Integration Hub.
+                </p>
+                <Button className="bg-primary hover:bg-primary/90">
+                  Schedule Platform Demo
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedSection>
+      </div>
     </div>
   );
 };
