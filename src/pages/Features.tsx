@@ -25,16 +25,18 @@ import {
 const Features = () => {
   return (
     <div className="py-20">
+      
       {/* Hero Section */}
-      <AnimatedSection type="fadeIn" className="mb-16 text-center px-4 md:px-6">
-        <h1 className="text-4xl font-bold mb-4 text-foreground">CyberCaution™ Features</h1>
-        <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-4">
-          Enterprise-grade security assessment, monitoring, and response
-        </p>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Comprehensive tools and capabilities to strengthen your cybersecurity posture and protect your organization from evolving threats
-        </p>
-      </AnimatedSection>
+<AnimatedSection type="fadeIn" className="mb-16 text-center px-4 md:px-6">
+  <h1 className="text-4xl font-bold mb-4 text-foreground">CyberCaution™ Features</h1>
+  <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-4">
+    Security Orchestration &amp; Governance Platform for Proactive Risk Management
+  </p>
+  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+    NIST-Aligned, Integrated Platform for Cyber Risk Orchestration &amp; Governance
+  </p>
+</AnimatedSection>
+     
 
       {/* Core Capabilities Section */}
       <AnimatedSection type="fadeIn" delay={0.1} className="mb-16 px-4 md:px-6">
@@ -331,7 +333,7 @@ const Features = () => {
       <AnimatedSection type="fadeIn" delay={0.4} className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Key Benefits</h2>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Key Benefits of CyberCaution</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               Discover why security professionals choose CyberCaution for comprehensive protection
             </p>
