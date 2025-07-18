@@ -392,10 +392,12 @@ const ToolkitPage = () => {
                   CrowdStrike, Palo Alto Networks, Microsoft Sentinel, Qualys, Rapid7, ServiceNow, and 100+ other 
                   security tools through our Integration Hub.
                 </p>
-                <Button className="bg-primary hover:bg-primary/90">
+                <Link to="/demo">
+                  <Button className="bg-primary hover:bg-primary/90">
                   Schedule Platform Demo
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
