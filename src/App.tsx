@@ -1,6 +1,7 @@
  import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/Toaster';
+import ErrorBoundary from './components/ErrorBoundary';
 // Import main layout components directly since they're used for the structure
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
 import { MainLayout } from './components/layout/MainLayout';
@@ -123,86 +124,88 @@ function App() {
 
   return (
     <Router>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {/* Main website routes */}
-          <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/features" element={<Features />} />
-            <Route path="/solutions" element={<Solutions />} />
-            <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/support" element={<Support />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/onboarding" element={<OnboardingPage />} />
-            <Route path="/demo" element={<DemoPage />} />
-          <Route path="/toolkit" element={<ToolkitPage />} />
-            <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
-            <Route path="/company/privacy" element={<Privacy />} />
-            <Route path="/company/terms" element={<Terms />} />
-            
-            {/* Toolkit Tool Routes */}
-            <Route path="/tools/predictive-analytics" element={<React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense>} />
-            <Route path="/tools/nist-csf-wizard" element={<React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense>} />
-            <Route path="/tools/vendor-scorecard" element={<React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense>} />
-            <Route path="/tools/compliance-gap-checker" element={<React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense>} />
-            <Route path="/tools/industry-threats" element={<React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense>} />
-            <Route path="/tools/dark-web-monitor" element={<React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense>} />
-            <Route path="/tools/recovery-time-calculator" element={<React.Suspense fallback={<LoadingFallback />}><RecoveryTimeCalculator /></React.Suspense>} />
-            <Route path="/tools/backup-integrity-validator" element={<React.Suspense fallback={<LoadingFallback />}><BackupIntegrityValidator /></React.Suspense>} />
-            <Route path="/tools/business-impact" element={<React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense>} />
-            <Route path="/tools/policy-generator" element={<React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense>} />
-            <Route path="/tools/incident-orchestrator" element={<React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense>} />
-            
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {/* Main website routes */}
+            <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/features" element={<Features />} />
+              <Route path="/solutions" element={<Solutions />} />
+              <Route path="/resources" element={<ResourcesPage />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/onboarding" element={<OnboardingPage />} />
+              <Route path="/demo" element={<DemoPage />} />
+            <Route path="/toolkit" element={<ToolkitPage />} />
+              <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
+              <Route path="/company/privacy" element={<Privacy />} />
+              <Route path="/company/terms" element={<Terms />} />
+              
+              {/* Toolkit Tool Routes */}
+              <Route path="/tools/predictive-analytics" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/nist-csf-wizard" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/vendor-scorecard" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/compliance-gap-checker" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/industry-threats" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/dark-web-monitor" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/recovery-time-calculator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><RecoveryTimeCalculator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/backup-integrity-validator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BackupIntegrityValidator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/business-impact" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/policy-generator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/incident-orchestrator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense></ErrorBoundary>} />
+              
+            </Route>
+
+            {/* Auth routes */}
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<LoginPage />} />
+            </Route>
+
+            {/* Assessment routes */}
+            <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
+              {/* Assessment landing page */}
+              <Route path="/assessments" element={<AssessmentsLanding />} />
+            </Route>
+
+            {/* Protected routes */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode}>
+                  <Dashboard />
+                </AssessmentLayout>
+              </ProtectedRoute>
+            } />
+
+            <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
+            {/* Assessment tools */}
+            <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
+            <Route path="/ransomware-results" element={<RansomwareResults />} />
+            <Route path="/ransomware-recommendations" element={<RansomwareRecommendations />} />
+            <Route path="/supply-chain-assessment" element={<SupplyChainAssessment />} />
+            <Route path="/supply-chain-results" element={<SupplyChainResults />} />
+            <Route path="/supply-chain-recommendations" element={<SupplyChainRecommendations />} />
+            <Route path="/zero-trust-maturity-assessment" element={<ZeroTrustMaturityAssessment />} />
+            <Route path="/zero-trust-maturity-results" element={<ZeroTrustMaturityResults />} />
+            <Route path="/network-segmentation-assessment" element={<NetworkSegmentationAssessment />} />
+            <Route path="/network-segmentation-results" element={<NetworkSegmentationResults />} />
+            <Route path="/backup-readiness-assessment" element={<BackupReadinessAssessment />} />
+            <Route path="/backup-readiness-results" element={<BackupReadinessResults />} />
+            <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
+            <Route path="/incident-response-results" element={<IncidentResponseResults />} />
+            <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
+            <Route path="/vulnerability-management-results" element={<VulnerabilityManagementResults />} />
+            <Route path="/tabletop-exercise" element={<TabletopExercise />} />
+            <Route path="/nist-csf-alignment" element={<NistCsfAlignment />} />
+            <Route path="/security-awareness" element={<SecurityAwareness />} />
           </Route>
-
-          {/* Auth routes */}
-          <Route element={<AuthLayout />}>
-            <Route path="/login" element={<LoginPage />} />
-          </Route>
-
-          {/* Assessment routes */}
-          <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
-            {/* Assessment landing page */}
-            <Route path="/assessments" element={<AssessmentsLanding />} />
-          </Route>
-
-          {/* Protected routes */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode}>
-                <Dashboard />
-              </AssessmentLayout>
-            </ProtectedRoute>
-          } />
-
-          <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
-          {/* Assessment tools */}
-          <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
-          <Route path="/ransomware-results" element={<RansomwareResults />} />
-          <Route path="/ransomware-recommendations" element={<RansomwareRecommendations />} />
-          <Route path="/supply-chain-assessment" element={<SupplyChainAssessment />} />
-          <Route path="/supply-chain-results" element={<SupplyChainResults />} />
-          <Route path="/supply-chain-recommendations" element={<SupplyChainRecommendations />} />
-          <Route path="/zero-trust-maturity-assessment" element={<ZeroTrustMaturityAssessment />} />
-          <Route path="/zero-trust-maturity-results" element={<ZeroTrustMaturityResults />} />
-          <Route path="/network-segmentation-assessment" element={<NetworkSegmentationAssessment />} />
-          <Route path="/network-segmentation-results" element={<NetworkSegmentationResults />} />
-          <Route path="/backup-readiness-assessment" element={<BackupReadinessAssessment />} />
-          <Route path="/backup-readiness-results" element={<BackupReadinessResults />} />
-          <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
-          <Route path="/incident-response-results" element={<IncidentResponseResults />} />
-          <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
-          <Route path="/vulnerability-management-results" element={<VulnerabilityManagementResults />} />
-          <Route path="/tabletop-exercise" element={<TabletopExercise />} />
-          <Route path="/nist-csf-alignment" element={<NistCsfAlignment />} />
-          <Route path="/security-awareness" element={<SecurityAwareness />} />
-        </Route>
-        
-        {/* 404 route */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      </Suspense>
+          
+          {/* 404 route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        </Suspense>
+      </ErrorBoundary>
       <Toaster />
      <Analytics />
     </Router>
