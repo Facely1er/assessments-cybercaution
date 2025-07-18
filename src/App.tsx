@@ -26,6 +26,7 @@ const RiskAggregator = React.lazy(() => import('./pages/tools/BusinessImpactCalc
 const PlaybookAutomation = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
 const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
 import AssetManager from './pages/tools/AssetManager';
+const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNormalizationEngine'));
 
 // Lazy load new orchestration tools
 const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
@@ -175,6 +176,7 @@ function App() {
                 <Route path="/tools/risk-aggregator" element={<RiskAggregator />} />
                 <Route path="/tools/playbook-automation" element={<PlaybookAutomation />} />
                 <Route path="/tools/workflow-designer" element={<WorkflowDesigner />} />
+                <Route path="/tools/data-normalization-engine" element={<DataNormalizationEngine />} />
               </Route>
 
               {/* Protected routes */}
