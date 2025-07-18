@@ -26,13 +26,13 @@ export interface RouteConfig {
 // Tool routes configuration
 export const toolRoutes: ToolRoute[] = [
   {
-    id: 'integration-hub',
+    id: 'integration-manager',
     path: '/tools/integration-hub',
-    name: 'Integration Hub',
+    name: 'Integration Manager',
     description: 'Connect and unify your existing security tools into a single orchestration platform',
     category: 'integration',
     icon: Network,
-    component: React.lazy(() => import('../pages/tools/IntegrationHub')),
+    component: React.lazy(() => import('../pages/tools/IntegrationManager')),
     features: [
       'SIEM/SOAR integration',
       'EDR/XDR connectivity',

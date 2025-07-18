@@ -16,15 +16,15 @@ const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
 const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
 // Lazy load updated toolkit tools
-const ThreatCorrelation = React.lazy(() => import('./pages/tools/ThreatCorrelation'));
-const UnifiedAnalytics = React.lazy(() => import('./pages/tools/UnifiedAnalytics'));
-const VendorAssessment = React.lazy(() => import('./pages/tools/VendorAssessment'));
-const GapAnalysis = React.lazy(() => import('./pages/tools/GapAnalysis'));
-const ComplianceMapper = React.lazy(() => import('./pages/tools/ComplianceMapper'));
-const PolicyOrchestrator = React.lazy(() => import('./pages/tools/PolicyOrchestrator'));
-const RiskAggregator = React.lazy(() => import('./pages/tools/RiskAggregator'));
-const PlaybookAutomation = React.lazy(() => import('./pages/tools/PlaybookAutomation'));
-const WorkflowDesigner = React.lazy(() => import('./pages/tools/WorkflowDesigner'));
+const ThreatCorrelation = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
+const UnifiedAnalytics = React.lazy(() => import('./pages/tools/DarkWebMonitoring'));
+const VendorAssessment = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
+const GapAnalysis = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
+const ComplianceMapper = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
+const PolicyOrchestrator = React.lazy(() => import('./pages/tools/Big5PolicyGenerator'));
+const RiskAggregator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
+const PlaybookAutomation = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
+const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
 
 // Lazy load new orchestration tools
 const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
