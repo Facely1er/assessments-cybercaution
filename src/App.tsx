@@ -173,11 +173,9 @@ function App() {
 
             {/* Protected routes */}
             <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode}>
-                  <Dashboard />
-                </AssessmentLayout>
-              </ProtectedRoute>
+              <MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen}>
+                <Dashboard />
+              </MainLayout>
             } />
 
             <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
