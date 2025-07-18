@@ -1,77 +1,117 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
 
-type CardProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'bordered' | 'elevated';
+}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, variant = 'default', ...props }, ref) => {
+    const variants = {
+      default: "border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900",
+      bordered: "border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900",
+      elevated: "border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-lg dark:shadow-xl dark:shadow-slate-900/50"
+    };
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "rounded-lg text-slate-900 dark:text-slate-100 transition-all duration-200",
+          variants[variant],
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+Card.displayName = "Card";
+
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  noPadding?: boolean;
+}
+
+const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
+  ({ className, noPadding = false, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        "rounded-lg border border-border bg-card text-card-foreground shadow-sm dark:shadow-none",
+        "flex flex-col space-y-1.5",
+        !noPadding && "p-6",
         className
       )}
       {...props}
     />
   )
 );
-Card.displayName = "Card";
-
-type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
-
-const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn("flex flex-col space-y-1.5 p-6", className)}
-      {...props}
-    />
-  )
-);
 CardHeader.displayName = "CardHeader";
 
-type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+}
 
 const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
-  ({ className, ...props }, ref) => (
-    <h3
+  ({ className, as: Component = 'h3', ...props }, ref) => (
+    <Component
       ref={ref}
-      className={cn("text-xl font-semibold leading-none tracking-tight", className)}
+      className={cn(
+        "text-2xl font-semibold leading-none tracking-tight text-slate-900 dark:text-slate-100",
+        className
+      )}
       {...props}
     />
   )
 );
 CardTitle.displayName = "CardTitle";
 
-type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
 
 const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(
+        "text-sm text-slate-600 dark:text-slate-400",
+        className
+      )}
       {...props}
     />
   )
 );
 CardDescription.displayName = "CardDescription";
 
-type CardContentProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  noPadding?: boolean;
+}
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  ({ className, noPadding = false, ...props }, ref) => (
+    <div 
+      ref={ref} 
+      className={cn(
+        !noPadding && "p-6 pt-0",
+        className
+      )} 
+      {...props} 
+    />
   )
 );
 CardContent.displayName = "CardContent";
 
-type CardFooterProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  noPadding?: boolean;
+}
 
 const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, noPadding = false, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex items-center p-6 pt-0", className)}
+      className={cn(
+        "flex items-center",
+        !noPadding && "p-6 pt-0",
+        className
+      )}
       {...props}
     />
   )
