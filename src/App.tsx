@@ -1,21 +1,21 @@
-// src/App.tsx
+ // src/App.tsx
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Add Navigate here
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/Toaster';
 import ErrorBoundary from './components/ErrorBoundary';
-// Import main layout components directly since they're used for the structure
+import { ThemeProvider } from './contexts/ThemeContext';
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
 import { MainLayout } from './components/layout/MainLayout';
+import { ToolLayout } from './components/layout/ToolLayout';
 import { Analytics } from '@vercel/analytics/react';
 import AuthLayout from './components/auth/AuthLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Lazy load the OnboardingPage component
+// Lazy load pages
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
-// Lazy load the QuickCyberCheck component
 const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
-// Lazy load tool components
+// Lazy load existing tools (legacy support)
 const PredictiveBreachAnalytics = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
 const NISTCSFToolkit = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
 const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
@@ -29,7 +29,15 @@ const DarkWebMonitoring = React.lazy(() => import('./pages/tools/DarkWebMonitori
 const Big5PolicyGenerator = React.lazy(() => import('./pages/tools/Big5PolicyGenerator'));
 const IncidentResponsePlaybooks = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
 
-// Lazy load all page components
+// Lazy load new orchestration tools
+const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
+const IntegrationHub = React.lazy(() => import('./pages/tools/IntegrationHub'));
+const WorkflowOrchestrator = React.lazy(() => import('./pages/tools/WorkflowOrchestrator'));
+const GovernanceFramework = React.lazy(() => import('./pages/tools/GovernanceFramework'));
+const AnalyticsOverlay = React.lazy(() => import('./pages/tools/AnalyticsOverlay'));
+const SecurityTraining = React.lazy(() => import('./pages/tools/SecurityTraining'));
+
+// Lazy load all other page components
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Pricing = React.lazy(() => import('./pages/Pricing'));
 const Features = React.lazy(() => import('./pages/Features'));
@@ -65,23 +73,29 @@ const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const Terms = React.lazy(() => import('./pages/Terms'));
 
+// Loading component
+const LoadingFallback: React.FC = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="relative">
+      <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+    </div>
+  </div>
+);
+
 function App() {
-  const [darkMode, setDarkMode] = React.useState(() => {
-    // Initialize from local storage or system preference
+  const [darkMode, setDarkMode] = React.useState<boolean>(() => {
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode !== null) {
       return savedMode === 'true';
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   
-  // Apply dark mode class with a slight delay to prevent flicker
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState<boolean>(false);
+  
   React.useEffect(() => {
-    // Store the preference
     localStorage.setItem('darkMode', String(darkMode));
     
-    // Apply the class without animation first
     if (darkMode) {
       document.documentElement.classList.add('dark-mode-transition-disabled');
       document.documentElement.classList.add('dark');
@@ -90,7 +104,6 @@ function App() {
       document.documentElement.classList.remove('dark');
     }
     
-    // Enable animations after a small delay
     const timer = setTimeout(() => {
       document.documentElement.classList.remove('dark-mode-transition-disabled');
     }, 100);
@@ -98,7 +111,6 @@ function App() {
     return () => clearTimeout(timer);
   }, [darkMode]);
 
-  // Listen for system preference changes
   React.useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
@@ -111,122 +123,118 @@ function App() {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Loading fallback for lazy loaded components
-  const LoadingFallback = () => (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="relative">
-        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-      </div>
-    </div>
-  );
-
   const toggleDarkMode = () => {
     setDarkMode(prevMode => !prevMode);
   };
 
   return (
-    <Router>
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            {/* Main website routes */}
-            <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/features" element={<Features />} />
-              <Route path="/solutions" element={<Solutions />} />
-              <Route path="/resources" element={<ResourcesPage />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/onboarding" element={<OnboardingPage />} />
-              <Route path="/demo" element={<DemoPage />} />
-            <Route path="/toolkit" element={<ToolkitPage />} />
-              <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
-              <Route path="/company/privacy" element={<Privacy />} />
-              <Route path="/company/terms" element={<Terms />} />
+    <ThemeProvider value={{ darkMode, toggleDarkMode }}>
+      <Router>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {/* Main website routes */}
+              <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/features" element={<Features />} />
+                <Route path="/solutions" element={<Solutions />} />
+                <Route path="/resources" element={<ResourcesPage />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/onboarding" element={<OnboardingPage />} />
+                <Route path="/demo" element={<DemoPage />} />
+                <Route path="/toolkit" element={<ToolkitPage />} />
+                <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
+                <Route path="/company/privacy" element={<Privacy />} />
+                <Route path="/company/terms" element={<Terms />} />
+              </Route>
+
+              {/* Auth routes */}
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<LoginPage />} />
+              </Route>
+
+              {/* Tool routes with ToolLayout */}
+              <Route element={<ToolLayout />}>
+                {/* Tools directory */}
+                <Route path="/tools" element={<ToolsDirectory />} />
+                
+                {/* New Orchestration & Governance Tools */}
+                <Route path="/tools/integration-hub" element={<IntegrationHub />} />
+                <Route path="/tools/workflow-orchestrator" element={<WorkflowOrchestrator />} />
+                <Route path="/tools/governance-framework" element={<GovernanceFramework />} />
+                <Route path="/tools/analytics-overlay" element={<AnalyticsOverlay />} />
+                <Route path="/tools/security-training" element={<SecurityTraining />} />
+                
+                {/* Legacy tool routes with redirects */}
+                <Route path="/tools/predictive-analytics" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/dark-web-monitor" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/vendor-iq-enhanced" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/vendor-scorecard" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/industry-threats" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/compliance-gap-checker" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/nist-csf-wizard" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/policy-generator" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/business-impact" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/recovery-time-calculator" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
+                <Route path="/tools/backup-integrity-validator" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
+                <Route path="/tools/incident-orchestrator" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
+                
+                {/* Mapped legacy routes */}
+                <Route path="/tools/threat-correlation" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/compliance-mapper" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/vendor-assessment" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/gap-analysis" element={<Navigate to="/tools/governance-framework" replace />} />
+                <Route path="/tools/unified-analytics" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/playbook-automation" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
+                <Route path="/tools/workflow-designer" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
+                <Route path="/tools/risk-aggregator" element={<Navigate to="/tools/analytics-overlay" replace />} />
+                <Route path="/tools/policy-orchestrator" element={<Navigate to="/tools/governance-framework" replace />} />
+              </Route>
+
+              {/* Protected routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen}>
+                    <Dashboard />
+                  </MainLayout>
+                </ProtectedRoute>
+              } />
+
+              {/* Assessment routes */}
+              <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
+                <Route path="/assessments" element={<AssessmentsLanding />} />
+                <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
+                <Route path="/ransomware-results" element={<RansomwareResults />} />
+                <Route path="/ransomware-recommendations" element={<RansomwareRecommendations />} />
+                <Route path="/supply-chain-assessment" element={<SupplyChainAssessment />} />
+                <Route path="/supply-chain-results" element={<SupplyChainResults />} />
+                <Route path="/supply-chain-recommendations" element={<SupplyChainRecommendations />} />
+                <Route path="/zero-trust-maturity-assessment" element={<ZeroTrustMaturityAssessment />} />
+                <Route path="/zero-trust-maturity-results" element={<ZeroTrustMaturityResults />} />
+                <Route path="/network-segmentation-assessment" element={<NetworkSegmentationAssessment />} />
+                <Route path="/network-segmentation-results" element={<NetworkSegmentationResults />} />
+                <Route path="/backup-readiness-assessment" element={<BackupReadinessAssessment />} />
+                <Route path="/backup-readiness-results" element={<BackupReadinessResults />} />
+                <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
+                <Route path="/incident-response-results" element={<IncidentResponseResults />} />
+                <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
+                <Route path="/vulnerability-management-results" element={<VulnerabilityManagementResults />} />
+                <Route path="/tabletop-exercise" element={<TabletopExercise />} />
+                <Route path="/nist-csf-alignment" element={<NistCsfAlignment />} />
+                <Route path="/security-awareness" element={<SecurityAwareness />} />
+              </Route>
               
-              {/* Redirects from old paths to new paths */}
-              <Route path="/tools/predictive-analytics" element={<Navigate to="/tools/threat-correlation" replace />} />
-              <Route path="/tools/dark-web-monitor" element={<Navigate to="/tools/unified-analytics" replace />} />
-              <Route path="/tools/vendor-iq-enhanced" element={<Navigate to="/tools/vendor-assessment" replace />} />
-              <Route path="/tools/vendor-scorecard" element={<Navigate to="/tools/vendor-assessment" replace />} />
-              <Route path="/tools/industry-threats" element={<Navigate to="/tools/threat-correlation" replace />} />
-              <Route path="/tools/compliance-gap-checker" element={<Navigate to="/tools/gap-analysis" replace />} />
-              <Route path="/tools/nist-csf-wizard" element={<Navigate to="/tools/compliance-mapper" replace />} />
-              <Route path="/tools/policy-generator" element={<Navigate to="/tools/policy-orchestrator" replace />} />
-              <Route path="/tools/business-impact" element={<Navigate to="/tools/risk-aggregator" replace />} />
-              <Route path="/tools/recovery-time-calculator" element={<Navigate to="/tools/playbook-automation" replace />} />
-              <Route path="/tools/backup-integrity-validator" element={<Navigate to="/tools/workflow-designer" replace />} />
-              <Route path="/tools/incident-orchestrator" element={<Navigate to="/tools/playbook-automation" replace />} />
-
-              {/* Toolkit Tool Routes (updated paths) */}
-              <Route path="/tools/threat-correlation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/compliance-mapper" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/vendor-assessment" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense></ErrorBoundary>} />
-              {/* Note: VendorIQEnhanced also maps to /tools/vendor-assessment as per user's request */}
-              <Route path="/tools/vendor-assessment" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorIQEnhanced /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/gap-analysis" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense></ErrorBoundary>} />
-              {/* Note: IndustryThreatProfiler also maps to /tools/threat-correlation as per user's request */}
-              <Route path="/tools/threat-correlation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/unified-analytics" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/playbook-automation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><RecoveryTimeCalculator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/workflow-designer" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BackupIntegrityValidator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/risk-aggregator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/policy-orchestrator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense></ErrorBoundary>} />
-              {/* Note: IncidentResponsePlaybooks also maps to /tools/playbook-automation as per user's request */}
-              <Route path="/tools/playbook-automation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense></ErrorBoundary>} />
-              
-            </Route>
-
-            {/* Auth routes */}
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<LoginPage />} />
-            </Route>
-
-            {/* Assessment routes */}
-            <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
-              {/* Assessment landing page */}
-              <Route path="/assessments" element={<AssessmentsLanding />} />
-            </Route>
-
-            {/* Protected routes */}
-            <Route path="/dashboard" element={
-              <MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen}>
-                <Dashboard />
-              </MainLayout>
-            } />
-
-            <Route element={<AssessmentLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} />}>
-            {/* Assessment tools */}
-            <Route path="/ransomware-assessment" element={<RansomwareAssessment />} />
-            <Route path="/ransomware-results" element={<RansomwareResults />} />
-            <Route path="/ransomware-recommendations" element={<RansomwareRecommendations />} />
-            <Route path="/supply-chain-assessment" element={<SupplyChainAssessment />} />
-            <Route path="/supply-chain-results" element={<SupplyChainResults />} />
-            <Route path="/supply-chain-recommendations" element={<SupplyChainRecommendations />} />
-            <Route path="/zero-trust-maturity-assessment" element={<ZeroTrustMaturityAssessment />} />
-            <Route path="/zero-trust-maturity-results" element={<ZeroTrustMaturityResults />} />
-            <Route path="/network-segmentation-assessment" element={<NetworkSegmentationAssessment />} />
-            <Route path="/network-segmentation-results" element={<NetworkSegmentationResults />} />
-            <Route path="/backup-readiness-assessment" element={<BackupReadinessAssessment />} />
-            <Route path="/backup-readiness-results" element={<BackupReadinessResults />} />
-            <Route path="/incident-response-plan-assessment" element={<IncidentResponsePlanAssessment />} />
-            <Route path="/incident-response-results" element={<IncidentResponseResults />} />
-            <Route path="/vulnerability-management-assessment" element={<VulnerabilityManagementAssessment />} />
-            <Route path="/vulnerability-management-results" element={<VulnerabilityManagementResults />} />
-            <Route path="/tabletop-exercise" element={<TabletopExercise />} />
-            <Route path="/nist-csf-alignment" element={<NistCsfAlignment />} />
-            <Route path="/security-awareness" element={<SecurityAwareness />} />
-          </Route>
-          
-          {/* 404 route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        </Suspense>
-      </ErrorBoundary>
-      <Toaster />
-     <Analytics />
-    </Router>
+              {/* 404 route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+        <Toaster />
+        <Analytics />
+      </Router>
+    </ThemeProvider>
   );
 }
 
