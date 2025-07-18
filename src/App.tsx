@@ -28,7 +28,7 @@ const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityV
 
 // Lazy load new orchestration tools
 const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
-const IntegrationHub = React.lazy(() => import('./pages/tools/IntegrationHub'));
+const IntegrationManager = React.lazy(() => import('./pages/tools/IntegrationManager'));
 const WorkflowOrchestrator = React.lazy(() => import('./pages/tools/WorkflowOrchestrator'));
 const GovernanceFramework = React.lazy(() => import('./pages/tools/GovernanceFramework'));
 const AnalyticsOverlay = React.lazy(() => import('./pages/tools/AnalyticsOverlay'));
@@ -158,7 +158,7 @@ function App() {
                 <Route path="/tools" element={<ToolsDirectory />} />
                 
                 {/* New Orchestration & Governance Tools */}
-                <Route path="/tools/integration-hub" element={<IntegrationHub />} />
+                <Route path="/tools/integration-hub" element={<IntegrationManager />} />
                 <Route path="/tools/workflow-orchestrator" element={<WorkflowOrchestrator />} />
                 <Route path="/tools/governance-framework" element={<GovernanceFramework />} />
                 <Route path="/tools/analytics-overlay" element={<AnalyticsOverlay />} />
