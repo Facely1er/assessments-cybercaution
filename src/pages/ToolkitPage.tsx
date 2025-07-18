@@ -33,22 +33,15 @@ import {
 } from 'lucide-react';
 
 const ToolkitPage = () => {
-  // Simple fade-in animation component
-  const AnimatedSection = ({ children, delay = 0 }) => (
+  // Simple fade-in animation component using Tailwind classes
+  const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) => (
     <div 
-      className="opacity-0 animate-[fadeIn_0.6s_ease-in-out_forwards]"
+      className="opacity-0 animate-fade-in-up"
       style={{ 
         animationDelay: `${delay}s`,
-        animation: `fadeIn 0.6s ease-in-out ${delay}s forwards`
       }}
     >
       {children}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 
