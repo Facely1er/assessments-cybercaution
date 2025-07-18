@@ -337,7 +337,7 @@ const ToolkitPage = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {category.tools.map((tool) => (
-                  <div key={tool.id} className="cursor-pointer" onClick={() => console.log(`Navigate to ${tool.path}`)}>
+                  <Link key={tool.id} to={tool.path} className="cursor-pointer">
                     <Card className="h-full hover:shadow-lg transition-shadow border dark:border-muted">
                       <CardContent className="p-6">
                         <div className={`w-12 h-12 rounded-lg ${tool.color} flex items-center justify-center mb-4`}>
@@ -345,15 +345,14 @@ const ToolkitPage = () => {
                         </div>
                         <h3 className="text-lg font-medium mb-2 text-foreground">{tool.title}</h3>
                         <p className="text-muted-foreground mb-4">{tool.description}</p>
-                        <div className="flex justify-end">
-                          <Button variant="ghost" size="sm" className="mt-auto">
-                            Open Tool
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </div>
+                        {/* The entire card is now clickable via the Link component */}
+                        {/* You can add a visual indicator like an arrow here if desired */}
+                        {/* <div className="flex justify-end">
+                          <ArrowRight className="ml-2 h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                        </div> */}
                       </CardContent>
                     </Card>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
