@@ -1,14 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Shield, Activity, TrendingUp, AlertTriangle, BarChart3, Clock, Download, Calendar, ChevronDown, ChevronRight, Settings, RefreshCw, Grid3x3, Maximize2 } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../../lib/supabase';
 import ToolTemplate from './ToolTemplate';
-
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.REACT_APP_SUPABASE_URL || '',
-  process.env.REACT_APP_SUPABASE_ANON_KEY || ''
-);
 
 // Types
 interface MetricData {

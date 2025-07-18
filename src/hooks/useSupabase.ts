@@ -65,7 +65,7 @@ export const useSupabaseQuery = (
     };
 
     fetchData();
-  }, [table, JSON.stringify(options)]);
+  }, [table, options]); // NOTE: options should be memoized by the caller using React.useMemo
 
   return {
     data,

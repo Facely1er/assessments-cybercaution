@@ -22,16 +22,18 @@ const LucideIcons: Record<string, React.FC<any>> = {
 
 const Pricing = () => {
   // Fetch pricing plans from Supabase
-  const { data: pricingPlans, loading: plansLoading, error: plansError } = useSupabaseQuery('pricing_plans', {
+  const pricingPlansOptions = React.useMemo(() => ({
     filter: (query) => query.eq('is_active', true),
     orderBy: { column: 'sort_order', ascending: true }
-  });
+  }), []);
+  const { data: pricingPlans, loading: plansLoading, error: plansError } = useSupabaseQuery('pricing_plans', pricingPlansOptions);
 
   // Fetch industry solutions from Supabase
-  const { data: industrySolutions, loading: solutionsLoading, error: solutionsError } = useSupabaseQuery('solutions', {
+  const industrySolutionsOptions = React.useMemo(() => ({
     orderBy: { column: 'order_index', ascending: true },
     limit: 6
-  });
+  }), []);
+  const { data: industrySolutions, loading: solutionsLoading, error: solutionsError } = useSupabaseQuery('solutions', industrySolutionsOptions);
 
   // Process pricing plans data
   const processedPlans = React.useMemo(() => {

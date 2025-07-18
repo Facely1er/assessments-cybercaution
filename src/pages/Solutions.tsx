@@ -272,14 +272,16 @@ const Solutions = () => {
   const [loading, setLoading] = useState(true);
 
   // Fetch solution data from Supabase
-  const { data: solutionsData, loading: solutionsLoading, error: solutionsError } = useSupabaseQuery('solutions', {
+  const solutionsOptions = React.useMemo(() => ({
     orderBy: { column: 'order_index', ascending: true }
-  });
+  }), []);
+  const { data: solutionsData, loading: solutionsLoading, error: solutionsError } = useSupabaseQuery('solutions', solutionsOptions);
   
   // Fetch case studies data from Supabase
-  const { data: caseStudiesData, loading: caseStudiesLoading, error: caseStudiesError } = useSupabaseQuery('case_studies', {
+  const caseStudiesOptions = React.useMemo(() => ({
     orderBy: { column: 'order_index', ascending: true }
-  });
+  }), []);
+  const { data: caseStudiesData, loading: caseStudiesLoading, error: caseStudiesError } = useSupabaseQuery('case_studies', caseStudiesOptions);
 
   // Process solutions data when it's loaded
   useEffect(() => {

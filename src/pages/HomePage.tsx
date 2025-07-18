@@ -8,6 +8,13 @@ import AnimatedItem from '../utils/AnimatedItem';
 import CisaSecurityBanner from '../components/CisaSecurityBanner';
 import TextCarousel from '../components/TextCarousel';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
+// NOTE: If uncommenting useSupabaseQuery calls below, ensure to memoize the 'options' object
+// using React.useMemo to prevent infinite re-renders. Example:
+// const carouselOptions = React.useMemo(() => ({
+//   filter: (query) => query.eq('active', true),
+//   orderBy: { column: 'order_index', ascending: true }
+// }), []);
+// const { data: carouselTexts, loading: carouselLoading } = useSupabaseQuery('carousel_texts', carouselOptions);
 // import { useSupabaseQuery } from '../hooks/useSupabase'; // Removed as per previous fix
 import {
   Shield,

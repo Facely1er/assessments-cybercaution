@@ -122,7 +122,7 @@ export const useSupabaseQuery = (tableName, options = {}) => {
     };
 
     fetchData();
-  }, [supabase, isConnected, tableName, JSON.stringify(options)]);
+  }, [supabase, isConnected, tableName, options]); // NOTE: options should be memoized by the caller using React.useMemo
 
   return { data, loading, error };
 };

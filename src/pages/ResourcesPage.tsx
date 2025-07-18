@@ -74,21 +74,24 @@ const ResourcesPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch resource categories from Supabase
-  const { data: resourceCategoriesData, loading: categoriesLoading, error: categoriesError } = useSupabaseQuery('resource_categories', {
+  const resourceCategoriesOptions = React.useMemo(() => ({
     orderBy: { column: 'order_index', ascending: true }
-  });
+  }), []);
+  const { data: resourceCategoriesData, loading: categoriesLoading, error: categoriesError } = useSupabaseQuery('resource_categories', resourceCategoriesOptions);
   
   // Fetch resources list from Supabase
-  const { data: resourcesListData, loading: resourcesLoading, error: resourcesError } = useSupabaseQuery('resources_list', {
+  const resourcesListOptions = React.useMemo(() => ({
     orderBy: { column: 'order_index', ascending: true }  
-  });
+  }), []);
+  const { data: resourcesListData, loading: resourcesLoading, error: resourcesError } = useSupabaseQuery('resources_list', resourcesListOptions);
   
   // Fetch featured resources from Supabase
-  const { data: featuredResourcesData, loading: featuredLoading, error: featuredError } = useSupabaseQuery('resources_list', {
+  const featuredResourcesOptions = React.useMemo(() => ({
     filter: (query) => query.eq('is_featured', true),
     orderBy: { column: 'order_index', ascending: true },
     limit: 6
-  });
+  }), []);
+  const { data: featuredResourcesData, loading: featuredLoading, error: featuredError } = useSupabaseQuery('resources_list', featuredResourcesOptions);
 
   // Process data once loaded
   useEffect(() => {
