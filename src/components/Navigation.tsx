@@ -91,7 +91,7 @@ const Navigation: React.FC<NavigationProps> = ({
     },
    { 
      name: 'Toolkit', 
-     path: '/toolkit',
+     path: '/tools',
      icon: Wrench,
      external: false
    },

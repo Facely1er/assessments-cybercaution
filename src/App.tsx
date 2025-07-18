@@ -41,7 +41,6 @@ const HomePage = React.lazy(() => import('./pages/HomePage'));
 const Pricing = React.lazy(() => import('./pages/Pricing'));
 const Features = React.lazy(() => import('./pages/Features'));
 const Solutions = React.lazy(() => import('./pages/Solutions'));
-const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage'));
 const ResourcesPage = React.lazy(() => import('./pages/ResourcesPage'));
 const AssessmentsLanding = React.lazy(() => import('./pages/AssessmentsLanding'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -143,7 +142,7 @@ function App() {
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/onboarding" element={<OnboardingPage />} />
                 <Route path="/demo" element={<DemoPage />} />
-                <Route path="/toolkit" element={<ToolkitPage />} />
+                <Route path="/toolkit" element={<Navigate to="/tools" replace />} />
                 <Route path="/quick-cyber-check" element={<QuickCyberCheck />} />
                 <Route path="/company/privacy" element={<Privacy />} />
                 <Route path="/company/terms" element={<Terms />} />
