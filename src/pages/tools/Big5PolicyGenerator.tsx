@@ -225,25 +225,20 @@ const Big5PolicyGenerator: React.FC = () => {
       const { data, error } = await supabase
         .from('policy_generators')
         .select('*')
+        .limit(1)
         .eq('session_id', sessionId)
-        .single();
+        .maybeSingle();
 
-      // Handle the case where no session exists yet (expected for new sessions)
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // No existing session found - this is expected for new sessions
-          setConnectionStatus('connected');
-          return;
-        }
-        // For other errors, throw them to be caught by the catch block
-        throw error;
-      }
+      if (error) throw error;
 
       if (data) {
         setOrganizationInfo(data.organization_info);
         setSelectedIndustry(data.selected_industry);
         setSelectedPolicies(new Set(data.selected_policies));
         setSelectedCompliance(data.selected_compliance);
+        setConnectionStatus('connected');
+      } else {
+        // No existing session found - this is expected for new sessions
         setConnectionStatus('connected');
       }
     } catch (error) {

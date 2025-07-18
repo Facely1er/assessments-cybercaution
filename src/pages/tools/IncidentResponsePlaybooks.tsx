@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import { 
@@ -8,30 +9,8 @@ import {
   ExternalLink, Play, Pause, RotateCcw, ChevronRight,
   AlertCircle, Info, Eye, Settings, BookOpen, Flag,
   Loader2, WifiOff, Wifi, X, Plus, Save, Timer,
-  Building, User, Calendar, Target, Activity
+  Building, User, Calendar, Target, Activity, Phone
 } from 'lucide-react';
-
-// CONFIGURATION - Update these with your actual Supabase credentials
-const SUPABASE_URL = 'https://YOUR_PROJECT_REF.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY_HERE';
-
-// Supabase client setup
-const createSupabaseClient = () => {
-  if (typeof window !== 'undefined' && window.supabase) {
-    return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  // For development without Supabase, return mock client
-  return {
-    from: (table) => ({
-      select: () => Promise.resolve({ data: [], error: null }),
-      insert: () => Promise.resolve({ data: [], error: null }),
-      update: () => Promise.resolve({ data: [], error: null }),
-      upsert: () => Promise.resolve({ data: [], error: null }),
-      delete: () => Promise.resolve({ data: null, error: null })
-    }),
-    channel: () => ({ on: () => ({ subscribe: () => {} }) })
-  };
-};
 
 const IncidentResponsePlaybooks = () => {
   // Core State
@@ -57,9 +36,6 @@ const IncidentResponsePlaybooks = () => {
   const [stepTimers, setStepTimers] = useState({});
   const [phaseStartTimes, setPhaseStartTimes] = useState({});
   
-  // Supabase client
-  const [supabase] = useState(() => createSupabaseClient());
-
   // Playbook definitions
   const getPlaybooks = () => [
     {
