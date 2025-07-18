@@ -26,7 +26,7 @@ interface SidebarItem {
   category?: string;
 }
 
-const ToolLayout: React.FC = () => {
+export const ToolLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { darkMode, toggleDarkMode } = useTheme();
   const location = useLocation();
@@ -195,4 +195,5 @@ const ToolLayout: React.FC = () => {
   );
 };
 
+// Add default export as well for flexibility
 export default ToolLayout;
