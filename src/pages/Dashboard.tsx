@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Link } from 'react-router-dom';
@@ -52,6 +52,22 @@ interface AssessmentData {
 
 const Dashboard = () => {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+
+  // Memoize query options to prevent infinite loops
+  const carouselQueryOptions = useMemo(() => ({
+    filter: (query) => query.eq('active', true),
+    orderBy: { column: 'order_index', ascending: true }
+  }), []);
+
+  const heroStatsQueryOptions = useMemo(() => ({
+    filter: (query) => query.eq('active', true),
+    orderBy: { column: 'order_index', ascending: true }
+  }), []);
+
+  // Fetch dynamic content from database
+  const { data: carouselTexts, loading: carouselLoading } = useSupabaseQuery('carousel_texts', carouselQueryOptions);
+  const { data: heroStats, loading: statsLoading } = useSupabaseQuery('hero_statistics', heroStatsQueryOptions);
+
   const [recentAssessments, setRecentAssessments] = useState<AssessmentData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
