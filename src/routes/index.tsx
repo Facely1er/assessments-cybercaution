@@ -14,6 +14,8 @@ export interface ToolRoute {
   component: React.LazyExoticComponent<React.ComponentType<any>>;
   features: string[];
   isPremium?: boolean;
+  bgColorClass: string;
+  iconColorClass: string;
 }
 
 export interface RouteConfig {
@@ -33,6 +35,8 @@ export const toolRoutes: ToolRoute[] = [
     category: 'integration',
     icon: Network,
     component: React.lazy(() => import('../pages/tools/IntegrationManager')),
+    bgColorClass: 'bg-blue-500/10',
+    iconColorClass: 'text-blue-500',
     features: [
       'SIEM/SOAR integration',
       'EDR/XDR connectivity',
@@ -48,6 +52,8 @@ export const toolRoutes: ToolRoute[] = [
     category: 'orchestration',
     icon: Workflow,
     component: React.lazy(() => import('../pages/tools/WorkflowOrchestrator')),
+    bgColorClass: 'bg-purple-500/10',
+    iconColorClass: 'text-purple-500',
     features: [
       'Visual workflow builder',
       'Automated incident response',
@@ -63,6 +69,8 @@ export const toolRoutes: ToolRoute[] = [
     category: 'governance',
     icon: Shield,
     component: React.lazy(() => import('../pages/tools/GovernanceFramework')),
+    bgColorClass: 'bg-secure-green/10',
+    iconColorClass: 'text-secure-green',
     features: [
       'Policy lifecycle management',
       'Compliance tracking',
@@ -78,6 +86,8 @@ export const toolRoutes: ToolRoute[] = [
     category: 'analytics',
     icon: BarChart3,
     component: React.lazy(() => import('../pages/tools/AnalyticsOverlay')),
+    bgColorClass: 'bg-orange-500/10',
+    iconColorClass: 'text-orange-500',
     features: [
       'Unified metrics dashboard',
       'Threat correlation',
@@ -93,6 +103,8 @@ export const toolRoutes: ToolRoute[] = [
     category: 'training',
     icon: Users,
     component: React.lazy(() => import('../pages/tools/SecurityTraining')),
+    bgColorClass: 'bg-teal-500/10',
+    iconColorClass: 'text-teal-500',
     features: [
       'Role-based training paths',
       'Phishing simulations',

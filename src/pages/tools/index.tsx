@@ -2,10 +2,14 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Search, 
-  Filter, 
-  ArrowRight, 
+  Search,
+  Filter,
+  ArrowRight,
   Shield,
+  Link2,
+  Workflow,
+  BarChart3,
+  Users,
   Sparkles,
   CheckCircle,
   Lock
@@ -13,6 +17,8 @@ import {
 import { toolRoutes, getToolsByCategory } from '../../routes';
 import type { ToolRoute } from '../../routes';
 
+import AnimatedSection from '../../utils/AnimatedSection';
+import AnimatedItem from '../../utils/AnimatedItem';
 const ToolsDirectory: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -54,13 +60,13 @@ const ToolsDirectory: React.FC = () => {
       <Link
         to={tool.path}
         className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-400"
-      >
+      > 
         {tool.isPremium && (
           <div className="absolute top-4 right-4">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
               <Sparkles className="w-3 h-3 mr-1" />
               Premium
-            </span>
+            </span> 
           </div>
         )}
         
@@ -68,11 +74,8 @@ const ToolsDirectory: React.FC = () => {
           <div className={`flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br ${
             tool.category === 'integration' ? 'from-blue-500 to-blue-600' :
             tool.category === 'orchestration' ? 'from-purple-500 to-purple-600' :
-            tool.category === 'governance' ? 'from-green-500 to-green-600' :
-            tool.category === 'analytics' ? 'from-orange-500 to-orange-600' :
-            'from-pink-500 to-pink-600'
-          } flex items-center justify-center`}>
-            <Icon className="w-6 h-6 text-white" />
+            tool.bgColorClass} flex items-center justify-center`}>
+            <Icon className={`w-6 h-6 ${tool.iconColorClass}`} />
           </div>
           
           <div className="flex-1">
@@ -108,30 +111,76 @@ const ToolsDirectory: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Security Orchestration Tools
-        </h1>
-        <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
-          Connect, automate, and govern your security operations from a single platform
-        </p>
-      </div>
+      <AnimatedSection delay={0}>
+        <div className="text-center mb-12">
+          <h1 className="text-3xl font-bold mb-4 text-foreground">CyberCaution Security Orchestration Toolkit</h1>
+          <p className="text-xl text-orange-500 max-w-3xl mx-auto mb-4">
+            Orchestrate, Govern, and Optimize Your Security Infrastructure
+          </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            CyberCaution is not a SIEM/EDR replacement - it's the orchestration layer that unifies your existing 
+            security tools, automates workflows, enforces governance, and provides actionable analytics across 
+            your entire security ecosystem.
+          </p>
+        </div>
+      </AnimatedSection>
+
+      {/* Core Capabilities Section */}
+      <AnimatedSection delay={0.1}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+          <Card className="bg-primary/5 border border-primary/20">
+            <CardContent className="p-4 text-center">
+              <Link2 className="h-8 w-8 mx-auto mb-2 text-primary" />
+              <h4 className="font-medium text-sm">Integration Hub</h4>
+              <p className="text-xs text-muted-foreground mt-1">Connect all tools</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-primary/5 border border-primary/20">
+            <CardContent className="p-4 text-center">
+              <Workflow className="h-8 w-8 mx-auto mb-2 text-primary" />
+              <h4 className="font-medium text-sm">Workflow Engine</h4>
+              <p className="text-xs text-muted-foreground mt-1">Automate operations</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-primary/5 border border-primary/20">
+            <CardContent className="p-4 text-center">
+              <Shield className="h-8 w-8 mx-auto mb-2 text-primary" />
+              <h4 className="font-medium text-sm">Governance</h4>
+              <p className="text-xs text-muted-foreground mt-1">Policy & compliance</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-primary/5 border border-primary/20">
+            <CardContent className="p-4 text-center">
+              <BarChart3 className="h-8 w-8 mx-auto mb-2 text-primary" />
+              <h4 className="font-medium text-sm">Analytics</h4>
+              <p className="text-xs text-muted-foreground mt-1">Unified insights</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-primary/5 border border-primary/20">
+            <CardContent className="p-4 text-center">
+              <Users className="h-8 w-8 mx-auto mb-2 text-primary" />
+              <h4 className="font-medium text-sm">Training</h4>
+              <p className="text-xs text-muted-foreground mt-1">Human-centric</p>
+            </CardContent>
+          </Card>
+        </div>
+      </AnimatedSection>
 
       {/* Search and Filter Bar */}
       <div className="mb-8 flex flex-col lg:flex-row gap-4">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
-            type="text"
+            type="text" 
             placeholder="Search tools by name, description, or features..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
-        
+
         <div className="flex gap-2 overflow-x-auto pb-2 lg:pb-0">
           {categories.map(category => (
             <button
@@ -153,14 +202,39 @@ const ToolsDirectory: React.FC = () => {
         </div>
       </div>
 
-      {/* Tools Grid */}
-      {filteredTools.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-          {filteredTools.map(tool => (
-            <ToolCard key={tool.id} tool={tool} />
-          ))}
-        </div>
-      ) : (
+      {/* Categorized Tools Grid */}
+      {useMemo(() => {
+        const categorizedTools = [
+          { id: 'integration', name: "Security Tool Integration Hub", description: "Connect and orchestrate your existing security infrastructure" },
+          { id: 'orchestration', name: "Workflow Orchestration", description: "Automate and streamline security operations" },
+          { id: 'governance', name: "Governance & Compliance Framework", description: "Policy management and regulatory compliance tools" },
+          { id: 'analytics', name: "Analytics & Intelligence Overlay", description: "Aggregate and analyze data from all connected security tools" },
+          { id: 'training', name: "Human-Centric Security Training", description: "Integrated training aligned with technical controls" },
+        ];
+
+        return categorizedTools.map((category, categoryIndex) => {
+          const toolsInCategory = filteredTools.filter(tool => tool.category === category.id);
+          if (toolsInCategory.length === 0) return null; // Don't render category if no tools match filters
+
+          return (
+            <AnimatedSection key={category.id} type="fadeIn" delay={categoryIndex * 0.1 + 0.2}>
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold mb-4 text-foreground">{category.name}</h2>
+                <p className="text-muted-foreground mb-6">{category.description}</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {toolsInCategory.map((tool) => (
+                    <ToolCard key={tool.id} tool={tool} />
+                  ))}
+                </div>
+              </div>
+            </AnimatedSection>
+          );
+        });
+      }, [filteredTools])}
+
+      {/* Fallback for no tools found */}
+      {filteredTools.length === 0 && (
         <div className="text-center py-12">
           <Shield className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
@@ -172,60 +246,47 @@ const ToolsDirectory: React.FC = () => {
         </div>
       )}
 
-      {/* Platform Overview */}
-      <div className="mt-16 bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white">
-        <div className="max-w-3xl">
-          <h2 className="text-2xl font-bold mb-4">
-            Not Just Another Security Tool
-          </h2>
-          <p className="text-lg mb-6 text-primary-100">
-            CyberCaution is a comprehensive Security Orchestration & Governance Platform that unifies your existing security infrastructure, automates workflows, and ensures compliance—all while keeping your team at the center of security operations.
-          </p>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="flex items-start space-x-3">
-              <CheckCircle className="w-5 h-5 text-primary-200 flex-shrink-0 mt-0.5" />
+      {/* Why CyberCaution? CTA Section */}
+      <AnimatedSection delay={0.3}>
+        <Card className="bg-gradient-to-r from-primary/5 to-orange-500/5 border border-primary/20">
+          <CardContent className="p-8">
+            <div className="flex items-center mb-4">
+              <AlertTriangle className="h-6 w-6 text-primary mr-3" />
+              <h3 className="text-xl font-medium">Why CyberCaution?</h3>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-semibold">Integration First</h3>
-                <p className="text-sm text-primary-100">Works with your existing SIEM, EDR, and security tools</p>
+                <h4 className="font-medium mb-2 text-foreground">What We Are NOT:</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• Not another SIEM or EDR solution</li>
+                  <li>• Not a replacement for your security tools</li>
+                  <li>• Not just another dashboard</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-medium mb-2 text-foreground">What We ARE:</h4>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li>• The orchestration layer for your security stack</li>
+                  <li>• Your automated workflow engine</li>
+                  <li>• Your governance and compliance hub</li>
+                  <li>• Your unified analytics platform</li>
+                </ul>
               </div>
             </div>
-            <div className="flex items-start space-x-3">
-              <CheckCircle className="w-5 h-5 text-primary-200 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold">Human-Centric</h3>
-                <p className="text-sm text-primary-100">Combines automation with human expertise and training</p>
-              </div>
+            <div className="mt-6 pt-6 border-t border-border">
+              <p className="text-sm text-muted-foreground mb-4">
+                <strong className="text-foreground">Integration Partners:</strong> Seamlessly connect with Splunk, 
+                CrowdStrike, Palo Alto Networks, Microsoft Sentinel, Qualys, Rapid7, ServiceNow, and 100+ other 
+                security tools through our Integration Hub.
+              </p>
+              <Link to="/demo">
+                <Button className="bg-primary hover:bg-primary/90">
+                Schedule Platform Demo
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              </Link>
             </div>
-            <div className="flex items-start space-x-3">
-              <CheckCircle className="w-5 h-5 text-primary-200 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold">Compliance Ready</h3>
-                <p className="text-sm text-primary-100">Built-in frameworks for NIST, ISO, SOC2, and more</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3">
-              <CheckCircle className="w-5 h-5 text-primary-200 flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="font-semibold">Enterprise Scale</h3>
-                <p className="text-sm text-primary-100">Designed for organizations of all sizes</p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-6 flex gap-4">
-            <Link
-              to="/demo"
-              className="inline-flex items-center px-6 py-3 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors"
-            >
-              Request Demo
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-            <Link
-              to="/features"
-              className="inline-flex items-center px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-400 transition-colors"
-            >
-              Learn More
-            </Link>
-          </div>
+          </CardContent>
         </div>
       </div>
     </div>
