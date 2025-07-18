@@ -227,7 +227,16 @@ const Big5PolicyGenerator: React.FC = () => {
         .eq('session_id', sessionId)
         .single();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      // Handle the case where no session exists yet (expected for new sessions)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // No existing session found - this is expected for new sessions
+          setConnectionStatus('connected');
+          return;
+        }
+        // For other errors, throw them to be caught by the catch block
+        throw error;
+      }
 
       if (data) {
         setOrganizationInfo(data.organization_info);
