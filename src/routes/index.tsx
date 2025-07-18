@@ -197,5 +197,3 @@ export const isProtectedRoute = (path: string): boolean => {
   const protectedPaths = ['/dashboard', '/tools', '/assessments'];
   return protectedPaths.some(protectedPath => path.startsWith(protectedPath));
 };
-
-export { toolRoutes }
