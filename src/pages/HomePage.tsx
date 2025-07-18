@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -8,10 +8,10 @@ import AnimatedItem from '../utils/AnimatedItem';
 import CisaSecurityBanner from '../components/CisaSecurityBanner';
 import TextCarousel from '../components/TextCarousel';
 import { SUBDOMAIN_URLS } from '../utils/navigation';
-import { useSupabaseQuery } from '../hooks/useSupabase';
-import { 
-  Shield, 
-  ArrowRight, 
+// import { useSupabaseQuery } from '../hooks/useSupabase'; // Removed as per previous fix
+import {
+  Shield,
+  ArrowRight,
   CheckCircle,
   AlertTriangle,
   Link2,
@@ -25,7 +25,17 @@ import {
   Network,
   Target,
   Gauge,
-  TrendingUp
+  TrendingUp,
+  // Icons for new sections
+  Settings, // For orchestration/governance
+  Activity, // For analytics
+  Plug, // For integration
+  BookOpen, // For training
+  Briefcase, // For professional services
+  ClipboardList, // For assessment interpretation
+  Handshake, // For strategic guidance
+  GraduationCap, // For custom training
+  RefreshCw // For continuous improvement
 } from 'lucide-react';
 
 // Simple animated counter component for statistics
@@ -38,12 +48,12 @@ const AnimatedCounter = ({ target, suffix = '', prefix = '' }) => {
     const frameDuration = 1000 / 60;
     const totalFrames = Math.round(duration / frameDuration);
     let frame = 0;
-    
+
     const counter = setInterval(() => {
       frame++;
       const progress = frame / totalFrames;
       const currentCount = Math.round(progress * target);
-      
+
       if (frame === totalFrames) {
         setCount(target);
         globalThis.clearInterval(counter);
@@ -51,10 +61,10 @@ const AnimatedCounter = ({ target, suffix = '', prefix = '' }) => {
         setCount(currentCount);
       }
     }, frameDuration);
-    
+
     return () => globalThis.clearInterval(counter);
   }, [target]);
-  
+
   return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
 };
 
@@ -66,26 +76,26 @@ const HomePage = () => {
     { icon: BarChart3, delay: 2000, bottom: '25%', left: '10%', size: 'h-12 w-12' },
   ];
 
-  // Fetch dynamic content from database
-  const { data: carouselTexts, loading: carouselLoading } = useSupabaseQuery('carousel_texts', {
-    filter: (query) => query.eq('active', true),
-    orderBy: { column: 'order_index', ascending: true }
-  });
+  // Fetch dynamic content from database (removed as per previous fix)
+  // const { data: carouselTexts, loading: carouselLoading } = useSupabaseQuery('carousel_texts', {
+  //   filter: (query) => query.eq('active', true),
+  //   orderBy: { column: 'order_index', ascending: true }
+  // });
 
-  const { data: heroStats, loading: statsLoading } = useSupabaseQuery('hero_statistics', {
-    filter: (query) => query.eq('active', true),
-    orderBy: { column: 'order_index', ascending: true }
-  });
+  // const { data: heroStats, loading: statsLoading } = useSupabaseQuery('hero_statistics', {
+  //   filter: (query) => query.eq('active', true),
+  //   orderBy: { column: 'order_index', ascending: true }
+  // });
 
-  // Fallback text carousel content if database is not available
+  // Fallback text carousel content
   const fallbackCarouselTexts = [
     {
       title: (
         <>
-          Proactive <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Ransomware</span> Risk Management
+          Proactive <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">Cyber Risk Orchestration &amp; Governance</span>
         </>
       ),
-      subtitle: "Comprehensive ransomware defense aligned with CISA and NIST recommendations"
+      subtitle: "An Integrated Platform Aligned with NIST Frameworks"
     },
     {
       title: (
@@ -122,26 +132,31 @@ const HomePage = () => {
   ];
 
   // Process carousel texts from database or use fallback
-  const processedCarouselTexts = !carouselLoading && carouselTexts?.length ? 
-    carouselTexts.map(item => ({
-      title: (
-        <>
-          {item.title.split(' ').map((word, index) => {
-            // Highlight key security terms
-            const highlightWords = ['Ransomware', 'CISA-Aligned', 'Risk', 'Management', 'Security', 'NIST', 'CSF', 'Enterprise', 'Business', 'Continuity'];
-            if (highlightWords.some(hw => word.includes(hw))) {
-              return (
-                <span key={index} className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                  {word}{' '}
-                </span>
-              );
-            }
-            return word + ' ';
-          })}
-        </>
-      ),
-      subtitle: item.subtitle
-    })) : fallbackCarouselTexts;
+  const processedCarouselTexts = fallbackCarouselTexts.map(item => ({ // Directly use fallback as per previous fix
+    title: (
+      <>
+        {item.title.props.children.map((child, index) => {
+          if (typeof child === 'string') {
+            return child.split(' ').map((word, wordIndex) => {
+              // Highlight key security terms
+              const highlightWords = ['Cyber', 'Risk', 'Orchestration', 'Governance', 'Integrated', 'Platform', 'NIST', 'Frameworks', 'CISA-Aligned', 'Security', 'Enterprise', 'Management', 'Business', 'Continuity', 'Protection', 'CSF', 'Implementation'];
+              if (highlightWords.some(hw => word.includes(hw))) {
+                return (
+                  <span key={`${index}-${wordIndex}`} className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                    {word}{' '}
+                  </span>
+                );
+              }
+              return word + ' ';
+            });
+          }
+          return child; // Return React element as is
+        })}
+      </>
+    ),
+    subtitle: item.subtitle
+  }));
+
 
   // Fallback hero statistics
   const fallbackHeroStats = [
@@ -169,7 +184,7 @@ const HomePage = () => {
   ];
 
   // Process hero statistics from database or use fallback
-  const processedHeroStats = !statsLoading && heroStats?.length ? heroStats : fallbackHeroStats;
+  const processedHeroStats = fallbackHeroStats; // Directly use fallback as per previous fix
 
   // Additional dynamic statistics for value proposition section
   const valueStats = [
@@ -194,7 +209,7 @@ const HomePage = () => {
     <div className="animate-in fade-in">
       {/* CISA Security Banner */}
       <CisaSecurityBanner />
-      
+
       {/* Hero Section - Reduced padding */}
       <section className="relative py-16 md:py-24 overflow-hidden">
         {/* Animated background */}
@@ -202,16 +217,16 @@ const HomePage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-background dark:from-primary/15 dark:to-background z-10"></div>
           <div className="hero-background"></div>
         </div>
-        
+
         {/* Floating animated elements */}
         {floatingElements.map((element, index) => (
-          <div 
+          <div
             key={index}
             className={`absolute ${element.size} text-primary/30 dark:text-primary/40 animate-pulse`}
-            style={{ 
-              top: element.top || 'auto', 
+            style={{
+              top: element.top || 'auto',
               left: element.left || 'auto',
-              right: element.right || 'auto', 
+              right: element.right || 'auto',
               bottom: element.bottom || 'auto',
               animationDelay: `${element.delay}ms`,
               animationDuration: '3s'
@@ -220,11 +235,11 @@ const HomePage = () => {
             <element.icon className="w-full h-full" />
           </div>
         ))}
-        
+
         <div className="container relative z-10">
           <AnimatedSection>
             <div className="text-center max-w-3xl mx-auto">
-              
+
               {/* CISA Badge */}
               <AnimatedItem delay={0.1}>
                 <div className="inline-block mb-8">
@@ -233,14 +248,14 @@ const HomePage = () => {
                   </span>
                 </div>
               </AnimatedItem>
-              
+
               {/* Text Carousel */}
               <AnimatedItem delay={0.2}>
                 <div className="mb-12">
                   <TextCarousel texts={processedCarouselTexts} interval={5000} />
                 </div>
               </AnimatedItem>
-              
+
               {/* CTA Buttons with increased top margin */}
               <AnimatedItem delay={0.4} className="mt-16">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -258,17 +273,17 @@ const HomePage = () => {
                   </Link>
                 </div>
               </AnimatedItem>
-              
+
               {/* Dynamic Stats cards */}
               <AnimatedItem delay={0.6}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
                   {processedHeroStats.map((stat, index) => (
                     <div key={index} className="bg-background/70 backdrop-blur-sm p-4 rounded-lg border border-border/50 shadow-md">
                       <div className={`text-3xl font-bold ${stat.color || 'text-primary'}`}>
-                        <AnimatedCounter 
-                          target={stat.target} 
-                          suffix={stat.suffix} 
-                          prefix={stat.prefix} 
+                        <AnimatedCounter
+                          target={stat.target}
+                          suffix={stat.suffix}
+                          prefix={stat.prefix}
                         />
                       </div>
                       <p className="text-sm text-muted-foreground mt-1">{stat.description}</p>
@@ -303,7 +318,7 @@ const HomePage = () => {
                       </div>
                     </div>
                   </AnimatedItem>
-                  
+
                   <AnimatedItem delay={0.2} direction="left">
                     <div className="flex items-start space-x-4 p-4 rounded-lg bg-warning/5 border-l-4 border-warning">
                       <div className="w-8 h-8 bg-warning/10 rounded-full flex items-center justify-center">
@@ -315,7 +330,7 @@ const HomePage = () => {
                       </div>
                     </div>
                   </AnimatedItem>
-                  
+
                   <AnimatedItem delay={0.3} direction="left">
                     <div className="flex items-start space-x-4 p-4 rounded-lg bg-success/5 border-l-4 border-success">
                       <div className="w-8 h-8 bg-success/10 rounded-full flex items-center justify-center">
@@ -330,7 +345,7 @@ const HomePage = () => {
                 </div>
               </div>
             </AnimatedSection>
-            
+
             <AnimatedSection direction="right" delay={0.2}>
               <Card className="shadow-2xl overflow-hidden">
                 <CardContent className="p-8">
@@ -363,7 +378,109 @@ const HomePage = () => {
         </div>
       </section>
 
-   
+      {/* CyberCaution™ Platform Section */}
+      <section className="py-20">
+        <div className="container">
+          <AnimatedSection>
+            <div className="text-center">
+              <h2 className="text-4xl font-bold mb-6 text-foreground">CyberCaution™ Platform</h2>
+              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
+                Our platform integrates security tools, orchestrates workflows, provides a governance framework, aggregates analytics, and enables human-centric training.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <AnimatedItem delay={0.1}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <Plug className="h-16 w-16 mb-4 text-primary" /> {/* Using Plug icon for integration */}
+                    <h3 className="text-xl font-semibold mb-2">Integration Hub</h3>
+                    <p className="text-muted-foreground text-center">Connect your existing security tools into a unified ecosystem.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.2}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <Settings className="h-16 w-16 mb-4 text-primary" /> {/* Using Settings icon for orchestration */}
+                    <h3 className="text-xl font-semibold mb-2">Orchestration Engine</h3>
+                    <p className="text-muted-foreground text-center">Automate security workflows and streamline incident response processes.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.3}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <BookOpen className="h-16 w-16 mb-4 text-primary" /> {/* Using BookOpen icon for governance */}
+                    <h3 className="text-xl font-semibold mb-2">Governance Framework</h3>
+                    <p className="text-muted-foreground text-center">Implement and manage security policies aligned with industry standards.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.4}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <BarChart3 className="h-16 w-16 mb-4 text-primary" /> {/* Using BarChart3 icon for analytics */}
+                    <h3 className="text-xl font-semibold mb-2">Unified Analytics</h3>
+                    <p className="text-muted-foreground text-center">Gain comprehensive insights into your security posture with aggregated data.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.5}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <Users className="h-16 w-16 mb-4 text-primary" /> {/* Using Users icon for training */}
+                    <h3 className="text-xl font-semibold mb-2">Human-Centric Training</h3>
+                    <p className="text-muted-foreground text-center">Empower your team with engaging and effective security awareness training.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.6}>
+                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
+                    <RefreshCw className="h-16 w-16 mb-4 text-primary" /> {/* Using RefreshCw icon for continuous improvement */}
+                    <h3 className="text-xl font-semibold mb-2">Continuous Improvement</h3>
+                    <p className="text-muted-foreground text-center">Leverage insights to continuously enhance your security defenses.</p>
+                  </div>
+                </AnimatedItem>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Professional Services Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container">
+          <AnimatedSection>
+            <div className="text-center">
+              <h2 className="text-4xl font-bold mb-6 text-foreground">Professional Services</h2>
+              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
+                Our team of experts provides end-to-end support to maximize the value of your CyberCaution implementation.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <AnimatedItem delay={0.1}>
+                  <div className="bg-card p-6 rounded-lg shadow-md">
+                    <ClipboardList className="h-12 w-12 mb-4 text-primary" /> {/* Using ClipboardList for assessment interpretation */}
+                    <h3 className="text-xl font-semibold mb-2">Assessment Interpretation &amp; Analysis</h3>
+                    <p className="text-muted-foreground">Gain actionable insights from your assessment results with expert analysis and recommendations.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.2}>
+                  <div className="bg-card p-6 rounded-lg shadow-md">
+                    <Handshake className="h-12 w-12 mb-4 text-primary" /> {/* Using Handshake for strategic guidance */}
+                    <h3 className="text-xl font-semibold mb-2">Strategic Guidance &amp; Roadmap Development</h3>
+                    <p className="text-muted-foreground">Develop a clear cybersecurity roadmap aligned with your business objectives and risk appetite.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.3}>
+                  <div className="bg-card p-6 rounded-lg shadow-md">
+                    <GraduationCap className="h-12 w-12 mb-4 text-primary" /> {/* Using GraduationCap for custom training */}
+                    <h3 className="text-xl font-semibold mb-2">Custom Training &amp; Workshops</h3>
+                    <p className="text-muted-foreground">Tailored training sessions to enhance your team's cybersecurity knowledge and skills.</p>
+                  </div>
+                </AnimatedItem>
+                <AnimatedItem delay={0.4}>
+                  <div className="bg-card p-6 rounded-lg shadow-md">
+                    <Briefcase className="h-12 w-12 mb-4 text-primary" /> {/* Using Briefcase for implementation support */}
+                    <h3 className="text-xl font-semibold mb-2">Implementation Support &amp; Integration</h3>
+                    <p className="text-muted-foreground">Expert assistance with deploying and integrating CyberCaution into your existing infrastructure.</p>
+                  </div>
+                </AnimatedItem>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+
       {/* Value Proposition Section */}
       <section className="py-20 bg-background to-background">
         <div className="container relative z-10">
@@ -373,7 +490,7 @@ const HomePage = () => {
               <p className="text-xl mb-12 text-orange-500 max-w-2xl mx-auto">
                 Protect your organization with enterprise-grade security aligned to CISA standards
               </p>
-              
+
               <AnimatedItem delay={0.1}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
                   {valueStats.map((stat, index) => (
@@ -385,7 +502,7 @@ const HomePage = () => {
                   ))}
                 </div>
               </AnimatedItem>
-              
+
               {/* Additional features grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-12">
                 <AnimatedItem delay={0.2} direction="left">
@@ -397,7 +514,7 @@ const HomePage = () => {
                     </div>
                   </div>
                 </AnimatedItem>
-                
+
                 <AnimatedItem delay={0.3} direction="right">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
                     <Link2 className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
@@ -407,7 +524,7 @@ const HomePage = () => {
                     </div>
                   </div>
                 </AnimatedItem>
-                
+
                 <AnimatedItem delay={0.4} direction="left">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
                     <Users className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
@@ -417,7 +534,7 @@ const HomePage = () => {
                     </div>
                   </div>
                 </AnimatedItem>
-                
+
                 <AnimatedItem delay={0.5} direction="right">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
                     <FileText className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
@@ -427,7 +544,7 @@ const HomePage = () => {
                     </div>
                   </div>
                 </AnimatedItem>
-                
+
                 <AnimatedItem delay={0.6} direction="left">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
                     <Lock className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
@@ -437,7 +554,7 @@ const HomePage = () => {
                     </div>
                   </div>
                 </AnimatedItem>
-                
+
                 <AnimatedItem delay={0.7} direction="right">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left">
                     <Building2 className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
@@ -447,7 +564,7 @@ const HomePage = () => {
                     </div>
                   </div>
                 </AnimatedItem>
-                
+
                 <AnimatedItem delay={0.8} direction="up" className="md:col-span-2">
                   <div className="flex items-start space-x-3 bg-muted/30 backdrop-blur-sm p-4 rounded-lg border border-border text-left md:col-span-2">
                     <BarChart3 className="h-6 w-6 flex-shrink-0 mt-1 text-foreground" />
@@ -458,7 +575,7 @@ const HomePage = () => {
                   </div>
                 </AnimatedItem>
               </div>
-              
+
               <AnimatedItem delay={0.9} scale={true}>
                 <Link to="/ransomware-assessment">
                   <Button variant="orange">
@@ -472,9 +589,8 @@ const HomePage = () => {
         </div>
       </section>
 
-   
-           {/* NIST Compliance Section */}
-      <AnimatedSection type="fadeIn" className="bg-muted/30 dark:bg-muted/10 py-16 px-4 md:px-6">
+      {/* NIST Compliance Section */}
+      <section className="bg-muted/30 dark:bg-muted/10 py-16 px-4 md:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-block mb-4">
@@ -506,7 +622,7 @@ const HomePage = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="slideInLeft" delay={0.2}>
               <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
                 <CardContent className="p-6">
@@ -524,7 +640,7 @@ const HomePage = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="slideInLeft" delay={0.3}>
               <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
                 <CardContent className="p-6">
@@ -544,11 +660,11 @@ const HomePage = () => {
             </AnimatedItem>
           </div>
         </div>
-      </AnimatedSection>
+      </section>
 
 
-  {/* Key Benefits Section */}
-      <AnimatedSection type="fadeIn" className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
+      {/* Key Benefits Section */}
+      <section className="py-16 px-4 md:px-6 bg-muted/30 dark:bg-muted/10">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4 text-foreground">Key Benefits of CyberCaution</h2>
@@ -568,7 +684,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">CISA Compliance Ready</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    #StopRansomware #comprehensive alignment with CISA recommendations. 
+                    #StopRansomware #comprehensive alignment with CISA recommendations.
                     Our platform ensures you meet government cybersecurity standards and guidelines.
                   </p>
                   <div className="space-y-2">
@@ -588,7 +704,7 @@ const HomePage = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.2}>
               <Card className="dark:border-muted h-full">
                 <CardContent className="p-6 flex flex-col h-full">
@@ -599,7 +715,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">Proactive Defense Strategy</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Move beyond reactive security measures with predictive threat analysis and prevention. 
+                    Move beyond reactive security measures with predictive threat analysis and prevention.
                     Our proactive approach helps organizations prevent incidents before they occur.
                   </p>
                   <div className="space-y-2">
@@ -619,7 +735,7 @@ const HomePage = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.3}>
               <Card className="dark:border-muted h-full">
                 <CardContent className="p-6 flex flex-col h-full">
@@ -630,7 +746,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">Critical Infrastructure Focus</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Specialized protection designed for organizations that maintain critical infrastructure. 
+                    Specialized protection designed for organizations that maintain critical infrastructure.
                     Enhanced security measures to protect vital systems and ensure operational continuity.
                   </p>
                   <div className="space-y-2">
@@ -661,7 +777,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">Rapid Implementation</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Get up and running quickly with our streamlined implementation process. 
+                    Get up and running quickly with our streamlined implementation process.
                     Pre-configured templates and automated workflows reduce deployment time significantly.
                   </p>
                   <div className="space-y-2">
@@ -692,7 +808,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">Measurable ROI</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Demonstrate clear return on investment with quantifiable security improvements. 
+                    Demonstrate clear return on investment with quantifiable security improvements.
                     Track metrics that matter to your business and show tangible security value.
                   </p>
                   <div className="space-y-2">
@@ -723,7 +839,7 @@ const HomePage = () => {
                     <h3 className="text-xl font-semibold text-foreground">Expert Support</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Access to certified cybersecurity professionals and industry experts. 
+                    Access to certified cybersecurity professionals and industry experts.
                     Get guidance from experienced practitioners who understand real-world security challenges.
                   </p>
                   <div className="space-y-2">
@@ -745,9 +861,7 @@ const HomePage = () => {
             </AnimatedItem>
           </div>
         </div>
-      </AnimatedSection>
-
-         {/* Incident Reporting Section */}
+      </section>
 
       {/* CTA Section */}
       <section className="py-20">
@@ -756,7 +870,7 @@ const HomePage = () => {
             <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
               {/* Background glow effect */}
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
-              
+
               <div className="relative z-10">
                 <h2 className="text-3xl font-bold text-white mb-4">
                   Ready to Strengthen Your Ransomware Defense?
@@ -771,8 +885,8 @@ const HomePage = () => {
                     </Button>
                   </Link>
                   <Link to="/contact">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
                     >
                       Contact Sales
