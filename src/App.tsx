@@ -15,19 +15,16 @@ import ProtectedRoute from './components/ProtectedRoute';
 const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
 const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
-// Lazy load existing tools (legacy support)
-const PredictiveBreachAnalytics = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
-const NISTCSFToolkit = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
-const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
-const VendorIQEnhanced = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
-const ComplianceGapChecker = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
-const RecoveryTimeCalculator = React.lazy(() => import('./pages/tools/RecoveryTimeCalculator'));
-const BackupIntegrityValidator = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
-const BusinessImpactCalculator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
-const IndustryThreatProfiler = React.lazy(() => import('./pages/tools/IndustryThreatProfiler'));
-const DarkWebMonitoring = React.lazy(() => import('./pages/tools/DarkWebMonitoring'));
-const Big5PolicyGenerator = React.lazy(() => import('./pages/tools/Big5PolicyGenerator'));
-const IncidentResponsePlaybooks = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
+// Lazy load updated toolkit tools
+const ThreatCorrelation = React.lazy(() => import('./pages/tools/ThreatCorrelation'));
+const UnifiedAnalytics = React.lazy(() => import('./pages/tools/UnifiedAnalytics'));
+const VendorAssessment = React.lazy(() => import('./pages/tools/VendorAssessment'));
+const GapAnalysis = React.lazy(() => import('./pages/tools/GapAnalysis'));
+const ComplianceMapper = React.lazy(() => import('./pages/tools/ComplianceMapper'));
+const PolicyOrchestrator = React.lazy(() => import('./pages/tools/PolicyOrchestrator'));
+const RiskAggregator = React.lazy(() => import('./pages/tools/RiskAggregator'));
+const PlaybookAutomation = React.lazy(() => import('./pages/tools/PlaybookAutomation'));
+const WorkflowDesigner = React.lazy(() => import('./pages/tools/WorkflowDesigner'));
 
 // Lazy load new orchestration tools
 const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
@@ -167,30 +164,16 @@ function App() {
                 <Route path="/tools/analytics-overlay" element={<AnalyticsOverlay />} />
                 <Route path="/tools/security-training" element={<SecurityTraining />} />
                 
-                {/* Legacy tool routes with redirects */}
-                <Route path="/tools/predictive-analytics" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/dark-web-monitor" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/vendor-iq-enhanced" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/vendor-scorecard" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/industry-threats" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/compliance-gap-checker" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/nist-csf-wizard" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/policy-generator" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/business-impact" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/recovery-time-calculator" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
-                <Route path="/tools/backup-integrity-validator" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
-                <Route path="/tools/incident-orchestrator" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
-                
-                {/* Mapped legacy routes */}
-                <Route path="/tools/threat-correlation" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/compliance-mapper" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/vendor-assessment" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/gap-analysis" element={<Navigate to="/tools/governance-framework" replace />} />
-                <Route path="/tools/unified-analytics" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/playbook-automation" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
-                <Route path="/tools/workflow-designer" element={<Navigate to="/tools/workflow-orchestrator" replace />} />
-                <Route path="/tools/risk-aggregator" element={<Navigate to="/tools/analytics-overlay" replace />} />
-                <Route path="/tools/policy-orchestrator" element={<Navigate to="/tools/governance-framework" replace />} />
+                {/* Updated toolkit tools */}
+                <Route path="/tools/threat-correlation" element={<ThreatCorrelation />} />
+                <Route path="/tools/unified-analytics" element={<UnifiedAnalytics />} />
+                <Route path="/tools/vendor-assessment" element={<VendorAssessment />} />
+                <Route path="/tools/gap-analysis" element={<GapAnalysis />} />
+                <Route path="/tools/compliance-mapper" element={<ComplianceMapper />} />
+                <Route path="/tools/policy-orchestrator" element={<PolicyOrchestrator />} />
+                <Route path="/tools/risk-aggregator" element={<RiskAggregator />} />
+                <Route path="/tools/playbook-automation" element={<PlaybookAutomation />} />
+                <Route path="/tools/workflow-designer" element={<WorkflowDesigner />} />
               </Route>
 
               {/* Protected routes */}
