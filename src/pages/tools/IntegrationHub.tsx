@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Shield, 
   Link2, 
   CheckCircle2, 
   AlertCircle,
@@ -20,8 +19,11 @@ import {
   Trash2,
   Edit,
   Save,
-  X
+  X,
+  Shield
 } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
+import ToolTemplate from './ToolTemplate';
 
 interface Integration {
   id: string;
@@ -59,6 +61,8 @@ const IntegrationHub: React.FC = () => {
   });
   const [testingConnection, setTestingConnection] = useState<string | null>(null);
   const [syncingIntegration, setSyncingIntegration] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Form state for configuration
   const [configForm, setConfigForm] = useState({
@@ -67,8 +71,56 @@ const IntegrationHub: React.FC = () => {
     syncInterval: 5
   });
 
+  // Initialize Supabase client
+  const supabase = createClient(
+    process.env.REACT_APP_SUPABASE_URL || '',
+    process.env.REACT_APP_SUPABASE_ANON_KEY || ''
+  );
+
   // Initialize with default integrations
   useEffect(() => {
+    loadIntegrations();
+  }, []);
+
+  const loadIntegrations = async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      // Try to load from Supabase first
+      const { data: dbIntegrations, error: dbError } = await supabase
+        .from('integrations')
+        .select('*')
+        .order('name');
+
+      if (dbError) {
+        console.warn('Failed to load from Supabase, using local storage:', dbError);
+        loadFromLocalStorage();
+      } else if (dbIntegrations && dbIntegrations.length > 0) {
+        setIntegrations(dbIntegrations);
+        // Also load logs from Supabase
+        const { data: dbLogs } = await supabase
+          .from('integration_logs')
+          .select('*')
+          .order('timestamp', { ascending: false })
+          .limit(100);
+        
+        if (dbLogs) {
+          setConnectionLogs(dbLogs);
+        }
+      } else {
+        // No data in Supabase, load defaults
+        loadFromLocalStorage();
+      }
+    } catch (err) {
+      console.error('Error loading integrations:', err);
+      loadFromLocalStorage();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadFromLocalStorage = () => {
     const defaultIntegrations: Integration[] = [
       {
         id: 'splunk',
@@ -104,7 +156,6 @@ const IntegrationHub: React.FC = () => {
       }
     ];
 
-    // Load saved integrations from localStorage
     const savedIntegrations = localStorage.getItem('cybercaution_integrations');
     const savedLogs = localStorage.getItem('cybercaution_logs');
     
@@ -117,16 +168,39 @@ const IntegrationHub: React.FC = () => {
     if (savedLogs) {
       setConnectionLogs(JSON.parse(savedLogs));
     }
-  }, []);
+  };
 
-  // Save to localStorage whenever integrations change
-  useEffect(() => {
-    localStorage.setItem('cybercaution_integrations', JSON.stringify(integrations));
-  }, [integrations]);
+  // Save to localStorage and attempt Supabase sync
+  const saveIntegrations = async (newIntegrations: Integration[]) => {
+    setIntegrations(newIntegrations);
+    localStorage.setItem('cybercaution_integrations', JSON.stringify(newIntegrations));
+    
+    // Try to sync with Supabase
+    try {
+      for (const integration of newIntegrations) {
+        await supabase.from('integrations').upsert({
+          ...integration,
+          updated_at: new Date().toISOString()
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to sync with Supabase:', err);
+    }
+  };
 
-  useEffect(() => {
-    localStorage.setItem('cybercaution_logs', JSON.stringify(connectionLogs));
-  }, [connectionLogs]);
+  const saveLogs = async (newLogs: ConnectionLog[]) => {
+    setConnectionLogs(newLogs);
+    localStorage.setItem('cybercaution_logs', JSON.stringify(newLogs));
+    
+    // Try to sync latest log with Supabase
+    if (newLogs.length > 0) {
+      try {
+        await supabase.from('integration_logs').insert(newLogs[0]);
+      } catch (err) {
+        console.warn('Failed to sync log with Supabase:', err);
+      }
+    }
+  };
 
   // Simulate periodic sync for connected integrations
   useEffect(() => {
@@ -156,7 +230,7 @@ const IntegrationHub: React.FC = () => {
       status,
       message
     };
-    setConnectionLogs(prev => [newLog, ...prev].slice(0, 100)); // Keep last 100 logs
+    saveLogs([newLog, ...connectionLogs].slice(0, 100)); // Keep last 100 logs
   };
 
   const testConnection = async (integration: Integration) => {
@@ -188,7 +262,7 @@ const IntegrationHub: React.FC = () => {
     setTimeout(() => {
       const newDataPoints = Math.floor(Math.random() * 1000) + 100;
       
-      setIntegrations(prev => prev.map(i => {
+      const updatedIntegrations = integrations.map(i => {
         if (i.id === integrationId && i.config) {
           return {
             ...i,
@@ -200,8 +274,9 @@ const IntegrationHub: React.FC = () => {
           };
         }
         return i;
-      }));
+      });
       
+      saveIntegrations(updatedIntegrations);
       addLog(integrationId, 'Data Sync', 'success', `Synced ${newDataPoints} new data points from ${integration.name}`);
       setSyncingIntegration(null);
     }, 3000);
@@ -219,11 +294,11 @@ const IntegrationHub: React.FC = () => {
     }
 
     // Update integration
-    setIntegrations(prev => prev.map(i => {
+    const updatedIntegrations = integrations.map(i => {
       if (i.id === integration.id) {
         return {
           ...i,
-          status: 'connected',
+          status: 'connected' as const,
           config: {
             endpoint: configForm.endpoint,
             apiKey: configForm.apiKey,
@@ -234,8 +309,9 @@ const IntegrationHub: React.FC = () => {
         };
       }
       return i;
-    }));
-
+    });
+    
+    saveIntegrations(updatedIntegrations);
     addLog(integration.id, 'Configuration', 'success', `${integration.name} configured successfully`);
     
     // Close modal and reset form
@@ -244,15 +320,18 @@ const IntegrationHub: React.FC = () => {
   };
 
   const disconnectIntegration = (integrationId: string) => {
-    setIntegrations(prev => prev.map(i => {
+    const integration = integrations.find(i => i.id === integrationId);
+    
+    const updatedIntegrations = integrations.map(i => {
       if (i.id === integrationId) {
         const { config, ...rest } = i;
-        return { ...rest, status: 'available' };
+        return { ...rest, status: 'available' as const };
       }
       return i;
-    }));
+    });
     
-    const integration = integrations.find(i => i.id === integrationId);
+    saveIntegrations(updatedIntegrations);
+    
     if (integration) {
       addLog(integrationId, 'Disconnection', 'warning', `${integration.name} disconnected`);
     }
@@ -282,11 +361,11 @@ const IntegrationHub: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'connected': return 'text-green-600';
-      case 'available': return 'text-blue-600';
-      case 'pending': return 'text-yellow-600';
-      case 'error': return 'text-red-600';
-      default: return 'text-gray-600';
+      case 'connected': return 'text-green-600 dark:text-green-400';
+      case 'available': return 'text-blue-600 dark:text-blue-400';
+      case 'pending': return 'text-yellow-600 dark:text-yellow-400';
+      case 'error': return 'text-red-600 dark:text-red-400';
+      default: return 'text-gray-600 dark:text-gray-400';
     }
   };
 
@@ -309,54 +388,54 @@ const IntegrationHub: React.FC = () => {
   const totalDataPoints = connectedIntegrations.reduce((sum, i) => sum + (i.config?.dataPoints || 0), 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Integration Hub</h1>
-        <p className="text-lg text-gray-600">
-          Connect and orchestrate your security tools. This is a functional testing environment.
-        </p>
-      </div>
-
+    <ToolTemplate
+      title="Integration Hub"
+      description="Connect and orchestrate your existing security tools"
+      icon={<Link2 />}
+      toolId="integration-hub"
+      showConnectionStatus={true}
+      isLoading={isLoading}
+      error={error}
+    >
       {/* Metrics Dashboard */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Connected Tools</p>
-              <p className="text-2xl font-bold">{connectedIntegrations.length}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Connected Tools</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{connectedIntegrations.length}</p>
             </div>
-            <Link2 className="w-8 h-8 text-blue-600" />
+            <Link2 className="w-8 h-8 text-blue-600 dark:text-blue-400" />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Total Data Points</p>
-              <p className="text-2xl font-bold">{totalDataPoints.toLocaleString()}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Total Data Points</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalDataPoints.toLocaleString()}</p>
             </div>
-            <Database className="w-8 h-8 text-green-600" />
+            <Database className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Active Syncs</p>
-              <p className="text-2xl font-bold">{syncingIntegration ? 1 : 0}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Active Syncs</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{syncingIntegration ? 1 : 0}</p>
             </div>
-            <RefreshCw className={`w-8 h-8 ${syncingIntegration ? 'text-yellow-600 animate-spin' : 'text-gray-400'}`} />
+            <RefreshCw className={`w-8 h-8 ${syncingIntegration ? 'text-yellow-600 dark:text-yellow-400 animate-spin' : 'text-gray-400 dark:text-gray-600'}`} />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600">Recent Logs</p>
-              <p className="text-2xl font-bold">{connectionLogs.length}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Recent Logs</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{connectionLogs.length}</p>
             </div>
-            <Activity className="w-8 h-8 text-purple-600" />
+            <Activity className="w-8 h-8 text-purple-600 dark:text-purple-400" />
           </div>
         </div>
       </div>
@@ -371,7 +450,7 @@ const IntegrationHub: React.FC = () => {
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 selectedCategory === category
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {category === 'all' ? 'All Integrations' : category}
@@ -385,10 +464,10 @@ const IntegrationHub: React.FC = () => {
         {filteredIntegrations.map((integration) => (
           <div
             key={integration.id}
-            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
           >
             <div className="flex items-start justify-between mb-4">
-              <div className="bg-gray-100 rounded-lg p-3">
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
                 {getIcon(integration.icon)}
               </div>
               <div className={`flex items-center ${getStatusColor(integration.status)}`}>
@@ -403,13 +482,13 @@ const IntegrationHub: React.FC = () => {
               </div>
             </div>
             
-            <h3 className="text-lg font-semibold mb-2">{integration.name}</h3>
-            <p className="text-sm text-gray-600 mb-4">{integration.description}</p>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{integration.name}</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{integration.description}</p>
             
             {integration.config && (
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-xs text-gray-500">Last sync: {new Date(integration.config.lastSync || new Date()).toLocaleString()}</p>
-                <p className="text-xs text-gray-500">Data points: {integration.config.dataPoints?.toLocaleString() || 0}</p>
+              <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <p className="text-xs text-gray-500 dark:text-gray-500">Last sync: {new Date(integration.config.lastSync || new Date()).toLocaleString()}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">Data points: {integration.config.dataPoints?.toLocaleString() || 0}</p>
               </div>
             )}
             
@@ -425,13 +504,13 @@ const IntegrationHub: React.FC = () => {
                   </button>
                   <button
                     onClick={() => openConfigModal(integration)}
-                    className="p-2 text-gray-600 bg-gray-100 rounded hover:bg-gray-200"
+                    className="p-2 text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded hover:bg-gray-200 dark:hover:bg-gray-600"
                   >
                     <Edit className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => disconnectIntegration(integration.id)}
-                    className="p-2 text-red-600 bg-red-50 rounded hover:bg-red-100"
+                    className="p-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded hover:bg-red-100 dark:hover:bg-red-900/40"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -447,7 +526,7 @@ const IntegrationHub: React.FC = () => {
                   <button
                     onClick={() => testConnection(integration)}
                     disabled={testingConnection === integration.id}
-                    className="px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 disabled:opacity-50"
+                    className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50"
                   >
                     {testingConnection === integration.id ? 'Testing...' : 'Test'}
                   </button>
@@ -459,26 +538,26 @@ const IntegrationHub: React.FC = () => {
       </div>
 
       {/* Connection Logs */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold mb-4">Connection Logs</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Connection Logs</h2>
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {connectionLogs.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No logs yet. Configure an integration to get started.</p>
+            <p className="text-gray-500 dark:text-gray-400 text-center py-8">No logs yet. Configure an integration to get started.</p>
           ) : (
             connectionLogs.map((log) => (
-              <div key={log.id} className="flex items-start p-3 bg-gray-50 rounded-lg">
+              <div key={log.id} className="flex items-start p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
                 <div className={`mr-3 mt-0.5 ${
-                  log.status === 'success' ? 'text-green-600' : 
-                  log.status === 'error' ? 'text-red-600' : 'text-yellow-600'
+                  log.status === 'success' ? 'text-green-600 dark:text-green-400' : 
+                  log.status === 'error' ? 'text-red-600 dark:text-red-400' : 'text-yellow-600 dark:text-yellow-400'
                 }`}>
                   {log.status === 'success' ? <CheckCircle2 className="w-5 h-5" /> :
                    log.status === 'error' ? <AlertCircle className="w-5 h-5" /> :
                    <AlertCircle className="w-5 h-5" />}
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium text-sm">{log.action}</p>
-                  <p className="text-sm text-gray-600">{log.message}</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="font-medium text-sm text-gray-900 dark:text-white">{log.action}</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{log.message}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
                     {new Date(log.timestamp).toLocaleString()}
                   </p>
                 </div>
@@ -491,14 +570,14 @@ const IntegrationHub: React.FC = () => {
       {/* Configuration Modal */}
       {configModal.open && configModal.integration && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                 Configure {configModal.integration.name}
               </h3>
               <button
                 onClick={() => setConfigModal({ open: false, integration: null })}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -506,40 +585,40 @@ const IntegrationHub: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   API Endpoint *
                 </label>
                 <input
                   type="text"
                   value={configForm.endpoint}
                   onChange={(e) => setConfigForm(prev => ({ ...prev, endpoint: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://api.example.com"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   API Key *
                 </label>
                 <input
                   type="password"
                   value={configForm.apiKey}
                   onChange={(e) => setConfigForm(prev => ({ ...prev, apiKey: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="••••••••••••••••"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Sync Interval (minutes)
                 </label>
                 <input
                   type="number"
                   value={configForm.syncInterval}
                   onChange={(e) => setConfigForm(prev => ({ ...prev, syncInterval: parseInt(e.target.value) || 5 }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500"
                   min="1"
                   max="60"
                 />
@@ -549,7 +628,7 @@ const IntegrationHub: React.FC = () => {
             <div className="flex justify-end space-x-3 mt-6">
               <button
                 onClick={() => setConfigModal({ open: false, integration: null })}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
               >
                 Cancel
               </button>
@@ -564,7 +643,7 @@ const IntegrationHub: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </ToolTemplate>
   );
 };
 
