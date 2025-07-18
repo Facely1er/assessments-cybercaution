@@ -6,6 +6,7 @@ import {
   Clock, ArrowLeft, 
   Calculator, 
   Server, 
+  Mail,
   Database, 
   FileText, 
   CheckCircle, 
