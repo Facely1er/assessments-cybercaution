@@ -3,11 +3,6 @@ import { Link } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import { ArrowLeft } from 'lucide-react';
 
-// Supabase configuration - replace with your actual credentials
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://your-project-ref.supabase.co';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Type definitions
 interface OrganizationInfo {
