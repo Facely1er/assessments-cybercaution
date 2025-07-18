@@ -1,5 +1,6 @@
- import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+// src/App.tsx
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'; // Add Navigate here
 import { Toaster } from './components/ui/Toaster';
 import ErrorBoundary from './components/ErrorBoundary';
 // Import main layout components directly since they're used for the structure
@@ -144,19 +145,36 @@ function App() {
               <Route path="/company/privacy" element={<Privacy />} />
               <Route path="/company/terms" element={<Terms />} />
               
-              {/* Toolkit Tool Routes */}
-              <Route path="/tools/predictive-analytics" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/nist-csf-wizard" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/vendor-scorecard" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/vendor-iq-enhanced" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorIQEnhanced /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/compliance-gap-checker" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/industry-threats" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/dark-web-monitor" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/recovery-time-calculator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><RecoveryTimeCalculator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/backup-integrity-validator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BackupIntegrityValidator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/business-impact" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/policy-generator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense></ErrorBoundary>} />
-              <Route path="/tools/incident-orchestrator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense></ErrorBoundary>} />
+              {/* Redirects from old paths to new paths */}
+              <Route path="/tools/predictive-analytics" element={<Navigate to="/tools/threat-correlation" replace />} />
+              <Route path="/tools/dark-web-monitor" element={<Navigate to="/tools/unified-analytics" replace />} />
+              <Route path="/tools/vendor-iq-enhanced" element={<Navigate to="/tools/vendor-assessment" replace />} />
+              <Route path="/tools/vendor-scorecard" element={<Navigate to="/tools/vendor-assessment" replace />} />
+              <Route path="/tools/industry-threats" element={<Navigate to="/tools/threat-correlation" replace />} />
+              <Route path="/tools/compliance-gap-checker" element={<Navigate to="/tools/gap-analysis" replace />} />
+              <Route path="/tools/nist-csf-wizard" element={<Navigate to="/tools/compliance-mapper" replace />} />
+              <Route path="/tools/policy-generator" element={<Navigate to="/tools/policy-orchestrator" replace />} />
+              <Route path="/tools/business-impact" element={<Navigate to="/tools/risk-aggregator" replace />} />
+              <Route path="/tools/recovery-time-calculator" element={<Navigate to="/tools/playbook-automation" replace />} />
+              <Route path="/tools/backup-integrity-validator" element={<Navigate to="/tools/workflow-designer" replace />} />
+              <Route path="/tools/incident-orchestrator" element={<Navigate to="/tools/playbook-automation" replace />} />
+
+              {/* Toolkit Tool Routes (updated paths) */}
+              <Route path="/tools/threat-correlation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/compliance-mapper" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/vendor-assessment" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense></ErrorBoundary>} />
+              {/* Note: VendorIQEnhanced also maps to /tools/vendor-assessment as per user's request */}
+              <Route path="/tools/vendor-assessment" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorIQEnhanced /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/gap-analysis" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense></ErrorBoundary>} />
+              {/* Note: IndustryThreatProfiler also maps to /tools/threat-correlation as per user's request */}
+              <Route path="/tools/threat-correlation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/unified-analytics" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/playbook-automation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><RecoveryTimeCalculator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/workflow-designer" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BackupIntegrityValidator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/risk-aggregator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><BusinessImpactCalculator /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/policy-orchestrator" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><Big5PolicyGenerator /></React.Suspense></ErrorBoundary>} />
+              {/* Note: IncidentResponsePlaybooks also maps to /tools/playbook-automation as per user's request */}
+              <Route path="/tools/playbook-automation" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IncidentResponsePlaybooks /></React.Suspense></ErrorBoundary>} />
               
             </Route>
 
