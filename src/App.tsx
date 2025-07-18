@@ -25,6 +25,7 @@ const PolicyOrchestrator = React.lazy(() => import('./pages/tools/Big5PolicyGene
 const RiskAggregator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
 const PlaybookAutomation = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
 const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
+import AssetManager from './pages/tools/AssetManager';
 
 // Lazy load new orchestration tools
 const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
