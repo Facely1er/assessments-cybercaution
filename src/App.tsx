@@ -18,6 +18,7 @@ const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 const PredictiveBreachAnalytics = React.lazy(() => import('./pages/tools/PredictiveBreachAnalytics'));
 const NISTCSFToolkit = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
 const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
+const VendorIQEnhanced = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
 const ComplianceGapChecker = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
 const RecoveryTimeCalculator = React.lazy(() => import('./pages/tools/RecoveryTimeCalculator'));
 const BackupIntegrityValidator = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
@@ -147,6 +148,7 @@ function App() {
               <Route path="/tools/predictive-analytics" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><PredictiveBreachAnalytics /></React.Suspense></ErrorBoundary>} />
               <Route path="/tools/nist-csf-wizard" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><NISTCSFToolkit /></React.Suspense></ErrorBoundary>} />
               <Route path="/tools/vendor-scorecard" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorSecurityScorecard /></React.Suspense></ErrorBoundary>} />
+              <Route path="/tools/vendor-iq-enhanced" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><VendorIQEnhanced /></React.Suspense></ErrorBoundary>} />
               <Route path="/tools/compliance-gap-checker" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><ComplianceGapChecker /></React.Suspense></ErrorBoundary>} />
               <Route path="/tools/industry-threats" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><IndustryThreatProfiler /></React.Suspense></ErrorBoundary>} />
               <Route path="/tools/dark-web-monitor" element={<ErrorBoundary><React.Suspense fallback={<LoadingFallback />}><DarkWebMonitoring /></React.Suspense></ErrorBoundary>} />
