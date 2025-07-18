@@ -1,4 +1,4 @@
- /** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
@@ -105,6 +105,8 @@ export default {
         "slide-out": "slideOut 0.3s ease-in-out",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        // New animation for the toolkit page
+        "fade-in-up": "fadeInUp 0.6s ease-in-out forwards",
       },
       keyframes: {
         fadeIn: {
@@ -130,6 +132,17 @@ export default {
         "accordion-up": {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
+        },
+        // New keyframe for the toolkit page animation
+        fadeInUp: {
+          "0%": { 
+            opacity: "0", 
+            transform: "translateY(20px)" 
+          },
+          "100%": { 
+            opacity: "1", 
+            transform: "translateY(0)" 
+          },
         },
       },
       boxShadow: {
