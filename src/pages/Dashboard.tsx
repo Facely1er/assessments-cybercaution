@@ -38,6 +38,7 @@ import {
 import { supabase, assessmentSubmissions } from '../lib/supabase';
 import { toast } from '../components/ui/Toaster';
 import { useAuth } from '../hooks/useAuth';
+import { useSupabaseQuery } from '../hooks/useSupabase';
 import AnimatedSection from '../utils/AnimatedSection';
 import AnimatedItem from '../utils/AnimatedItem';
 
