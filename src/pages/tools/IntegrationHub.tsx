@@ -20,34 +20,26 @@ import {
   Edit,
   Save,
   X,
-  Shield
+  Shield,
+  Search,
+  Target,
+  UserCheck
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 import ToolTemplate from './ToolTemplate';
+import { 
+  Integration, 
+  IntegrationType,
+  ConnectionStatus,
+  IntegrationEvent,
+  IntegrationStats,
+  IntegrationConfig
+} from '../../types/integrations';
 
-interface Integration {
-  id: string;
-  name: string;
-  category: string;
-  status: 'connected' | 'available' | 'pending' | 'error';
-  icon: string;
-  description: string;
-  config?: {
-    endpoint?: string;
-    apiKey?: string;
-    lastSync?: Date;
-    syncInterval?: number;
-    dataPoints?: number;
-  };
-}
-
-interface ConnectionLog {
-  id: string;
-  integrationId: string;
-  timestamp: Date;
+// Helper type for connection logs (extends IntegrationEvent)
+interface ConnectionLog extends IntegrationEvent {
   action: string;
   status: 'success' | 'error' | 'warning';
-  message: string;
 }
 
 const IntegrationHub: React.FC = () => {
@@ -65,8 +57,8 @@ const IntegrationHub: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Form state for configuration
-  const [configForm, setConfigForm] = useState({
-    endpoint: '',
+  const [configForm, setConfigForm] = useState<Partial<IntegrationConfig>>({
+    apiEndpoint: '',
     apiKey: '',
     syncInterval: 5
   });
@@ -125,34 +117,70 @@ const IntegrationHub: React.FC = () => {
       {
         id: 'splunk',
         name: 'Splunk',
-        category: 'SIEM',
-        status: 'available',
+        type: IntegrationType.SIEM,
+        vendor: 'Splunk Inc.',
+        description: 'Real-time security event correlation and analysis',
         icon: 'Database',
-        description: 'Real-time security event correlation and analysis'
+        status: ConnectionStatus.DISCONNECTED,
+        config: {},
+        supportedFeatures: ['log-analysis', 'threat-detection', 'reporting'],
+        requiredPermissions: ['read', 'write'],
+        dataFlowDirection: 'inbound',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: 'system',
+        isActive: true
       },
       {
         id: 'crowdstrike',
         name: 'CrowdStrike Falcon',
-        category: 'EDR',
-        status: 'available',
+        type: IntegrationType.EDR,
+        vendor: 'CrowdStrike',
+        description: 'Endpoint detection and response platform',
         icon: 'Shield',
-        description: 'Endpoint detection and response platform'
+        status: ConnectionStatus.DISCONNECTED,
+        config: {},
+        supportedFeatures: ['endpoint-protection', 'threat-hunting', 'incident-response'],
+        requiredPermissions: ['read', 'write', 'execute'],
+        dataFlowDirection: 'bidirectional',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: 'system',
+        isActive: true
       },
       {
         id: 'sentinel',
         name: 'Microsoft Sentinel',
-        category: 'SIEM',
-        status: 'available',
+        type: IntegrationType.SIEM,
+        vendor: 'Microsoft',
+        description: 'Cloud-native SIEM with AI-driven insights',
         icon: 'Cloud',
-        description: 'Cloud-native SIEM with AI-driven insights'
+        status: ConnectionStatus.DISCONNECTED,
+        config: {},
+        supportedFeatures: ['cloud-security', 'ai-analytics', 'automation'],
+        requiredPermissions: ['read', 'write'],
+        dataFlowDirection: 'bidirectional',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: 'system',
+        isActive: true
       },
       {
         id: 'paloalto',
         name: 'Palo Alto Cortex',
-        category: 'XDR',
-        status: 'available',
+        type: IntegrationType.EDR,
+        vendor: 'Palo Alto Networks',
+        description: 'Extended detection and response platform',
         icon: 'Server',
-        description: 'Extended detection and response platform'
+        status: ConnectionStatus.DISCONNECTED,
+        config: {},
+        supportedFeatures: ['xdr', 'threat-intelligence', 'automated-response'],
+        requiredPermissions: ['read', 'write', 'admin'],
+        dataFlowDirection: 'bidirectional',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: 'system',
+        isActive: true
       }
     ];
 
@@ -206,8 +234,8 @@ const IntegrationHub: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       integrations.forEach(integration => {
-        if (integration.status === 'connected' && integration.config?.syncInterval) {
-          const lastSync = new Date(integration.config.lastSync || new Date());
+        if (integration.status === ConnectionStatus.CONNECTED && integration.config?.syncInterval) {
+          const lastSync = new Date(integration.lastSync || new Date());
           const now = new Date();
           const minutesSinceSync = (now.getTime() - lastSync.getTime()) / 60000;
           
@@ -228,7 +256,9 @@ const IntegrationHub: React.FC = () => {
       timestamp: new Date(),
       action,
       status,
-      message
+      message,
+      eventType: status === 'error' ? 'error' : status === 'warning' ? 'warning' : 'info',
+      severity: status === 'error' ? 'high' : status === 'warning' ? 'medium' : 'low'
     };
     saveLogs([newLog, ...connectionLogs].slice(0, 100)); // Keep last 100 logs
   };
@@ -263,13 +293,13 @@ const IntegrationHub: React.FC = () => {
       const newDataPoints = Math.floor(Math.random() * 1000) + 100;
       
       const updatedIntegrations = integrations.map(i => {
-        if (i.id === integrationId && i.config) {
+        if (i.id === integrationId) {
           return {
             ...i,
+            lastSync: new Date(),
             config: {
               ...i.config,
-              lastSync: new Date(),
-              dataPoints: (i.config.dataPoints || 0) + newDataPoints
+              dataRetentionDays: i.config.dataRetentionDays || 30
             }
           };
         }
@@ -288,7 +318,7 @@ const IntegrationHub: React.FC = () => {
     const integration = configModal.integration;
     
     // Validate inputs
-    if (!configForm.endpoint || !configForm.apiKey) {
+    if (!configForm.apiEndpoint || !configForm.apiKey) {
       alert('Please fill in all required fields');
       return;
     }
@@ -298,14 +328,13 @@ const IntegrationHub: React.FC = () => {
       if (i.id === integration.id) {
         return {
           ...i,
-          status: 'connected' as const,
+          status: ConnectionStatus.CONNECTED,
           config: {
-            endpoint: configForm.endpoint,
-            apiKey: configForm.apiKey,
-            syncInterval: configForm.syncInterval,
-            lastSync: new Date(),
-            dataPoints: 0
-          }
+            ...i.config,
+            ...configForm
+          },
+          lastSync: new Date(),
+          updatedAt: new Date()
         };
       }
       return i;
@@ -316,7 +345,7 @@ const IntegrationHub: React.FC = () => {
     
     // Close modal and reset form
     setConfigModal({ open: false, integration: null });
-    setConfigForm({ endpoint: '', apiKey: '', syncInterval: 5 });
+    setConfigForm({ apiEndpoint: '', apiKey: '', syncInterval: 5 });
   };
 
   const disconnectIntegration = (integrationId: string) => {
@@ -324,8 +353,12 @@ const IntegrationHub: React.FC = () => {
     
     const updatedIntegrations = integrations.map(i => {
       if (i.id === integrationId) {
-        const { config, ...rest } = i;
-        return { ...rest, status: 'available' as const };
+        return { 
+          ...i, 
+          status: ConnectionStatus.DISCONNECTED,
+          lastSync: undefined,
+          updatedAt: new Date()
+        };
       }
       return i;
     });
@@ -341,51 +374,54 @@ const IntegrationHub: React.FC = () => {
     setConfigModal({ open: true, integration });
     if (integration.config) {
       setConfigForm({
-        endpoint: integration.config.endpoint || '',
+        apiEndpoint: integration.config.apiEndpoint || '',
         apiKey: integration.config.apiKey || '',
         syncInterval: integration.config.syncInterval || 5
       });
     }
   };
 
-  const getIcon = (iconName: string) => {
+  const getIcon = (iconName?: string) => {
     const icons: { [key: string]: React.ReactNode } = {
       Database: <Database className="w-6 h-6" />,
       Shield: <Shield className="w-6 h-6" />,
       Cloud: <Cloud className="w-6 h-6" />,
       Server: <Server className="w-6 h-6" />,
-      Workflow: <Workflow className="w-6 h-6" />
+      Workflow: <Workflow className="w-6 h-6" />,
+      Search: <Search className="w-6 h-6" />,
+      Target: <Target className="w-6 h-6" />,
+      UserCheck: <UserCheck className="w-6 h-6" />
     };
-    return icons[iconName] || <Activity className="w-6 h-6" />;
+    return icons[iconName || ''] || <Activity className="w-6 h-6" />;
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: ConnectionStatus) => {
     switch (status) {
-      case 'connected': return 'text-green-600 dark:text-green-400';
-      case 'available': return 'text-blue-600 dark:text-blue-400';
-      case 'pending': return 'text-yellow-600 dark:text-yellow-400';
-      case 'error': return 'text-red-600 dark:text-red-400';
+      case ConnectionStatus.CONNECTED: return 'text-green-600 dark:text-green-400';
+      case ConnectionStatus.DISCONNECTED: return 'text-blue-600 dark:text-blue-400';
+      case ConnectionStatus.PENDING: return 'text-yellow-600 dark:text-yellow-400';
+      case ConnectionStatus.ERROR: return 'text-red-600 dark:text-red-400';
       default: return 'text-gray-600 dark:text-gray-400';
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: ConnectionStatus) => {
     switch (status) {
-      case 'connected': return <CheckCircle2 className="w-5 h-5" />;
-      case 'available': return <Circle className="w-5 h-5" />;
-      case 'pending': return <RefreshCw className="w-5 h-5 animate-spin" />;
-      case 'error': return <AlertCircle className="w-5 h-5" />;
+      case ConnectionStatus.CONNECTED: return <CheckCircle2 className="w-5 h-5" />;
+      case ConnectionStatus.DISCONNECTED: return <Circle className="w-5 h-5" />;
+      case ConnectionStatus.PENDING: return <RefreshCw className="w-5 h-5 animate-spin" />;
+      case ConnectionStatus.ERROR: return <AlertCircle className="w-5 h-5" />;
       default: return <Circle className="w-5 h-5" />;
     }
   };
 
-  const categories = ['all', 'SIEM', 'SOAR', 'EDR', 'XDR'];
+  const categories = ['all', ...Object.values(IntegrationType)];
   const filteredIntegrations = selectedCategory === 'all' 
     ? integrations 
-    : integrations.filter(i => i.category === selectedCategory);
+    : integrations.filter(i => i.type === selectedCategory);
 
-  const connectedIntegrations = integrations.filter(i => i.status === 'connected');
-  const totalDataPoints = connectedIntegrations.reduce((sum, i) => sum + (i.config?.dataPoints || 0), 0);
+  const connectedIntegrations = integrations.filter(i => i.status === ConnectionStatus.CONNECTED);
+  const totalDataPoints = connectedIntegrations.length * 5000; // Mock calculation
 
   return (
     <ToolTemplate
@@ -447,13 +483,13 @@ const IntegrationHub: React.FC = () => {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
                 selectedCategory === category
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
-              {category === 'all' ? 'All Integrations' : category}
+              {category === 'all' ? 'All Integrations' : category.replace(/_/g, ' ')}
             </button>
           ))}
         </div>
@@ -477,7 +513,7 @@ const IntegrationHub: React.FC = () => {
                   getStatusIcon(integration.status)
                 )}
                 <span className="ml-2 text-sm font-medium capitalize">
-                  {integration.status}
+                  {integration.status.replace(/_/g, ' ')}
                 </span>
               </div>
             </div>
@@ -485,15 +521,19 @@ const IntegrationHub: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{integration.name}</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{integration.description}</p>
             
-            {integration.config && (
+            {integration.lastSync && (
               <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <p className="text-xs text-gray-500 dark:text-gray-500">Last sync: {new Date(integration.config.lastSync || new Date()).toLocaleString()}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">Data points: {integration.config.dataPoints?.toLocaleString() || 0}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Last sync: {new Date(integration.lastSync).toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Type: {integration.type.replace(/_/g, ' ')}
+                </p>
               </div>
             )}
             
             <div className="flex gap-2">
-              {integration.status === 'connected' ? (
+              {integration.status === ConnectionStatus.CONNECTED ? (
                 <>
                   <button
                     onClick={() => performSync(integration.id)}
@@ -590,8 +630,8 @@ const IntegrationHub: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  value={configForm.endpoint}
-                  onChange={(e) => setConfigForm(prev => ({ ...prev, endpoint: e.target.value }))}
+                  value={configForm.apiEndpoint || ''}
+                  onChange={(e) => setConfigForm(prev => ({ ...prev, apiEndpoint: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://api.example.com"
                 />
@@ -603,7 +643,7 @@ const IntegrationHub: React.FC = () => {
                 </label>
                 <input
                   type="password"
-                  value={configForm.apiKey}
+                  value={configForm.apiKey || ''}
                   onChange={(e) => setConfigForm(prev => ({ ...prev, apiKey: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500"
                   placeholder="••••••••••••••••"
@@ -616,7 +656,7 @@ const IntegrationHub: React.FC = () => {
                 </label>
                 <input
                   type="number"
-                  value={configForm.syncInterval}
+                  value={configForm.syncInterval || 5}
                   onChange={(e) => setConfigForm(prev => ({ ...prev, syncInterval: parseInt(e.target.value) || 5 }))}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:ring-blue-500 focus:border-blue-500"
                   min="1"
