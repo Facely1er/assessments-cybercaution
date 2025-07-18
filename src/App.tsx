@@ -125,7 +125,7 @@ function App() {
   };
 
   return (
-    <ThemeProvider value={{ darkMode, toggleDarkMode }}>
+    <ThemeProvider>
       <Router>
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
