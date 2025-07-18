@@ -84,6 +84,15 @@ const ToolkitPage = () => {
           path: '/tools/data-normalizer',
           color: 'bg-purple-500/10',
           iconColor: 'text-purple-500'
+        },
+        {
+          id: 'asset-manager',
+          title: 'Information Asset Manager',
+          description: 'Manage and assess your organization\'s information assets and their associated risks',
+          icon: Database,
+          path: '/tools/asset-manager',
+          color: 'bg-blue-500/10',
+          iconColor: 'text-blue-500'
         }
       ]
     },
