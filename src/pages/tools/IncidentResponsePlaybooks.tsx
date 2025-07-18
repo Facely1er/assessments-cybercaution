@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Ca
 import { Button } from '../../components/ui/Button';
 import { 
   FileText, AlertTriangle, Shield, Users, Clock, 
-  Database, Users, Lock, Key, Mail, CreditCard, ArrowLeft,
+  Database, Lock, Key, Mail, CreditCard, ArrowLeft,
   ExternalLink, Play, Pause, RotateCcw, ChevronRight,
   AlertCircle, Info, Eye, Settings, BookOpen, Flag,
   Loader2, WifiOff, Wifi, X, Plus, Save, Timer,
