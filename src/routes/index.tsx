@@ -27,7 +27,7 @@ export interface RouteConfig {
 export const toolRoutes: ToolRoute[] = [
   {
     id: 'integration-manager',
-    path: '/tools/integration-hub',
+    path: '/tools/integration-manager',
     name: 'Integration Manager',
     description: 'Connect and unify your existing security tools into a single orchestration platform',
     category: 'integration',
