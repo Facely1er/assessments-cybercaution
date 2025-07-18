@@ -4,15 +4,15 @@ import { Card, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import AnimatedSection from '../utils/AnimatedSection';
 import AnimatedItem from '../utils/AnimatedItem';
-import { 
-  Shield, 
-  AlertTriangle, 
-  BarChart3, 
-  Network, 
-  FileText, 
-  Users, 
-  Lock, 
-  Database, 
+import {
+  Shield,
+  AlertTriangle,
+  BarChart3,
+  Network,
+  FileText,
+  Users,
+  Lock,
+  Database,
   Eye,
   ArrowRight,
   CheckCircle,
@@ -25,7 +25,7 @@ import {
 const Features = () => {
   return (
     <div className="py-20">
-      
+
       {/* Hero Section */}
 <AnimatedSection type="fadeIn" className="mb-16 text-center px-4 md:px-6">
   <h1 className="text-4xl font-bold mb-4 text-foreground">CyberCaution™ Features</h1>
@@ -36,7 +36,7 @@ const Features = () => {
     NIST-Aligned, Integrated Platform for Cyber Risk Orchestration &amp; Governance
   </p>
 </AnimatedSection>
-     
+
 
       {/* Core Capabilities Section */}
       <AnimatedSection type="fadeIn" delay={0.1} className="mb-16 px-4 md:px-6">
@@ -47,7 +47,7 @@ const Features = () => {
               Our platform delivers integrated security assessment, monitoring, and response capabilities
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatedItem type="fadeIn" delay={0.2}>
               <Card className="h-full hover:shadow-lg transition-shadow dark:border-muted">
@@ -82,7 +82,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.3}>
               <Card className="h-full hover:shadow-lg transition-shadow dark:border-muted">
                 <CardContent className="p-6">
@@ -116,7 +116,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.4}>
               <Card className="h-full hover:shadow-lg transition-shadow dark:border-muted">
                 <CardContent className="p-6">
@@ -163,7 +163,7 @@ const Features = () => {
                 Framework-Aligned Security
               </span>
             </div>
-            <h2 className="text-3xl font-bold mb-4 text-foreground">NIST Framework Alignment</h2>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">Built on NIST Standards</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               All features are aligned with NIST frameworks and industry best practices to ensure comprehensive and effective security
             </p>
@@ -187,7 +187,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="slideInLeft" delay={0.2}>
               <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
                 <CardContent className="p-6">
@@ -205,7 +205,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="slideInLeft" delay={0.3}>
               <Card className="hover:shadow-lg transition-all duration-300 dark:border-muted">
                 <CardContent className="p-6">
@@ -236,7 +236,7 @@ const Features = () => {
               Enterprise-grade security tools to assess, monitor, and protect your organization
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <AnimatedItem type="fadeIn" delay={0.1}>
               <Card className="hover:shadow-lg transition-shadow dark:border-muted">
@@ -259,7 +259,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.2}>
               <Card className="hover:shadow-lg transition-shadow dark:border-muted">
                 <CardContent className="p-6">
@@ -281,7 +281,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.3}>
               <Card className="hover:shadow-lg transition-shadow dark:border-muted">
                 <CardContent className="p-6">
@@ -303,7 +303,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.4}>
               <Card className="hover:shadow-lg transition-shadow dark:border-muted">
                 <CardContent className="p-6">
@@ -369,7 +369,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.2}>
               <Card className="dark:border-muted h-full">
                 <CardContent className="p-6 flex flex-col h-full">
@@ -399,7 +399,7 @@ const Features = () => {
                 </CardContent>
               </Card>
             </AnimatedItem>
-            
+
             <AnimatedItem type="fadeIn" delay={0.3}>
               <Card className="dark:border-muted h-full">
                 <CardContent className="p-6 flex flex-col h-full">
@@ -410,7 +410,8 @@ const Features = () => {
                     <h3 className="text-xl font-semibold text-foreground">Measurable ROI</h3>
                   </div>
                   <p className="text-muted-foreground mb-4 flex-1">
-                    Demonstrate clear return on investment with quantifiable security improvements. Track metrics that matter to your business and show tangible security value.
+                    Demonstrate clear return on investment with quantifiable security improvements.
+                    Track metrics that matter to your business and show tangible security value.
                   </p>
                   <div className="space-y-2">
                     <div className="flex items-center text-sm">
@@ -439,7 +440,7 @@ const Features = () => {
           <div className="bg-[#FF6B00] rounded-lg p-6 md:p-8 text-center shadow-lg relative overflow-hidden">
             {/* Background glow effect */}
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#FF6B00]/50 via-[#FF8F40]/30 to-[#FF6B00]/50 opacity-50 animate-pulse"></div>
-            
+
             <div className="relative z-10">
               <h2 className="text-3xl font-bold text-white mb-6">
                 Ready to Strengthen Your Cybersecurity Posture?
@@ -455,8 +456,8 @@ const Features = () => {
                   </Button>
                 </Link>
                 <Link to="/ransomware-assessment">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="w-full sm:w-auto bg-transparent text-white border-white hover:bg-white/10"
                   >
                     Start Free Assessment
