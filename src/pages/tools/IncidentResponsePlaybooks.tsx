@@ -9,7 +9,7 @@ import {
   ExternalLink, Play, Pause, RotateCcw, ChevronRight,
   AlertCircle, Info, Eye, Settings, BookOpen, Flag,
   Loader2, WifiOff, Wifi, X, Plus, Save, Timer,
-  Building, User, Calendar, Target, Activity, Phone
+  Building, User, Calendar, Target, Activity, Phone, Download
 } from 'lucide-react';
 
 const IncidentResponsePlaybooks = () => {
