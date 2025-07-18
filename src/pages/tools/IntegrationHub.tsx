@@ -73,8 +73,8 @@ const IntegrationHub: React.FC = () => {
 
   // Initialize Supabase client
   const supabase = createClient(
-    process.env.VITE_APP_SUPABASE_URL || '',
-    process.env.VITE_APP_SUPABASE_ANON_KEY || ''
+    process.env.REACT_APP_SUPABASE_URL || '',
+    process.env.REACT_APP_SUPABASE_ANON_KEY || ''
   );
 
   // Initialize with default integrations
