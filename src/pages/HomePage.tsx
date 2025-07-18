@@ -363,54 +363,7 @@ const HomePage = () => {
         </div>
       </section>
 
-{/* CyberCaution™ Platform Section */}
-      <section className="py-20">
-        <div className="container">
-          <AnimatedSection>
-            <div className="text-center">
-              <h2 className="text-4xl font-bold mb-6 text-foreground">CyberCaution™ Platform</h2>
-              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
-                Our platform integrates security tools, orchestrates workflows, provides a governance framework, aggregates analytics, and enables human-centric training.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <AnimatedItem delay={0.1}>
-                  <div className="flex flex-col items-center bg-muted/30 p-6 rounded-lg">
-                    <img src="integrate-icon.png" alt="Integration Icon" className="h-16 w-16 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2">Integration Hub</h3>
-                    <p className="text-muted-foreground text-center">Connect your existing security tools into a unified ecosystem.</p>
-                  </div>
-                </AnimatedItem>
-                {/* ... Other platform features ... */}
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
- {/* Professional Services Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container">
-          <AnimatedSection>
-            <div className="text-center">
-              <h2 className="text-4xl font-bold mb-6 text-foreground">Professional Services</h2>
-              <p className="text-xl mb-12 text-muted-foreground max-w-2xl mx-auto">
-                Our team of experts provides end-to-end support to maximize the value of your CyberCaution implementation.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <AnimatedItem delay={0.1}>
-                  <div className="bg-card p-6 rounded-lg shadow-md">
-                    <h3 className="text-xl font-semibold mb-2">Assessment Interpretation &amp; Analysis</h3>
-                    <p className="text-muted-foreground">Gain actionable insights from your assessment results with expert analysis and recommendations.</p>
-                  </div>
-                </AnimatedItem>
-                {/* ... Other professional services ... */}
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-    
+   
       {/* Value Proposition Section */}
       <section className="py-20 bg-background to-background">
         <div className="container relative z-10">
