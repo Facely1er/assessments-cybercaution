@@ -14,7 +14,24 @@ import {
   BarChart3,
   Users,
   Settings,
-  HelpCircle
+  HelpCircle,
+  GitBranch,
+  Database,
+  Zap,
+  Activity,
+  FileText,
+  CheckCircle,
+  Gauge,
+  ClipboardCheck,
+  Brain,
+  TrendingUp,
+  BookOpen,
+  Eye,
+  UserCheck,
+  Calculator,
+  Building2,
+  Globe,
+  Server
 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { toolRoutes, ToolRoute } from '../../routes/toolRoutes';
@@ -31,20 +48,42 @@ export const ToolLayout: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const location = useLocation();
 
-  // Generate sidebar items dynamically from toolRoutes
+  // Sidebar items - individual tools for easy navigation
   const sidebarItems: SidebarItem[] = [
     { name: 'All Tools', path: '/tools', icon: Home },
-    // Featured/main tools for each category
+    // Integration Hub Tools
     { name: 'Integration Manager', path: '/tools/integration-manager', icon: Network, category: 'integration' },
-    { name: 'Workflow Orchestrator', path: '/tools/workflow-orchestrator', icon: Workflow, category: 'orchestration' },
+    { name: 'API Connector Studio', path: '/tools/api-connector', icon: GitBranch, category: 'integration' },
+    { name: 'Data Normalization Engine', path: '/tools/data-normalization-engine', icon: Database, category: 'integration' },
+    // Workflow Orchestration Tools
+    { name: 'Security Workflow Designer', path: '/tools/workflow-designer', icon: Workflow, category: 'orchestration' },
+    { name: 'Playbook Automation Engine', path: '/tools/playbook-automation', icon: Zap, category: 'orchestration' },
+    { name: 'Orchestration Dashboard', path: '/tools/orchestration-dashboard', icon: Activity, category: 'orchestration' },
+    // Governance & Compliance Tools
+    { name: 'Policy Orchestrator', path: '/tools/policy-orchestrator', icon: FileText, category: 'governance' },
+    { name: 'Compliance Mapping Engine', path: '/tools/compliance-mapper', icon: CheckCircle, category: 'governance' },
     { name: 'Governance Framework', path: '/tools/governance-framework', icon: Shield, category: 'governance' },
+    { name: 'Governance Scorecard', path: '/tools/governance-scorecard', icon: Gauge, category: 'governance' },
+    { name: 'Audit Automation Suite', path: '/tools/audit-automation', icon: ClipboardCheck, category: 'governance' },
+    // Analytics & Intelligence Tools  
+    { name: 'Unified Security Analytics', path: '/tools/unified-analytics', icon: BarChart3, category: 'analytics' },
+    { name: 'Threat Correlation Engine', path: '/tools/threat-correlation', icon: Brain, category: 'analytics' },
+    { name: 'Risk Score Aggregator', path: '/tools/risk-aggregator', icon: TrendingUp, category: 'analytics' },
     { name: 'Analytics Overlay', path: '/tools/analytics-overlay', icon: BarChart3, category: 'analytics' },
-    { name: 'Security Training', path: '/tools/security-training', icon: Users, category: 'training' },
-    // Add other popular tools
-    { name: 'Playbook Automation', path: '/tools/playbook-automation', icon: toolRoutes.find(t => t.path === '/tools/playbook-automation')?.icon || Workflow, category: 'orchestration' },
-    { name: 'Policy Orchestrator', path: '/tools/policy-orchestrator', icon: toolRoutes.find(t => t.path === '/tools/policy-orchestrator')?.icon || Shield, category: 'governance' },
-    { name: 'Threat Correlation', path: '/tools/threat-correlation', icon: toolRoutes.find(t => t.path === '/tools/threat-correlation')?.icon || BarChart3, category: 'analytics' },
-    { name: 'Vendor Assessment', path: '/tools/vendor-assessment', icon: toolRoutes.find(t => t.path === '/tools/vendor-assessment')?.icon || Shield, category: 'assessment' }
+    { name: 'Executive Reporting Suite', path: '/tools/executive-reporting', icon: FileText, category: 'analytics' },
+    // Training Tools
+    { name: 'Training Orchestrator', path: '/tools/training-orchestrator', icon: BookOpen, category: 'training' },
+    { name: 'Security Training Platform', path: '/tools/security-training', icon: Users, category: 'training' },
+    { name: 'Phishing Simulation Platform', path: '/tools/phishing-simulator', icon: Eye, category: 'training' },
+    { name: 'Role-Based Training Engine', path: '/tools/role-based-training', icon: UserCheck, category: 'training' },
+    // Assessment & Benchmarking Tools
+    { name: 'Security Maturity Assessment', path: '/tools/maturity-assessment', icon: Shield, category: 'assessment' },
+    { name: 'Gap Analysis Engine', path: '/tools/gap-analysis', icon: Calculator, category: 'assessment' },
+    { name: 'VendorIQ Enterprise Platform', path: '/tools/vendor-assessment', icon: Building2, category: 'assessment' },
+    { name: 'Vendor Security Scorecard', path: '/tools/vendor-security-scorecard', icon: Building2, category: 'assessment' },
+    { name: 'Industry Threat Profiler', path: '/tools/industry-threat-profiler', icon: Globe, category: 'assessment' },
+    { name: 'Asset Manager', path: '/tools/asset-manager', icon: Server, category: 'governance' },
+    { name: 'Recovery Time Calculator', path: '/tools/recovery-time-calculator', icon: Calculator, category: 'assessment' }
   ];
 
   const isActive = (path: string) => location.pathname === path;
