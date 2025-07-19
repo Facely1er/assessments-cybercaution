@@ -104,33 +104,18 @@ export const ToolLayout: React.FC = () => {
               return (
                 <li key={category.key}>
                   {/* Category header */}
-                  <div className="flex items-center w-full">
-                    {category.key === 'integration' ? (
-                      <Link
-                        to="/tools/integration-manager"
-                        className="flex items-center flex-1 p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                        onClick={() => setSidebarOpen(false)}
-                      >
-                        <CategoryIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                        <span className="flex-1 ml-3 text-left">{category.name}</span>
-                      </Link>
+                  <button
+                    onClick={() => toggleCategory(category.key)}
+                    className="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <CategoryIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    <span className="flex-1 ml-3 text-left">{category.name}</span>
+                    {isOpen ? (
+                      <ChevronUp className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     ) : (
-                      <div className="flex items-center flex-1 p-2 text-gray-900 rounded-lg dark:text-white">
-                        <CategoryIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                        <span className="flex-1 ml-3 text-left">{category.name}</span>
-                      </div>
+                      <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     )}
-                    <button
-                      onClick={() => toggleCategory(category.key)}
-                      className="p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      {isOpen ? (
-                        <ChevronUp className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                      )}
-                    </button>
-                  </div>
+                  </button>
                   
                   {/* Tools submenu */}
                   {isOpen && (
