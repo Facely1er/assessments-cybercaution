@@ -1,5 +1,5 @@
 // src/components/layout/ToolLayout.tsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { 
   Menu, 
@@ -9,6 +9,8 @@ import {
   Sun, 
   Home,
   ChevronLeft,
+  ChevronDown,
+  ChevronUp,
   Network,
   Workflow,
   BarChart3,
@@ -34,59 +36,36 @@ import {
   Server
 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { toolRoutes, ToolRoute } from '../../routes/toolRoutes';
-
-interface SidebarItem {
-  name: string;
-  path: string;
-  icon: React.ElementType;
-  category?: string;
-}
+import { toolRoutes, getToolsByCategory } from '../../routes/toolRoutes';
 
 export const ToolLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
   const { darkMode, toggleDarkMode } = useTheme();
-  const location = useLocation();
+  // Group tools by category
+  const groupedTools = useMemo(() => {
+    const categories = {
+      integration: { name: 'Integration Hub', icon: Network },
+      orchestration: { name: 'Workflow Orchestration', icon: Workflow },
+      governance: { name: 'Governance & Compliance', icon: Shield },
+      analytics: { name: 'Analytics & Intelligence', icon: BarChart3 },
+      training: { name: 'Security Training', icon: Users },
+      assessment: { name: 'Assessment & Benchmarking', icon: Calculator }
+    };
 
-  // Sidebar items - individual tools for easy navigation
-  const sidebarItems: SidebarItem[] = [
-    { name: 'All Tools', path: '/tools', icon: Home },
-    // Integration Hub Tools
-    { name: 'Integration Manager', path: '/tools/integration-manager', icon: Network, category: 'integration' },
-    { name: 'API Connector Studio', path: '/tools/api-connector', icon: GitBranch, category: 'integration' },
-    { name: 'Data Normalization Engine', path: '/tools/data-normalization-engine', icon: Database, category: 'integration' },
-    // Workflow Orchestration Tools
-    { name: 'Security Workflow Designer', path: '/tools/workflow-designer', icon: Workflow, category: 'orchestration' },
-    { name: 'Playbook Automation Engine', path: '/tools/playbook-automation', icon: Zap, category: 'orchestration' },
-    { name: 'Orchestration Dashboard', path: '/tools/orchestration-dashboard', icon: Activity, category: 'orchestration' },
-    // Governance & Compliance Tools
-    { name: 'Policy Orchestrator', path: '/tools/policy-orchestrator', icon: FileText, category: 'governance' },
-    { name: 'Compliance Mapping Engine', path: '/tools/compliance-mapper', icon: CheckCircle, category: 'governance' },
-    { name: 'Governance Framework', path: '/tools/governance-framework', icon: Shield, category: 'governance' },
-    { name: 'Governance Scorecard', path: '/tools/governance-scorecard', icon: Gauge, category: 'governance' },
-    { name: 'Audit Automation Suite', path: '/tools/audit-automation', icon: ClipboardCheck, category: 'governance' },
-    // Analytics & Intelligence Tools  
-    { name: 'Unified Security Analytics', path: '/tools/unified-analytics', icon: BarChart3, category: 'analytics' },
-    { name: 'Threat Correlation Engine', path: '/tools/threat-correlation', icon: Brain, category: 'analytics' },
-    { name: 'Risk Score Aggregator', path: '/tools/risk-aggregator', icon: TrendingUp, category: 'analytics' },
-    { name: 'Analytics Overlay', path: '/tools/analytics-overlay', icon: BarChart3, category: 'analytics' },
-    { name: 'Executive Reporting Suite', path: '/tools/executive-reporting', icon: FileText, category: 'analytics' },
-    // Training Tools
-    { name: 'Training Orchestrator', path: '/tools/training-orchestrator', icon: BookOpen, category: 'training' },
-    { name: 'Security Training Platform', path: '/tools/security-training', icon: Users, category: 'training' },
-    { name: 'Phishing Simulation Platform', path: '/tools/phishing-simulator', icon: Eye, category: 'training' },
-    { name: 'Role-Based Training Engine', path: '/tools/role-based-training', icon: UserCheck, category: 'training' },
-    // Assessment & Benchmarking Tools
-    { name: 'Security Maturity Assessment', path: '/tools/maturity-assessment', icon: Shield, category: 'assessment' },
-    { name: 'Gap Analysis Engine', path: '/tools/gap-analysis', icon: Calculator, category: 'assessment' },
-    { name: 'VendorIQ Enterprise Platform', path: '/tools/vendor-assessment', icon: Building2, category: 'assessment' },
-    { name: 'Vendor Security Scorecard', path: '/tools/vendor-security-scorecard', icon: Building2, category: 'assessment' },
-    { name: 'Industry Threat Profiler', path: '/tools/industry-threat-profiler', icon: Globe, category: 'assessment' },
-    { name: 'Asset Manager', path: '/tools/asset-manager', icon: Server, category: 'governance' },
-    { name: 'Recovery Time Calculator', path: '/tools/recovery-time-calculator', icon: Calculator, category: 'assessment' }
-  ];
+    return Object.entries(categories).map(([categoryKey, categoryInfo]) => ({
+      key: categoryKey,
+      name: categoryInfo.name,
+      icon: categoryInfo.icon,
+      tools: getToolsByCategory(categoryKey)
+    })).filter(category => category.tools.length > 0);
+  }, []);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const toggleCategory = (categoryKey: string) => {
+    setOpenCategory(openCategory === categoryKey ? null : categoryKey);
+  };
 
   return (
     <div className="relative flex h-full">
@@ -98,29 +77,69 @@ export const ToolLayout: React.FC = () => {
       >
         <div className="h-full px-3 pb-4 overflow-y-auto">
           <ul className="space-y-2 font-medium">
-            {sidebarItems.map((item) => {
-              const Icon = item.icon;
-              const active = isActive(item.path);
+            {/* All Tools link */}
+            <li>
+              <Link
+                to="/tools"
+                className={`flex items-center p-2 rounded-lg transition-colors ${
+                  isActive('/tools')
+                    ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
+                    : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+                onClick={() => setSidebarOpen(false)}
+              >
+                <Home className={`w-5 h-5 ${isActive('/tools') ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'}`} />
+                <span className="ml-3">All Tools</span>
+              </Link>
+            </li>
+
+            {/* Category groups */}
+            {groupedTools.map((category) => {
+              const CategoryIcon = category.icon;
+              const isOpen = openCategory === category.key;
               
               return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`flex items-center p-2 rounded-lg transition-colors ${
-                      active
-                        ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
-                        : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }`}
-                    onClick={() => setSidebarOpen(false)}
+                <li key={category.key}>
+                  {/* Category header */}
+                  <button
+                    onClick={() => toggleCategory(category.key)}
+                    className="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
-                    <Icon className={`w-5 h-5 ${active ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'}`} />
-                    <span className="ml-3">{item.name}</span>
-                    {item.category && (
-                      <span className="ml-auto text-xs text-gray-500 dark:text-gray-400 capitalize">
-                        {item.category}
-                      </span>
+                    <CategoryIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                    <span className="flex-1 ml-3 text-left">{category.name}</span>
+                    {isOpen ? (
+                      <ChevronUp className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     )}
-                  </Link>
+                  </button>
+                  
+                  {/* Tools submenu */}
+                  {isOpen && (
+                    <ul className="mt-2 space-y-1">
+                      {category.tools.map((tool) => {
+                        const ToolIcon = tool.icon;
+                        const active = isActive(tool.path);
+                        
+                        return (
+                          <li key={tool.path}>
+                            <Link
+                              to={tool.path}
+                              className={`flex items-center p-2 pl-8 rounded-lg transition-colors ${
+                                active
+                                  ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
+                                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                              }`}
+                              onClick={() => setSidebarOpen(false)}
+                            >
+                              <ToolIcon className={`w-4 h-4 ${active ? 'text-primary-600 dark:text-primary-400' : 'text-gray-500 dark:text-gray-400'}`} />
+                              <span className="ml-3 text-sm">{tool.name}</span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </li>
               );
             })}
