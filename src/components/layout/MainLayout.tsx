@@ -19,7 +19,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   setMobileMenuOpen
 }) => {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="grid grid-rows-[auto_1fr_auto] min-h-screen bg-background">
       {/* Navigation Header */}
       <Navigation 
         toggleDarkMode={toggleDarkMode} 
@@ -29,7 +29,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       />
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="relative overflow-hidden">
         {children || <Outlet />}
       </main>
 
