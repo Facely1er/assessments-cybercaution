@@ -31,6 +31,9 @@ const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityV
 import AssetManager from './pages/tools/AssetManager';
 const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNormalizationEngine'));
 
+// Generic tool page for unimplemented tools
+const GenericToolPage = React.lazy(() => import('./pages/tools/GenericToolPage'));
+
 // Lazy load orchestration and other tools
 const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage')); // Re-add ToolkitPage import
 const IntegrationManager = React.lazy(() => import('./pages/tools/IntegrationManager'));
