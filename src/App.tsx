@@ -21,7 +21,6 @@ const UnifiedAnalytics = React.lazy(() => import('./pages/tools/DarkWebMonitorin
 const VendorAssessment = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
 const GapAnalysis = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
 const ComplianceMapper = React.lazy(() => import('./pages/tools/NISTCSFToolkit')); // This is NISTCSFToolkit
-const GenericToolPage = React.lazy(() => import('./pages/tools/GenericToolPage'));
 const RecoveryTimeCalculator = React.lazy(() => import('./pages/tools/RecoveryTimeCalculator'));
 const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
 const IndustryThreatProfiler = React.lazy(() => import('./pages/tools/IndustryThreatProfiler'));
@@ -33,7 +32,7 @@ import AssetManager from './pages/tools/AssetManager';
 const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNormalizationEngine'));
 
 // Lazy load orchestration and other tools
-const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
+const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage'));
 const IntegrationManager = React.lazy(() => import('./pages/tools/IntegrationManager'));
 const WorkflowOrchestrator = React.lazy(() => import('./pages/tools/WorkflowOrchestrator'));
 const GovernanceFramework = React.lazy(() => import('./pages/tools/GovernanceFramework'));
@@ -160,8 +159,8 @@ function App() {
               {/* MainLayout wraps ToolLayout for consistent header/footer */}
               <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
                 <Route element={<ToolLayout />}>
-                  {/* Tools directory */}
-                  <Route path="/tools" element={<ToolsDirectory />} />
+                  {/* Main Toolkit page */}
+                  <Route path="/tools" element={<ToolkitPage />} />
                   
                   {/* New Orchestration & Governance Tools */}
                   <Route path="/tools/integration-hub" element={<IntegrationManager />} />
