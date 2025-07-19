@@ -62,17 +62,6 @@ export const toolRoutes: ToolRoute[] = [
     iconColorClass: 'text-white'
   },
   {
-    id: 'integration-hub',
-    name: 'Integration Hub',
-    path: '/tools/integration-hub',
-    description: 'Central hub for managing all security tool integrations',
-    category: 'integration',
-    features: ['Centralized management', 'Integration monitoring', 'Health checks', 'Configuration'],
-    icon: Network,
-    bgColorClass: 'from-blue-500 to-blue-600',
-    iconColorClass: 'text-white'
-  },
-  {
     id: 'api-connector',
     name: 'API Connector Studio',
     path: '/tools/api-connector',
@@ -81,17 +70,6 @@ export const toolRoutes: ToolRoute[] = [
     features: ['Visual API builder', 'Custom connectors', 'Testing framework', 'Documentation'],
     icon: GitBranch,
     bgColorClass: 'from-indigo-500 to-indigo-600',
-    iconColorClass: 'text-white'
-  },
-  {
-    id: 'data-normalizer',
-    name: 'Data Normalization Engine',
-    path: '/tools/data-normalizer',
-    description: 'Standardize data formats across different security tools for unified analytics',
-    category: 'integration',
-    features: ['Data standardization', 'Format conversion', 'Schema mapping', 'Quality validation'],
-    icon: Database,
-    bgColorClass: 'from-purple-500 to-purple-600',
     iconColorClass: 'text-white'
   },
   {
