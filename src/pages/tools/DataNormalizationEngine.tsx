@@ -298,7 +298,7 @@ const DataNormalizationEngine = () => {
     
     try {
       // Simulate data processing
-      setTimeout(() => {
+      setTimeout(async() => {
         // Parse source data based on format
         let parsedData;
         if (activeTemplate?.sourceFormat === 'JSON') {
