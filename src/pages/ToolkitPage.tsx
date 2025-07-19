@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { toolRoutes, getToolsByCategory, ToolRoute } from '../routes/toolRoutes';
 import { 
   AlertTriangle, 
   Eye, 
@@ -29,7 +30,9 @@ import {
   Gauge,
   Globe,
   Lock,
-  Activity
+  Activity,
+  Server,
+  HardDrive
 } from 'lucide-react';
 
 const ToolkitPage = () => {
@@ -52,225 +55,96 @@ const ToolkitPage = () => {
     </div>
   );
 
-  // Tool categories aligned with CyberCaution's core capabilities
-  const toolCategories = [
-    {
+  // Dynamic tool categories from toolRoutes
+  const categoryConfig = {
+    integration: {
       name: "Security Tool Integration Hub",
       description: "Connect and orchestrate your existing security infrastructure",
-      tools: [
-        {
-          id: 'integration-manager',
-          title: 'Integration Manager',
-          description: 'Connect SIEM, EDR, vulnerability scanners, and other security tools into a unified platform',
-          icon: Link2,
-          path: '/tools/integration-manager',
-          color: 'bg-blue-500/10',
-          iconColor: 'text-blue-500'
-        },
-        {
-          id: 'api-connector',
-          title: 'API Connector Studio',
-          description: 'Build custom integrations with your security tools using our visual API builder',
-          icon: GitBranch,
-          path: '/tools/api-connector',
-          color: 'bg-indigo-500/10',
-          iconColor: 'text-indigo-500'
-        },
-        {
-          id: 'data-normalizer',
-          title: 'Data Normalization Engine',
-          description: 'Standardize data formats across different security tools for unified analytics',
-          icon: Database,
-          path: '/tools/data-normalizer',
-          color: 'bg-purple-500/10',
-          iconColor: 'text-purple-500'
-        }
-      ]
+      colorMap: {
+        'integration-manager': { color: 'bg-blue-500/10', iconColor: 'text-blue-500' },
+        'api-connector': { color: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
+        'data-normalization-engine': { color: 'bg-purple-500/10', iconColor: 'text-purple-500' },
+        'data-normalizer': { color: 'bg-purple-500/10', iconColor: 'text-purple-500' }
+      }
     },
-    {
+    orchestration: {
       name: "Workflow Orchestration",
       description: "Automate and streamline security operations",
-      tools: [
-        {
-          id: 'workflow-designer',
-          title: 'Security Workflow Designer',
-          description: 'Visual workflow builder for automated incident response and security operations',
-          icon: Workflow,
-          path: '/tools/workflow-designer',
-          color: 'bg-orange-500/10',
-          iconColor: 'text-orange-500'
-        },
-        {
-          id: 'playbook-automation',
-          title: 'Playbook Automation Engine',
-          description: 'Pre-built and customizable security playbooks aligned with NIST incident response',
-          icon: Zap,
-          path: '/tools/playbook-automation',
-          color: 'bg-amber-500/10',
-          iconColor: 'text-amber-500'
-        },
-        {
-          id: 'orchestration-dashboard',
-          title: 'Orchestration Dashboard',
-          description: 'Real-time monitoring and control of automated security workflows',
-          icon: Activity,
-          path: '/tools/orchestration-dashboard',
-          color: 'bg-green-500/10',
-          iconColor: 'text-green-500'
-        }
-      ]
+      colorMap: {
+        'workflow-designer': { color: 'bg-orange-500/10', iconColor: 'text-orange-500' },
+        'workflow-orchestrator': { color: 'bg-orange-500/10', iconColor: 'text-orange-500' },
+        'playbook-automation': { color: 'bg-amber-500/10', iconColor: 'text-amber-500' },
+        'orchestration-dashboard': { color: 'bg-green-500/10', iconColor: 'text-green-500' }
+      }
     },
-    {
+    governance: {
       name: "Governance & Compliance Framework",
       description: "Policy management and regulatory compliance tools",
-      tools: [
-        {
-          id: 'policy-orchestrator',
-          title: 'Policy Orchestrator',
-          description: 'Centralized policy creation, distribution, and enforcement across your organization',
-          icon: FileText,
-          path: '/tools/policy-orchestrator',
-          color: 'bg-teal-500/10',
-          iconColor: 'text-teal-500'
-        },
-        {
-          id: 'compliance-mapper',
-          title: 'Compliance Mapping Engine',
-          description: 'Map controls across NIST, ISO, SOC2, HIPAA, and other frameworks',
-          icon: CheckCircle,
-          path: '/tools/compliance-mapper',
-          color: 'bg-green-500/10',
-          iconColor: 'text-green-500'
-        },
-        {
-          id: 'governance-scorecard',
-          title: 'Governance Scorecard',
-          description: 'Track policy adherence and compliance metrics across your security program',
-          icon: Gauge,
-          path: '/tools/governance-scorecard',
-          color: 'bg-blue-500/10',
-          iconColor: 'text-blue-500'
-        },
-        {
-          id: 'audit-automation',
-          title: 'Audit Automation Suite',
-          description: 'Automated evidence collection and audit preparation across integrated tools',
-          icon: ClipboardCheck,
-          path: '/tools/audit-automation',
-          color: 'bg-pink-500/10',
-          iconColor: 'text-pink-500'
-        }
-      ]
+      colorMap: {
+        'policy-orchestrator': { color: 'bg-teal-500/10', iconColor: 'text-teal-500' },
+        'compliance-mapper': { color: 'bg-green-500/10', iconColor: 'text-green-500' },
+        'governance-framework': { color: 'bg-blue-500/10', iconColor: 'text-blue-500' },
+        'governance-scorecard': { color: 'bg-blue-500/10', iconColor: 'text-blue-500' },
+        'audit-automation': { color: 'bg-pink-500/10', iconColor: 'text-pink-500' },
+        'asset-manager': { color: 'bg-gray-500/10', iconColor: 'text-gray-500' }
+      }
     },
-    {
+    analytics: {
       name: "Analytics & Intelligence Overlay",
       description: "Aggregate and analyze data from all connected security tools",
-      tools: [
-        {
-          id: 'unified-analytics',
-          title: 'Unified Security Analytics',
-          description: 'Cross-platform analytics dashboard aggregating data from all integrated tools',
-          icon: BarChart3,
-          path: '/tools/unified-analytics',
-          color: 'bg-blue-500/10',
-          iconColor: 'text-blue-500'
-        },
-        {
-          id: 'threat-correlation',
-          title: 'Threat Correlation Engine',
-          description: 'AI-powered correlation of threats across multiple security data sources',
-          icon: Brain,
-          path: '/tools/threat-correlation',
-          color: 'bg-indigo-500/10',
-          iconColor: 'text-indigo-500'
-        },
-        {
-          id: 'risk-aggregator',
-          title: 'Risk Score Aggregator',
-          description: 'Consolidated risk scoring across vulnerabilities, threats, and compliance gaps',
-          icon: TrendingUp,
-          path: '/tools/risk-aggregator',
-          color: 'bg-amber-500/10',
-          iconColor: 'text-amber-500'
-        },
-        {
-          id: 'executive-reporting',
-          title: 'Executive Reporting Suite',
-          description: 'Automated board-ready reports with data from all integrated security tools',
-          icon: FileText,
-          path: '/tools/executive-reporting',
-          color: 'bg-purple-500/10',
-          iconColor: 'text-purple-500'
-        }
-      ]
+      colorMap: {
+        'unified-analytics': { color: 'bg-blue-500/10', iconColor: 'text-blue-500' },
+        'analytics-overlay': { color: 'bg-blue-500/10', iconColor: 'text-blue-500' },
+        'threat-correlation': { color: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
+        'risk-aggregator': { color: 'bg-amber-500/10', iconColor: 'text-amber-500' },
+        'executive-reporting': { color: 'bg-purple-500/10', iconColor: 'text-purple-500' },
+        'industry-threat-profiler': { color: 'bg-indigo-500/10', iconColor: 'text-indigo-500' }
+      }
     },
-    {
+    training: {
       name: "Human-Centric Security Training",
       description: "Integrated training aligned with technical controls",
-      tools: [
-        {
-          id: 'training-orchestrator',
-          title: 'Training Orchestrator',
-          description: 'Automated security awareness training triggered by security events and policy changes',
-          icon: BookOpen,
-          path: '/tools/training-orchestrator',
-          color: 'bg-green-500/10',
-          iconColor: 'text-green-500'
-        },
-        {
-          id: 'phishing-simulator',
-          title: 'Phishing Simulation Platform',
-          description: 'Integrated phishing tests with automated training for failed attempts',
-          icon: Eye,
-          path: '/tools/phishing-simulator',
-          color: 'bg-orange-500/10',
-          iconColor: 'text-orange-500'
-        },
-        {
-          id: 'role-based-training',
-          title: 'Role-Based Training Engine',
-          description: 'Customized security training paths based on job roles and access levels',
-          icon: UserCheck,
-          path: '/tools/role-based-training',
-          color: 'bg-teal-500/10',
-          iconColor: 'text-teal-500'
-        }
-      ]
+      colorMap: {
+        'training-orchestrator': { color: 'bg-green-500/10', iconColor: 'text-green-500' },
+        'security-training': { color: 'bg-green-500/10', iconColor: 'text-green-500' },
+        'phishing-simulator': { color: 'bg-orange-500/10', iconColor: 'text-orange-500' },
+        'role-based-training': { color: 'bg-teal-500/10', iconColor: 'text-teal-500' }
+      }
     },
-    {
+    assessment: {
       name: "Assessment & Benchmarking",
       description: "Professional assessment tools with industry benchmarks",
-      tools: [
-        {
-          id: 'maturity-assessment',
-          title: 'Security Maturity Assessment',
-          description: 'NIST CSF-aligned maturity assessment with industry benchmarking',
-          icon: Shield,
-          path: '/tools/maturity-assessment',
-          color: 'bg-green-500/10',
-          iconColor: 'text-green-500'
-        },
-        {
-          id: 'gap-analysis',
-          title: 'Gap Analysis Engine',
-          description: 'Automated gap identification across technical controls and governance',
-          icon: Calculator,
-          path: '/tools/gap-analysis',
-          color: 'bg-blue-500/10',
-          iconColor: 'text-blue-500'
-        },
-        {
-          id: 'vendor-assessment',
-          title: 'Vendor Risk Assessment',
-          description: 'Third-party risk assessment integrated with your vendor management systems',
-          icon: Building2,
-          path: '/tools/vendor-assessment',
-          color: 'bg-pink-500/10',
-          iconColor: 'text-pink-500'
-        }
-      ]
+      colorMap: {
+        'maturity-assessment': { color: 'bg-green-500/10', iconColor: 'text-green-500' },
+        'gap-analysis': { color: 'bg-blue-500/10', iconColor: 'text-blue-500' },
+        'vendor-assessment': { color: 'bg-pink-500/10', iconColor: 'text-pink-500' },
+        'vendor-security-scorecard': { color: 'bg-pink-500/10', iconColor: 'text-pink-500' },
+        'recovery-time-calculator': { color: 'bg-green-500/10', iconColor: 'text-green-500' }
+      }
     }
-  ];
+  };
+
+  // Generate tool categories dynamically from toolRoutes
+  const toolCategories = Object.entries(categoryConfig).map(([categoryKey, config]) => {
+    const tools = getToolsByCategory(categoryKey).map(toolRoute => {
+      const colorConfig = config.colorMap[toolRoute.id] || { color: 'bg-gray-500/10', iconColor: 'text-gray-500' };
+      return {
+        id: toolRoute.id,
+        title: toolRoute.name,
+        description: toolRoute.description,
+        icon: toolRoute.icon,
+        path: toolRoute.path,
+        color: colorConfig.color,
+        iconColor: colorConfig.iconColor
+      };
+    });
+
+    return {
+      name: config.name,
+      description: config.description,
+      tools
+    };
+  }).filter(category => category.tools.length > 0); // Only include categories with tools
 
   return (
     <div className="min-h-screen bg-background">
