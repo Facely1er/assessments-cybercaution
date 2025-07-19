@@ -17,7 +17,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { toolRoutes } from '../../routes';
+import { toolRoutes } from '../../routes/toolRoutes';
 
 interface SidebarItem {
   name: string;
