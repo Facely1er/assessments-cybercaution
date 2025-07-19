@@ -15,8 +15,7 @@ import {
   Lock,
   AlertTriangle
 } from 'lucide-react';
-import { toolRoutes, getToolsByCategory } from '../../routes';
-import type { ToolRoute } from '../../routes';
+import { toolRoutes, getToolsByCategory } from '../../routes/toolRoutes';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
 import AnimatedSection from '../../utils/AnimatedSection';
@@ -28,14 +27,18 @@ const ToolsDirectory: React.FC = () => {
 
   const categories = [
     { id: 'all', name: 'All Tools', count: toolRoutes.length },
-    { id: 'integration', name: 'Integration', count: getToolsByCategory('integration').length },
-    { id: 'orchestration', name: 'Orchestration', count: getToolsByCategory('orchestration').length },
-    { id: 'governance', name: 'Governance', count: getToolsByCategory('governance').length },
-    { id: 'analytics', name: 'Analytics', count: getToolsByCategory('analytics').length },
-    { id: 'training', name: 'Training', count: getToolsByCategory('training').length }
+    { id: 'integration', name: 'Integration', count: getToolsByCategory?.('integration')?.length || 0 },
+    { id: 'orchestration', name: 'Orchestration', count: getToolsByCategory?.('orchestration')?.length || 0 },
+    { id: 'governance', name: 'Governance', count: getToolsByCategory?.('governance')?.length || 0 },
+    { id: 'analytics', name: 'Analytics', count: getToolsByCategory?.('analytics')?.length || 0 },
+    { id: 'training', name: 'Training', count: getToolsByCategory?.('training')?.length || 0 }
   ];
 
   const filteredTools = useMemo(() => {
+    if (!toolRoutes || !Array.isArray(toolRoutes)) {
+      return [];
+    }
+
     let tools = toolRoutes;
 
     // Filter by category
@@ -49,14 +52,14 @@ const ToolsDirectory: React.FC = () => {
       tools = tools.filter(tool => 
         tool.name.toLowerCase().includes(query) ||
         tool.description.toLowerCase().includes(query) ||
-        tool.features.some(feature => feature.toLowerCase().includes(query))
+        tool.features?.some(feature => feature.toLowerCase().includes(query))
       );
     }
 
     return tools;
   }, [searchQuery, selectedCategory]);
 
-  const ToolCard: React.FC<{ tool: ToolRoute }> = ({ tool }) => {
+  const ToolCard: React.FC<{ tool: any }> = ({ tool }) => {
     const Icon = tool.icon;
     
     return (
@@ -78,7 +81,7 @@ const ToolsDirectory: React.FC = () => {
             tool.category === 'integration' ? 'from-blue-500 to-blue-600' :
             tool.category === 'orchestration' ? 'from-purple-500 to-purple-600' :
             tool.bgColorClass} flex items-center justify-center`}>
-            <Icon className={`w-6 h-6 ${tool.iconColorClass}`} />
+            <Icon className={`w-6 h-6 ${tool.iconColorClass || 'text-white'}`} />
           </div>
           
           <div className="flex-1">
@@ -90,7 +93,7 @@ const ToolsDirectory: React.FC = () => {
             </p>
             
             <div className="mt-4 flex flex-wrap gap-2">
-              {tool.features.slice(0, 3).map((feature, index) => (
+              {tool.features?.slice(0, 3).map((feature, index) => (
                 <span
                   key={index}
                   className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
@@ -99,9 +102,9 @@ const ToolsDirectory: React.FC = () => {
                   {feature}
                 </span>
               ))}
-              {tool.features.length > 3 && (
+              {tool.features?.length > 3 && (
                 <span className="text-xs text-gray-500 dark:text-gray-400">
-                  +{tool.features.length - 3} more
+                  +{tool.features?.length - 3} more
                 </span>
               )}
             </div>
@@ -205,8 +208,21 @@ const ToolsDirectory: React.FC = () => {
         </div>
       </div>
 
+      {/* Loading/Error States */}
+      {!toolRoutes && (
+        <div className="text-center py-12">
+          <AlertTriangle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+            Loading Tools...
+          </h3>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+            Please wait while we load the security tools
+          </p>
+        </div>
+      )}
+
       {/* Categorized Tools Grid */}
-      {(() => {
+      {toolRoutes && (() => {
         const categorizedTools = [
           { id: 'integration', name: "Security Tool Integration Hub", description: "Connect and orchestrate your existing security infrastructure" },
           { id: 'orchestration', name: "Workflow Orchestration", description: "Automate and streamline security operations" },
@@ -237,7 +253,7 @@ const ToolsDirectory: React.FC = () => {
       })()}
 
       {/* Fallback for no tools found */}
-      {filteredTools.length === 0 && (
+      {toolRoutes && filteredTools.length === 0 && (
         <div className="text-center py-12">
           <Shield className="w-12 h-12 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">
