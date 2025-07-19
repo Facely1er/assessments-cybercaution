@@ -73,9 +73,10 @@ export const ToolLayout: React.FC = () => {
       <aside
         className={`fixed top-0 left-0 z-10 w-64 h-full transition-transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0`}
+        } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0 flex flex-col`}
       >
         <div className="h-full px-3 pb-4 overflow-y-auto">
+        <div className="flex-1 px-3 pb-4 overflow-y-auto">
           <ul className="space-y-2 font-medium">
             {/* All Tools link */}
             <li>
