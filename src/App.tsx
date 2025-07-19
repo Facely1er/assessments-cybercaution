@@ -20,7 +20,10 @@ const ThreatCorrelation = React.lazy(() => import('./pages/tools/PredictiveBreac
 const UnifiedAnalytics = React.lazy(() => import('./pages/tools/DarkWebMonitoring'));
 const VendorAssessment = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
 const GapAnalysis = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
-const ComplianceMapper = React.lazy(() => import('./pages/tools/NISTCSFToolkit'));
+const ComplianceMapper = React.lazy(() => import('./pages/tools/NISTCSFToolkit')); // This is NISTCSFToolkit
+const RecoveryTimeCalculator = React.lazy(() => import('./pages/tools/RecoveryTimeCalculator'));
+const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
+const IndustryThreatProfiler = React.lazy(() => import('./pages/tools/IndustryThreatProfiler'));
 const PolicyOrchestrator = React.lazy(() => import('./pages/tools/Big5PolicyGenerator'));
 const RiskAggregator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
 const PlaybookAutomation = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
@@ -28,7 +31,7 @@ const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityV
 import AssetManager from './pages/tools/AssetManager';
 const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNormalizationEngine'));
 
-// Lazy load new orchestration tools
+// Lazy load orchestration and other tools
 const ToolsDirectory = React.lazy(() => import('./pages/tools/index'));
 const IntegrationManager = React.lazy(() => import('./pages/tools/IntegrationManager'));
 const WorkflowOrchestrator = React.lazy(() => import('./pages/tools/WorkflowOrchestrator'));
@@ -174,6 +177,10 @@ function App() {
                 <Route path="/tools/policy-orchestrator" element={<PolicyOrchestrator />} />
                 <Route path="/tools/risk-aggregator" element={<RiskAggregator />} />
                 <Route path="/tools/playbook-automation" element={<PlaybookAutomation />} />
+                <Route path="/tools/asset-manager" element={<AssetManager />} />
+                <Route path="/tools/recovery-time-calculator" element={<RecoveryTimeCalculator />} />
+                <Route path="/tools/vendor-security-scorecard" element={<VendorSecurityScorecard />} />
+                <Route path="/tools/industry-threat-profiler" element={<IndustryThreatProfiler />} />
                 <Route path="/tools/workflow-designer" element={<WorkflowDesigner />} />
                 <Route path="/tools/data-normalization-engine" element={<DataNormalizationEngine />} />
               </Route>
