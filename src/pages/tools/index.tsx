@@ -290,7 +290,7 @@ const ToolsDirectory: React.FC = () => {
               </Link>
             </div>
           </CardContent>
-        </div>
+        </Card>
       </div>
     </div>
   );
