@@ -33,7 +33,6 @@ const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNorma
 
 // Lazy load orchestration and other tools
 const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage')); // Re-add ToolkitPage import
-const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage'));
 const IntegrationManager = React.lazy(() => import('./pages/tools/IntegrationManager'));
 const WorkflowOrchestrator = React.lazy(() => import('./pages/tools/WorkflowOrchestrator'));
 const GovernanceFramework = React.lazy(() => import('./pages/tools/GovernanceFramework'));
