@@ -1,6 +1,6 @@
  // src/App.tsx
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from './components/ui/Toaster';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -12,7 +12,7 @@ import AuthLayout from './components/auth/AuthLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Lazy load pages
-const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage'));
+const OnboardingPage = React.lazy(() => import('./pages/OnboardingPage')); // Keep this import
 const QuickCyberCheck = React.lazy(() => import('./pages/QuickCyberCheck'));
 
 // Lazy load updated toolkit tools
@@ -32,6 +32,7 @@ import AssetManager from './pages/tools/AssetManager';
 const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNormalizationEngine'));
 
 // Lazy load orchestration and other tools
+const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage')); // Re-add ToolkitPage import
 const ToolkitPage = React.lazy(() => import('./pages/ToolkitPage'));
 const IntegrationManager = React.lazy(() => import('./pages/tools/IntegrationManager'));
 const WorkflowOrchestrator = React.lazy(() => import('./pages/tools/WorkflowOrchestrator'));
@@ -160,7 +161,7 @@ function App() {
               <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
                 <Route element={<ToolLayout />}>
                   {/* Main Toolkit page */}
-                  <Route path="/tools" element={<ToolkitPage />} />
+                  <Route path="/tools" element={<ToolkitPage />} /> {/* Render ToolkitPage here */}
                   
                   {/* New Orchestration & Governance Tools */}
                   <Route path="/tools/integration-hub" element={<IntegrationManager />} />
@@ -171,10 +172,10 @@ function App() {
                   
                   {/* Updated toolkit tools */}
                   <Route path="/tools/threat-correlation" element={<ThreatCorrelation />} />
-                  <Route path="/tools/unified-analytics" element={<UnifiedAnalytics />} />
-                  <Route path="/tools/vendor-assessment" element={<VendorAssessment />} />
-                  <Route path="/tools/gap-analysis" element={<GapAnalysis />} />
-                  <Route path="/tools/compliance-mapper" element={<ComplianceMapper />} />
+                  <Route path="/tools/unified-analytics" element={<UnifiedAnalytics />} /> {/* DarkWebMonitoring */}
+                  <Route path="/tools/vendor-assessment" element={<VendorAssessment />} /> {/* VendorIQEnhanced */}
+                  <Route path="/tools/gap-analysis" element={<GapAnalysis />} /> {/* ComplianceGapChecker */}
+                  <Route path="/tools/compliance-mapper" element={<ComplianceMapper />} /> {/* NISTCSFToolkit */}
                   <Route path="/tools/policy-orchestrator" element={<PolicyOrchestrator />} />
                   <Route path="/tools/risk-aggregator" element={<RiskAggregator />} />
                   <Route path="/tools/playbook-automation" element={<PlaybookAutomation />} />
