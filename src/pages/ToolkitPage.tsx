@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Card, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { 
@@ -337,7 +338,7 @@ const ToolkitPage = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {category.tools.map((tool) => (
-                  <div key={tool.id} className="cursor-pointer" onClick={() => console.log(`Navigate to ${tool.path}`)}>
+                  <div key={tool.id}>
                     <Card className="h-full hover:shadow-lg transition-shadow border dark:border-muted">
                       <CardContent className="p-6">
                         <div className={`w-12 h-12 rounded-lg ${tool.color} flex items-center justify-center mb-4`}>
@@ -346,10 +347,12 @@ const ToolkitPage = () => {
                         <h3 className="text-lg font-medium mb-2 text-foreground">{tool.title}</h3>
                         <p className="text-muted-foreground mb-4">{tool.description}</p>
                         <div className="flex justify-end">
-                          <Button variant="ghost" size="sm" className="mt-auto">
-                            Open Tool
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
+                          <Link to={tool.path}>
+                            <Button variant="ghost" size="sm" className="mt-auto">
+                              Open Tool
+                              <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                          </Link>
                         </div>
                       </CardContent>
                     </Card>
