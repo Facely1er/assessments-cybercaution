@@ -28,7 +28,7 @@ const PolicyOrchestrator = React.lazy(() => import('./pages/tools/Big5PolicyGene
 const RiskAggregator = React.lazy(() => import('./pages/tools/BusinessImpactCalculator'));
 const PlaybookAutomation = React.lazy(() => import('./pages/tools/IncidentResponsePlaybooks'));
 const WorkflowDesigner = React.lazy(() => import('./pages/tools/BackupIntegrityValidator'));
-import AssetManager from './pages/tools/AssetManager';
+const AssetManager = React.lazy(() => import('./pages/tools/AssetManager'));
 const DataNormalizationEngine = React.lazy(() => import('./pages/tools/DataNormalizationEngine'));
 
 // Generic tool page for unimplemented tools
