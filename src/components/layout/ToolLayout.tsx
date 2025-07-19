@@ -17,7 +17,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { toolRoutes } from '../../routes/toolRoutes';
+import { toolRoutes, ToolRoute } from '../../routes/toolRoutes';
 
 interface SidebarItem {
   name: string;
@@ -31,13 +31,20 @@ export const ToolLayout: React.FC = () => {
   const { darkMode, toggleDarkMode } = useTheme();
   const location = useLocation();
 
+  // Generate sidebar items dynamically from toolRoutes
   const sidebarItems: SidebarItem[] = [
     { name: 'All Tools', path: '/tools', icon: Home },
-    { name: 'Integration Hub', path: '/tools/integration-hub', icon: Network, category: 'integration' },
+    // Featured/main tools for each category
+    { name: 'Integration Manager', path: '/tools/integration-manager', icon: Network, category: 'integration' },
     { name: 'Workflow Orchestrator', path: '/tools/workflow-orchestrator', icon: Workflow, category: 'orchestration' },
     { name: 'Governance Framework', path: '/tools/governance-framework', icon: Shield, category: 'governance' },
     { name: 'Analytics Overlay', path: '/tools/analytics-overlay', icon: BarChart3, category: 'analytics' },
-    { name: 'Security Training', path: '/tools/security-training', icon: Users, category: 'training' }
+    { name: 'Security Training', path: '/tools/security-training', icon: Users, category: 'training' },
+    // Add other popular tools
+    { name: 'Playbook Automation', path: '/tools/playbook-automation', icon: toolRoutes.find(t => t.path === '/tools/playbook-automation')?.icon || Workflow, category: 'orchestration' },
+    { name: 'Policy Orchestrator', path: '/tools/policy-orchestrator', icon: toolRoutes.find(t => t.path === '/tools/policy-orchestrator')?.icon || Shield, category: 'governance' },
+    { name: 'Threat Correlation', path: '/tools/threat-correlation', icon: toolRoutes.find(t => t.path === '/tools/threat-correlation')?.icon || BarChart3, category: 'analytics' },
+    { name: 'Vendor Assessment', path: '/tools/vendor-assessment', icon: toolRoutes.find(t => t.path === '/tools/vendor-assessment')?.icon || Shield, category: 'assessment' }
   ];
 
   const isActive = (path: string) => location.pathname === path;
