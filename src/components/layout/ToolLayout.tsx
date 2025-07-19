@@ -71,7 +71,7 @@ export const ToolLayout: React.FC = () => {
     <div className="relative flex h-full">
       {/* Sidebar */}
       <aside
-        className={`absolute top-0 left-0 z-10 w-64 h-full transition-transform ${
+        className={`fixed top-0 left-0 z-10 w-64 h-full transition-transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0`}
       >
