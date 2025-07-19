@@ -12,10 +12,13 @@ import {
   Users,
   Sparkles,
   CheckCircle,
-  Lock
+  Lock,
+  AlertTriangle
 } from 'lucide-react';
 import { toolRoutes, getToolsByCategory } from '../../routes';
 import type { ToolRoute } from '../../routes';
+import { Card, CardContent } from '../../components/ui/Card';
+import { Button } from '../../components/ui/Button';
 
 import AnimatedSection from '../../utils/AnimatedSection';
 import AnimatedItem from '../../utils/AnimatedItem';
