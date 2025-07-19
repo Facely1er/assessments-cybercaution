@@ -42,6 +42,8 @@ export const ToolLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [openCategory, setOpenCategory] = useState<string | null>(null);
   const { darkMode, toggleDarkMode } = useTheme();
+  const location = useLocation();
+  
   // Group tools by category
   const groupedTools = useMemo(() => {
     const categories = {
@@ -162,6 +164,7 @@ export const ToolLayout: React.FC = () => {
               <span className="ml-3">Settings</span>
             </Link>
           </div>
+        </div>
         </div>
       </aside>
 
