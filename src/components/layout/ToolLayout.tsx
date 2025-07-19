@@ -43,10 +43,10 @@ export const ToolLayout: React.FC = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div>
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${
+        className={`fixed top-16 left-0 z-10 w-64 h-[calc(100vh-4rem)] transition-transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0`}
       >
@@ -101,7 +101,7 @@ export const ToolLayout: React.FC = () => {
 
       {/* Main Content */}
       <div className="lg:ml-64 pt-16">
-        <main className="pt-20 px-4 sm:px-6 lg:px-8 py-8">
+        <main className="px-4 sm:px-6 lg:px-8 py-8">
           {/* Breadcrumb */}
           <nav className="flex mb-8" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
