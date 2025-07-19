@@ -78,7 +78,7 @@ export const ToolLayout: React.FC = () => {
         } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 lg:translate-x-0 flex flex-col`}
       >
         <div className="h-full px-3 pb-4 overflow-y-auto">
-        <div className="flex-1 px-3 pt-4 pb-4 overflow-y-auto">
+        <div className="flex-1 px-3 pt-8 pb-4 overflow-y-auto">
           <ul className="space-y-2 font-medium">
             {/* All Tools link */}
             <li>
