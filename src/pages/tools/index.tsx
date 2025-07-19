@@ -19,9 +19,9 @@ import { toolRoutes, getToolsByCategory } from '../../routes';
 import type { ToolRoute } from '../../routes';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-
 import AnimatedSection from '../../utils/AnimatedSection';
 import AnimatedItem from '../../utils/AnimatedItem';
+
 const ToolsDirectory: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -206,7 +206,7 @@ const ToolsDirectory: React.FC = () => {
       </div>
 
       {/* Categorized Tools Grid */}
-      {useMemo(() => {
+      {(() => {
         const categorizedTools = [
           { id: 'integration', name: "Security Tool Integration Hub", description: "Connect and orchestrate your existing security infrastructure" },
           { id: 'orchestration', name: "Workflow Orchestration", description: "Automate and streamline security operations" },
@@ -217,7 +217,7 @@ const ToolsDirectory: React.FC = () => {
 
         return categorizedTools.map((category, categoryIndex) => {
           const toolsInCategory = filteredTools.filter(tool => tool.category === category.id);
-          if (toolsInCategory.length === 0) return null; // Don't render category if no tools match filters
+          if (toolsInCategory.length === 0) return null;
 
           return (
             <AnimatedSection key={category.id} type="fadeIn" delay={categoryIndex * 0.1 + 0.2}>
@@ -234,7 +234,7 @@ const ToolsDirectory: React.FC = () => {
             </AnimatedSection>
           );
         });
-      }, [filteredTools])}
+      })()}
 
       {/* Fallback for no tools found */}
       {filteredTools.length === 0 && (
@@ -284,14 +284,14 @@ const ToolsDirectory: React.FC = () => {
               </p>
               <Link to="/demo">
                 <Button className="bg-primary hover:bg-primary/90">
-                Schedule Platform Demo
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+                  Schedule Platform Demo
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
               </Link>
             </div>
           </CardContent>
         </Card>
-      </div>
+      </AnimatedSection>
     </div>
   );
 };
