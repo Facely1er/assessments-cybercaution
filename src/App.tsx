@@ -21,6 +21,7 @@ const UnifiedAnalytics = React.lazy(() => import('./pages/tools/DarkWebMonitorin
 const VendorAssessment = React.lazy(() => import('./pages/tools/VendorIQEnhanced'));
 const GapAnalysis = React.lazy(() => import('./pages/tools/ComplianceGapChecker'));
 const ComplianceMapper = React.lazy(() => import('./pages/tools/NISTCSFToolkit')); // This is NISTCSFToolkit
+const GenericToolPage = React.lazy(() => import('./pages/tools/GenericToolPage'));
 const RecoveryTimeCalculator = React.lazy(() => import('./pages/tools/RecoveryTimeCalculator'));
 const VendorSecurityScorecard = React.lazy(() => import('./pages/tools/VendorSecurityScorecard'));
 const IndustryThreatProfiler = React.lazy(() => import('./pages/tools/IndustryThreatProfiler'));
@@ -156,33 +157,38 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
               </Route>
 
-              {/* Tool routes with ToolLayout */}
-              <Route element={<ToolLayout />}>
-                {/* Tools directory */}
-                <Route path="/tools" element={<ToolsDirectory />} />
-                
-                {/* New Orchestration & Governance Tools */}
-                <Route path="/tools/integration-hub" element={<IntegrationManager />} />
-                <Route path="/tools/workflow-orchestrator" element={<WorkflowOrchestrator />} />
-                <Route path="/tools/governance-framework" element={<GovernanceFramework />} />
-                <Route path="/tools/analytics-overlay" element={<AnalyticsOverlay />} />
-                <Route path="/tools/security-training" element={<SecurityTraining />} />
-                
-                {/* Updated toolkit tools */}
-                <Route path="/tools/threat-correlation" element={<ThreatCorrelation />} />
-                <Route path="/tools/unified-analytics" element={<UnifiedAnalytics />} />
-                <Route path="/tools/vendor-assessment" element={<VendorAssessment />} />
-                <Route path="/tools/gap-analysis" element={<GapAnalysis />} />
-                <Route path="/tools/compliance-mapper" element={<ComplianceMapper />} />
-                <Route path="/tools/policy-orchestrator" element={<PolicyOrchestrator />} />
-                <Route path="/tools/risk-aggregator" element={<RiskAggregator />} />
-                <Route path="/tools/playbook-automation" element={<PlaybookAutomation />} />
-                <Route path="/tools/asset-manager" element={<AssetManager />} />
-                <Route path="/tools/recovery-time-calculator" element={<RecoveryTimeCalculator />} />
-                <Route path="/tools/vendor-security-scorecard" element={<VendorSecurityScorecard />} />
-                <Route path="/tools/industry-threat-profiler" element={<IndustryThreatProfiler />} />
-                <Route path="/tools/workflow-designer" element={<WorkflowDesigner />} />
-                <Route path="/tools/data-normalization-engine" element={<DataNormalizationEngine />} />
+              {/* MainLayout wraps ToolLayout for consistent header/footer */}
+              <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
+                <Route element={<ToolLayout />}>
+                  {/* Tools directory */}
+                  <Route path="/tools" element={<ToolsDirectory />} />
+                  
+                  {/* New Orchestration & Governance Tools */}
+                  <Route path="/tools/integration-hub" element={<IntegrationManager />} />
+                  <Route path="/tools/workflow-orchestrator" element={<WorkflowOrchestrator />} />
+                  <Route path="/tools/governance-framework" element={<GovernanceFramework />} />
+                  <Route path="/tools/analytics-overlay" element={<AnalyticsOverlay />} />
+                  <Route path="/tools/security-training" element={<SecurityTraining />} />
+                  
+                  {/* Updated toolkit tools */}
+                  <Route path="/tools/threat-correlation" element={<ThreatCorrelation />} />
+                  <Route path="/tools/unified-analytics" element={<UnifiedAnalytics />} />
+                  <Route path="/tools/vendor-assessment" element={<VendorAssessment />} />
+                  <Route path="/tools/gap-analysis" element={<GapAnalysis />} />
+                  <Route path="/tools/compliance-mapper" element={<ComplianceMapper />} />
+                  <Route path="/tools/policy-orchestrator" element={<PolicyOrchestrator />} />
+                  <Route path="/tools/risk-aggregator" element={<RiskAggregator />} />
+                  <Route path="/tools/playbook-automation" element={<PlaybookAutomation />} />
+                  <Route path="/tools/asset-manager" element={<AssetManager />} />
+                  <Route path="/tools/recovery-time-calculator" element={<RecoveryTimeCalculator />} />
+                  <Route path="/tools/vendor-security-scorecard" element={<VendorSecurityScorecard />} />
+                  <Route path="/tools/industry-threat-profiler" element={<IndustryThreatProfiler />} />
+                  <Route path="/tools/workflow-designer" element={<WorkflowDesigner />} />
+                  <Route path="/tools/data-normalization-engine" element={<DataNormalizationEngine />} />
+
+                  {/* Generic route for any other /tools/* path */}
+                  <Route path="/tools/:toolId" element={<GenericToolPage />} />
+                </Route>
               </Route>
 
               {/* Protected routes */}
