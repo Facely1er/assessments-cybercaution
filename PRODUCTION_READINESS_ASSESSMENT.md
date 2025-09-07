@@ -12,9 +12,20 @@ This assessment evaluates the CyberCaution platform's readiness for production d
 
 ---
 
-## 1. NIST Cybersecurity Framework Alignment
+## 1. NIST Cybersecurity Framework 2.0 Alignment (2024)
 
-### 1.1 IDENTIFY Function
+### 1.1 GOVERN Function (NEW in CSF 2.0)
+**Status: ✅ IMPLEMENTED**
+
+The platform demonstrates strong governance capabilities:
+- ✅ Organizational cybersecurity risk management strategy
+- ✅ Cybersecurity roles and responsibilities (RBAC)
+- ✅ Cybersecurity policy management system
+- ✅ Legal and regulatory requirements tracking
+
+**Assessment Score: 90/100**
+
+### 1.2 IDENTIFY Function
 **Status: ✅ IMPLEMENTED**
 
 The platform demonstrates strong identification capabilities:
@@ -25,7 +36,9 @@ The platform demonstrates strong identification capabilities:
 
 **Assessment Score: 85/100**
 
-### 1.2 PROTECT Function
+**⚠️ LIMITATION**: Cannot implement physical device inventory or network asset management (cloud platform limitation)
+
+### 1.3 PROTECT Function
 **Status: ⚠️ PARTIALLY IMPLEMENTED**
 
 **Implemented Controls:**
@@ -41,9 +54,15 @@ The platform demonstrates strong identification capabilities:
 - ❌ **NO SECURITY HEADERS** - Missing CSP, HSTS, X-Frame-Options
 - ❌ **NO RATE LIMITING** - API endpoints vulnerable to abuse
 
+**❌ CANNOT IMPLEMENT** (Platform Limitations):
+- ❌ **Physical Access Controls** - Cloud platform, no physical infrastructure control
+- ❌ **Network Integrity Controls** - Managed infrastructure (Supabase/Vercel)
+- ❌ **Hardware Security Modules** - No hardware control
+- ❌ **Network Segmentation** - No network infrastructure control
+
 **Assessment Score: 60/100**
 
-### 1.3 DETECT Function
+### 1.4 DETECT Function
 **Status: ❌ NOT IMPLEMENTED**
 
 **Missing Critical Controls:**
@@ -53,9 +72,15 @@ The platform demonstrates strong identification capabilities:
 - ❌ No automated threat detection
 - ❌ No security event correlation
 
+**❌ CANNOT IMPLEMENT** (Platform Limitations):
+- ❌ **Network Operations Monitoring** - No network infrastructure control
+- ❌ **Network Traffic Analysis** - Managed cloud infrastructure
+- ❌ **Endpoint Detection and Response** - No endpoint control
+- ❌ **Network-based Intrusion Detection** - No network control
+
 **Assessment Score: 20/100**
 
-### 1.4 RESPOND Function
+### 1.5 RESPOND Function
 **Status: ⚠️ PARTIALLY IMPLEMENTED**
 
 **Implemented:**
@@ -71,7 +96,7 @@ The platform demonstrates strong identification capabilities:
 
 **Assessment Score: 40/100**
 
-### 1.5 RECOVER Function
+### 1.6 RECOVER Function
 **Status: ❌ NOT IMPLEMENTED**
 
 **Missing Critical Controls:**
@@ -84,6 +109,49 @@ The platform demonstrates strong identification capabilities:
 
 ---
 
+## 🚫 PLATFORM LIMITATIONS - WHAT CANNOT BE IMPLEMENTED
+
+### Critical Understanding for End-Users
+
+The CyberCaution platform runs on **managed cloud infrastructure** (Supabase/Vercel) and **CANNOT** implement the following security controls:
+
+#### **Network-Level Controls** ❌
+- Network segmentation and micro-segmentation
+- Firewall management and configuration
+- Network monitoring and traffic analysis
+- VPN management and configuration
+- Network Access Control (NAC)
+- Intrusion Detection Systems (IDS/IPS)
+
+#### **Infrastructure-Level Controls** ❌
+- Server hardening and configuration
+- Operating system security controls
+- Hypervisor security management
+- Physical security controls
+- Power management and UPS controls
+
+#### **Hardware-Level Controls** ❌
+- Endpoint Detection and Response (EDR)
+- Hardware Security Modules (HSM)
+- Trusted Platform Module (TPM) management
+- BIOS/UEFI security controls
+- Hardware-based encryption
+
+#### **Enterprise-Level Controls** ❌
+- Active Directory integration
+- Enterprise SIEM integration
+- Corporate network policy enforcement
+- Enterprise certificate management
+- Corporate email security
+
+### **What This Means for End-Users:**
+- **Focus on Application Security**: Platform provides application-level security controls
+- **Complementary Solution**: Works alongside existing enterprise security infrastructure
+- **Not a Replacement**: Cannot replace network security, endpoint protection, or enterprise systems
+- **Clear Scope**: Application security, data protection, and compliance management only
+
+---
+
 ## 2. CISA Ransomware Protection Framework Alignment
 
 ### 2.1 Prevention Controls
@@ -91,7 +159,7 @@ The platform demonstrates strong identification capabilities:
 
 **Implemented:**
 - ✅ Strong authentication mechanisms
-- ✅ Network segmentation through Supabase RLS
+- ✅ Data isolation through Supabase RLS
 - ✅ Regular security assessments
 - ✅ User training capabilities (Security Training tool)
 
@@ -100,6 +168,12 @@ The platform demonstrates strong identification capabilities:
 - ❌ No email security controls
 - ❌ No web application firewall (WAF)
 - ❌ No vulnerability management automation
+
+**❌ CANNOT IMPLEMENT** (Platform Limitations):
+- ❌ **Network Segmentation** - No network infrastructure control
+- ❌ **Endpoint Protection** - No endpoint control
+- ❌ **Email Security** - No email infrastructure control
+- ❌ **Network-based WAF** - Limited to application-level controls
 
 **Assessment Score: 65/100**
 
@@ -112,6 +186,12 @@ The platform demonstrates strong identification capabilities:
 - ❌ No network monitoring
 - ❌ No behavioral analytics
 - ❌ No threat intelligence feeds
+
+**❌ CANNOT IMPLEMENT** (Platform Limitations):
+- ❌ **SIEM Integration** - No enterprise SIEM access
+- ❌ **EDR Systems** - No endpoint control
+- ❌ **Network Monitoring** - No network infrastructure control
+- ❌ **Network-based Analytics** - No network traffic access
 
 **Assessment Score: 10/100**
 
