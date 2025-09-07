@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Toaster } from './components/ui/Toaster';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { AssessmentLayout } from './components/layout/AssessmentLayout';
 import { MainLayout } from './components/layout/MainLayout';
 import { ToolLayout } from './components/layout/ToolLayout';
@@ -74,6 +75,7 @@ const Support = React.lazy(() => import('./pages/Support'));
 const FAQ = React.lazy(() => import('./pages/FAQ'));
 const DemoPage = React.lazy(() => import('./pages/DemoPage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const SignUpPage = React.lazy(() => import('./pages/SignUpPage'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const Terms = React.lazy(() => import('./pages/Terms'));
 
@@ -133,10 +135,11 @@ function App() {
 
   return (
     <ThemeProvider value={{ darkMode, toggleDarkMode }}>
-      <Router>
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingFallback />}>
-            <Routes>
+      <AuthProvider>
+        <Router>
+          <ErrorBoundary>
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
               {/* Main website routes */}
               <Route element={<MainLayout toggleDarkMode={toggleDarkMode} darkMode={darkMode} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />}>
                 <Route path="/" element={<HomePage />} />
@@ -157,6 +160,7 @@ function App() {
               {/* Auth routes */}
               <Route element={<AuthLayout />}>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
               </Route>
 
               {/* MainLayout wraps ToolLayout for consistent header/footer */}
@@ -228,12 +232,13 @@ function App() {
               
               {/* 404 route */}
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
-        <Toaster />
-        <Analytics />
-      </Router>
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+          <Toaster />
+          <Analytics />
+        </Router>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
