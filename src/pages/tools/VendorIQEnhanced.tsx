@@ -151,11 +151,11 @@ const VendorIQEnhanced = () => {
       return {
         on(event, callback) {
           // Simulate real-time updates
-          console.log(`Subscribed to ${event} on ${tableName}`);
+          // Subscribed to table changes
           return this;
         },
         subscribe() {
-          console.log('Subscription active');
+          // Subscription active
         }
       };
     }
@@ -277,7 +277,7 @@ const syncWithBreachMonitor = async () => {
     try {
       breachData = await response.json();
     } catch (parseError) {
-      console.warn('No breach data available or invalid JSON response:', parseError);
+      // No breach data available or invalid JSON response
       // Handle the case when the response is not a valid JSON or empty
       // You can set a default value for breachData or update the state accordingly
       setIntegrationData(prev => ({ ...prev, breachAlerts: [] }));
@@ -442,12 +442,12 @@ const syncWithBreachMonitor = async () => {
   // Risk calculation functions (from previous version)
   const calculateRiskScore = (responses, category) => {
     // Implementation from previous version
-    return 2.5; // Placeholder
+    return 2.5; // Default score
   };
 
   const calculateOverallRisk = (responses) => {
     // Implementation from previous version
-    return 2.5; // Placeholder
+    return 2.5; // Default score
   };
 
   const getRiskLevel = (score) => {

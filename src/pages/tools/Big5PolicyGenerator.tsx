@@ -435,7 +435,7 @@ const Big5PolicyGenerator: React.FC = () => {
       };
 
       // Simulate API call to generate documents
-      console.log('Generating policy documents:', downloadData);
+      // Generate policy documents
       
       alert(`Download initiated: ${formatNames[format]}\n\nYour customized policy package includes:\n\n• ${selectedPolicies.size} selected Big 5 policies\n• Industry-specific customizations for ${selectedIndustry}\n• Implementation timelines and checklists\n• Compliance mappings\n\nDocument generation in progress...`);
       

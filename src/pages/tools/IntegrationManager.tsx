@@ -26,6 +26,7 @@ import {
   Upload
 } from 'lucide-react';
 import ToolTemplate from './ToolTemplate';
+import { supabase } from '../../lib/supabase';
 import {
   Integration,
   IntegrationType,
@@ -43,134 +44,65 @@ import {
   validateIntegrationConfig
 } from '../../utils/integrationHelpers';
 
-// Mock data generator
-const generateMockIntegrations = (): Integration[] => {
-  const now = new Date();
-  const integrations: Integration[] = [
-    {
-      id: '1',
-      name: 'Splunk Enterprise',
-      type: IntegrationType.SIEM,
-      vendor: 'Splunk',
-      description: 'Enterprise security information and event management',
-      status: ConnectionStatus.CONNECTED,
-      lastSync: new Date(now.getTime() - 15 * 60 * 1000), // 15 minutes ago
-      config: {
-        apiEndpoint: 'https://splunk.company.com:8089',
-        apiKey: '********',
-        syncInterval: 5
-      },
-      version: '9.0.1',
-      supportedFeatures: ['log-ingestion', 'alerting', 'dashboards', 'reporting'],
-      requiredPermissions: ['read_logs', 'create_alerts'],
-      dataFlowDirection: 'bidirectional',
-      createdAt: new Date('2024-01-15'),
-      updatedAt: now,
-      createdBy: 'admin@company.com',
-      isActive: true,
-      healthCheckUrl: 'https://splunk.company.com:8089/health',
-      tags: ['production', 'critical']
-    },
-    {
-      id: '2',
-      name: 'CrowdStrike Falcon',
-      type: IntegrationType.EDR,
-      vendor: 'CrowdStrike',
-      description: 'Endpoint detection and response platform',
-      status: ConnectionStatus.CONNECTED,
-      lastSync: new Date(now.getTime() - 5 * 60 * 1000), // 5 minutes ago
-      config: {
-        apiEndpoint: 'https://api.crowdstrike.com',
-        clientId: 'client123',
-        clientSecret: '********',
-        syncInterval: 10
-      },
-      version: '6.42.0',
-      supportedFeatures: ['threat-detection', 'endpoint-visibility', 'incident-response'],
-      requiredPermissions: ['read_detections', 'manage_hosts'],
-      dataFlowDirection: 'inbound',
-      createdAt: new Date('2024-02-01'),
-      updatedAt: now,
-      createdBy: 'security@company.com',
-      isActive: true,
-      tags: ['production', 'endpoints']
-    },
-    {
-      id: '3',
-      name: 'ServiceNow',
-      type: IntegrationType.TICKETING,
-      vendor: 'ServiceNow',
-      description: 'IT service management and ticketing',
-      status: ConnectionStatus.ERROR,
-      lastSync: new Date(now.getTime() - 2 * 60 * 60 * 1000), // 2 hours ago
-      lastError: 'Authentication failed: Invalid credentials',
-      config: {
-        apiEndpoint: 'https://company.service-now.com',
-        username: 'integration_user',
-        password: '********',
-        syncInterval: 15
-      },
-      version: 'Tokyo',
-      supportedFeatures: ['ticket-creation', 'workflow-automation', 'cmdb-sync'],
-      requiredPermissions: ['create_incident', 'read_cmdb'],
-      dataFlowDirection: 'bidirectional',
-      createdAt: new Date('2024-01-20'),
-      updatedAt: now,
-      createdBy: 'it-ops@company.com',
-      isActive: true,
-      tags: ['production', 'itsm']
-    },
-    {
-      id: '4',
-      name: 'Microsoft Azure AD',
-      type: IntegrationType.IAM,
-      vendor: 'Microsoft',
-      description: 'Identity and access management',
-      status: ConnectionStatus.CONNECTED,
-      lastSync: new Date(now.getTime() - 30 * 60 * 1000), // 30 minutes ago
-      config: {
-        apiEndpoint: 'https://graph.microsoft.com',
-        tenantId: 'tenant123',
-        clientId: 'app123',
-        clientSecret: '********',
-        syncInterval: 60
-      },
-      version: '2.0',
-      supportedFeatures: ['user-sync', 'group-management', 'sso', 'mfa'],
-      requiredPermissions: ['User.Read.All', 'Group.Read.All'],
-      dataFlowDirection: 'inbound',
-      createdAt: new Date('2024-01-10'),
-      updatedAt: now,
-      createdBy: 'admin@company.com',
-      isActive: true,
-      tags: ['production', 'identity']
-    },
-    {
-      id: '5',
-      name: 'Qualys VMDR',
-      type: IntegrationType.VULNERABILITY_SCANNER,
-      vendor: 'Qualys',
-      description: 'Vulnerability management and scanning',
-      status: ConnectionStatus.PENDING,
-      config: {
-        apiEndpoint: 'https://qualysapi.qualys.com',
-        username: 'api_user',
-        password: '********',
-        syncInterval: 720 // 12 hours
-      },
-      version: '2.0',
-      supportedFeatures: ['vulnerability-scanning', 'asset-discovery', 'reporting'],
-      requiredPermissions: ['scan_assets', 'view_reports'],
-      dataFlowDirection: 'inbound',
-      createdAt: new Date('2024-03-01'),
-      updatedAt: now,
-      createdBy: 'security@company.com',
-      isActive: false,
-      tags: ['staging', 'vulnerability-management']
-    }
-  ];
+// Real integration data management
+const fetchIntegrations = async (): Promise<Integration[]> => {
+  const { data, error } = await supabase
+    .from('integrations')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-  return integrations;
+  if (error) {
+    throw new Error(`Failed to fetch integrations: ${error.message}`);
+  }
+
+  return data || [];
+};
+
+const createIntegration = async (integration: Omit<Integration, 'id' | 'createdAt' | 'updatedAt'>): Promise<Integration> => {
+  const { data, error } = await supabase
+    .from('integrations')
+    .insert([{
+      ...integration,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }])
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`Failed to create integration: ${error.message}`);
+  }
+
+  return data;
+};
+
+const updateIntegration = async (id: string, updates: Partial<Integration>): Promise<Integration> => {
+  const { data, error } = await supabase
+    .from('integrations')
+    .update({
+      ...updates,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(`Failed to update integration: ${error.message}`);
+  }
+
+  return data;
+};
+
+const deleteIntegration = async (id: string): Promise<void> => {
+  const { error } = await supabase
+    .from('integrations')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    throw new Error(`Failed to delete integration: ${error.message}`);
+  }
 };
 
 // Mock integration templates
@@ -251,16 +183,29 @@ const IntegrationManager: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<IntegrationStats | null>(null);
 
   useEffect(() => {
-    // Load mock data
-    const mockData = generateMockIntegrations();
-    setIntegrations(mockData);
-    
-    // Calculate stats
-    const mockStats = generateIntegrationSummary(mockData, []);
-    setStats(mockStats);
+    const loadIntegrations = async () => {
+      try {
+        setIsLoading(true);
+        const integrationsData = await fetchIntegrations();
+        setIntegrations(integrationsData);
+        
+        // Calculate stats
+        const integrationStats = generateIntegrationSummary(integrationsData, []);
+        setStats(integrationStats);
+      } catch (error) {
+        setError('Failed to load integrations. Please try again.');
+        console.error('Integration loading error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadIntegrations();
   }, []);
 
   // Filter integrations based on search and filters
@@ -279,17 +224,19 @@ const IntegrationManager: React.FC = () => {
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    // Simulate refresh
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Update last sync times
-    const updatedIntegrations = integrations.map(integration => ({
-      ...integration,
-      lastSync: integration.status === ConnectionStatus.CONNECTED ? new Date() : integration.lastSync
-    }));
-    
-    setIntegrations(updatedIntegrations);
-    setIsRefreshing(false);
+    try {
+      const integrationsData = await fetchIntegrations();
+      setIntegrations(integrationsData);
+      
+      // Update stats
+      const integrationStats = generateIntegrationSummary(integrationsData, []);
+      setStats(integrationStats);
+    } catch (error) {
+      setError('Failed to refresh integrations. Please try again.');
+      console.error('Integration refresh error:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const handleTestConnection = async (integration: Integration) => {
@@ -298,9 +245,20 @@ const IntegrationManager: React.FC = () => {
     // Show result in a toast or modal
   };
 
-  const handleDeleteIntegration = (id: string) => {
+  const handleDeleteIntegration = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this integration?')) {
-      setIntegrations(integrations.filter(i => i.id !== id));
+      try {
+        await deleteIntegration(id);
+        setIntegrations(integrations.filter(i => i.id !== id));
+        
+        // Update stats
+        const updatedIntegrations = integrations.filter(i => i.id !== id);
+        const integrationStats = generateIntegrationSummary(updatedIntegrations, []);
+        setStats(integrationStats);
+      } catch (error) {
+        setError('Failed to delete integration. Please try again.');
+        console.error('Integration deletion error:', error);
+      }
     }
   };
 
@@ -340,6 +298,8 @@ const IntegrationManager: React.FC = () => {
       description="Connect and manage your security tools in one unified platform"
       icon={<Link2 className="h-8 w-8 text-blue-600" />}
       toolId="integration-manager"
+      isLoading={isLoading}
+      error={error}
     >
       {/* Stats Grid */}
       {stats && (

@@ -18,7 +18,7 @@ export const useSupabase = () => {
 
         // Check if environment variables are configured
         if (!supabaseUrl || !supabaseAnonKey) {
-          console.warn('Supabase configuration missing. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file');
+          // Supabase configuration missing - using fallback mode
           setError('Supabase configuration missing');
           setLoading(false);
           return;
@@ -35,8 +35,7 @@ export const useSupabase = () => {
         setIsConnected(true); // Assume connection is good if client is created successfully
         setLoading(false);
         
-        console.log('✅ Supabase client initialized successfully');
-        console.log('🔗 Connected to:', supabaseUrl);
+        // Supabase client initialized successfully
 
       } catch (err) {
         console.error('❌ Failed to initialize Supabase:', err);
@@ -102,7 +101,7 @@ export const useSupabaseQuery = (tableName, options = {}) => {
         if (queryError) {
           // Handle specific error cases gracefully
           if (queryError.code === '42P01') {
-            console.warn(`ℹ️ Table '${tableName}' doesn't exist yet. Returning empty data.`);
+            // Table doesn't exist yet - returning empty data
             setData([]);
             return;
           }
@@ -110,7 +109,7 @@ export const useSupabaseQuery = (tableName, options = {}) => {
         }
 
         setData(result || []);
-        console.log(`✅ Successfully fetched ${(result || []).length} records from ${tableName}`);
+        // Successfully fetched records
         
       } catch (err) {
         console.error(`❌ Error fetching data from ${tableName}:`, err);
@@ -142,10 +141,10 @@ export const testSupabaseConnection = async (supabase) => {
       throw error;
     }
     
-    console.log('✅ Supabase connection test successful');
+    // Supabase connection test successful
     return { connected: true, error: null };
   } catch (err) {
-    console.warn('⚠️ Supabase connection test failed:', err.message);
+    // Supabase connection test failed
     return { connected: false, error: err.message };
   }
 };
@@ -166,9 +165,9 @@ export const checkSupabaseConfig = () => {
   };
 
   if (config.isConfigured) {
-    console.log('✅ Supabase configuration complete');
+    // Supabase configuration complete
   } else {
-    console.warn('⚠️ Missing Supabase environment variables:', config.missingVars.join(', '));
+    // Missing Supabase environment variables
   }
 
   return config;

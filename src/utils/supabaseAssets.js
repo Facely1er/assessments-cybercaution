@@ -1,5 +1,6 @@
  // src/utils/supabaseAssets.js
 // Utility functions for handling Supabase storage and assets
+import { supabase } from '../lib/supabase';
 
 // Default app assets configuration
 export const appAssets = {
@@ -25,13 +26,13 @@ export const appAssets = {
 export const getStorageUrl = (path, bucket = 'assets') => {
   if (!path) return '';
   
-  // For development/demo, return a placeholder path
-  // In production, this would integrate with your Supabase storage:
-  // const supabase = createClient(url, key);
-  // return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
-  
-  // Return a constructed asset path for now
-  return `/assets/${path}`;
+  try {
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    return data.publicUrl;
+  } catch (error) {
+    console.error('Error getting storage URL:', error);
+    return `/assets/${path}`; // Fallback to local path
+  }
 };
 
 // Get asset URL from predefined assets
@@ -43,65 +44,136 @@ export const getAssetUrl = (category, asset) => {
   return appAssets[category][asset];
 };
 
-// Get public URL for Supabase storage (when configured)
+// Get public URL for Supabase storage
 export const getPublicUrl = (bucket, path) => {
   if (!bucket || !path) return '';
   
-  // This would be implemented when Supabase storage is configured
-  // const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-  // return data.publicUrl;
-  
-  return `/storage/${bucket}/${path}`;
+  try {
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    return data.publicUrl;
+  } catch (error) {
+    console.error('Error getting public URL:', error);
+    return `/storage/${bucket}/${path}`; // Fallback
+  }
 };
 
-// Upload file to Supabase storage (placeholder)
+// Upload file to Supabase storage
 export const uploadFile = async (bucket, path, file) => {
-  console.warn('Upload functionality not yet implemented');
-  
-  // This would be implemented when Supabase storage is configured
-  // const { data, error } = await supabase.storage
-  //   .from(bucket)
-  //   .upload(path, file);
-  
-  return { data: null, error: 'Not implemented' };
+  try {
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload(path, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.error('Upload error:', error);
+    return { data: null, error: error.message };
+  }
 };
 
-// Delete file from Supabase storage (placeholder)
+// Delete file from Supabase storage
 export const deleteFile = async (bucket, path) => {
-  console.warn('Delete functionality not yet implemented');
-  
-  // This would be implemented when Supabase storage is configured
-  // const { error } = await supabase.storage
-  //   .from(bucket)
-  //   .remove([path]);
-  
-  return { error: 'Not implemented' };
+  try {
+    const { error } = await supabase.storage
+      .from(bucket)
+      .remove([path]);
+
+    if (error) {
+      throw error;
+    }
+
+    return { error: null };
+  } catch (error) {
+    console.error('Delete error:', error);
+    return { error: error.message };
+  }
 };
 
-// List files in a storage bucket (placeholder)
+// List files in a storage bucket
 export const listFiles = async (bucket, folder = '') => {
-  console.warn('List files functionality not yet implemented');
-  
-  // This would be implemented when Supabase storage is configured
-  // const { data, error } = await supabase.storage
-  //   .from(bucket)
-  //   .list(folder);
-  
-  return { data: [], error: 'Not implemented' };
+  try {
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .list(folder, {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' }
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: data || [], error: null };
+  } catch (error) {
+    console.error('List files error:', error);
+    return { data: [], error: error.message };
+  }
 };
 
 // Check if file exists in storage
 export const fileExists = async (bucket, path) => {
-  console.warn('File exists check not yet implemented');
-  
-  // This would be implemented when Supabase storage is configured
-  // const { data, error } = await supabase.storage
-  //   .from(bucket)
-  //   .list(dirname(path), {
-  //     search: basename(path)
-  //   });
-  
-  return false;
+  try {
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .list(path.split('/').slice(0, -1).join('/'), {
+        search: path.split('/').pop()
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return data && data.length > 0;
+  } catch (error) {
+    console.error('File exists check error:', error);
+    return false;
+  }
+};
+
+// Download file from storage
+export const downloadFile = async (bucket, path) => {
+  try {
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .download(path);
+
+    if (error) {
+      throw error;
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    console.error('Download error:', error);
+    return { data: null, error: error.message };
+  }
+};
+
+// Get file metadata
+export const getFileMetadata = async (bucket, path) => {
+  try {
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .list(path.split('/').slice(0, -1).join('/'), {
+        search: path.split('/').pop()
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: data?.[0] || null, error: null };
+  } catch (error) {
+    console.error('Get metadata error:', error);
+    return { data: null, error: error.message };
+  }
 };
 
 export default appAssets;

@@ -87,7 +87,7 @@ const DarkWebMonitoring = () => {
       }
       
       setConnectionStatus('connected');
-      console.log('✅ Supabase connection successful');
+      // Supabase connection successful
     } catch (err) {
       console.error('❌ Supabase connection failed:', err);
       setConnectionStatus('error');
@@ -114,7 +114,7 @@ const DarkWebMonitoring = () => {
         }
       }
     } catch (err) {
-      console.log('No existing session found, will create new one');
+      // No existing session found, will create new one
     }
   };
 

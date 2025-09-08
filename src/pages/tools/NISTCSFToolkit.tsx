@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 import { 
   Award,
   CheckCircle,
@@ -43,18 +44,27 @@ const NISTCSFToolkit = () => {
   const [assessment, setAssessment] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const sessionId = "demo-session";
+  const sessionId = `nist-csf-${Date.now()}`;
   
   const saveAssessment = async (data: any) => {
-    // Mock function implementation
-    console.log('Saving assessment data:', data);
     setLoading(true);
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { error } = await supabase
+        .from('nist_csf_assessments')
+        .upsert({
+          id: sessionId,
+          assessment_data: data,
+          updated_at: new Date().toISOString()
+        });
+
+      if (error) {
+        throw error;
+      }
+
       return { success: true };
     } catch (err) {
       setError('Failed to save assessment');
+      console.error('Save assessment error:', err);
       return { success: false };
     } finally {
       setLoading(false);
@@ -62,9 +72,26 @@ const NISTCSFToolkit = () => {
   };
   
   const generateReport = async (options: any) => {
-    // Mock implementation
-    console.log("Generating report with options:", options);
-    return true;
+    try {
+      const { data: assessmentData, error } = await supabase
+        .from('nist_csf_assessments')
+        .select('*')
+        .eq('id', sessionId)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      // Generate PDF report
+      const { generateNISTCSFReport } = await import('../../utils/generatePdf');
+      await generateNISTCSFReport(assessmentData.assessment_data, options);
+      
+      return true;
+    } catch (err) {
+      console.error('Generate report error:', err);
+      return false;
+    }
   };
 
   const [assessmentData, setAssessmentData] = useState({});
@@ -430,7 +457,7 @@ const NISTCSFToolkit = () => {
       setLastSaved(new Date().toISOString());
       if (showNotification) {
         // You could add a toast notification here
-        console.log('Assessment saved successfully');
+        // Assessment saved successfully
       }
     }
   };
