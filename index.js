@@ -1,3 +1,4 @@
 // run `node index.js` in the terminal
 
-console.log(`Hello Node.js v${process.versions.node}!`);
+// This file is used for Node.js server-side operations
+// Remove this file if not needed for production

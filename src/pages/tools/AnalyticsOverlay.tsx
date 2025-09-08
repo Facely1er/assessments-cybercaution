@@ -68,7 +68,7 @@ const AnalyticsOverlay: React.FC = () => {
   const [showWidgetSettings, setShowWidgetSettings] = useState(false);
   const [expandedWidget, setExpandedWidget] = useState<string | null>(null);
 
-  // Mock data - In production, this would come from integrated tools
+  // Real analytics data from integrated tools
   const [analyticsData, setAnalyticsData] = useState<any>({
     threats: [],
     vulnerabilities: [],
@@ -78,76 +78,109 @@ const AnalyticsOverlay: React.FC = () => {
     assets: []
   });
 
-  // Generate mock data
-  const generateMockData = () => {
-    const now = new Date();
-    const threats = [];
-    const vulnerabilities = [];
-    const incidents = [];
-    const riskScores = [];
+  // Fetch real analytics data from integrated tools
+  const fetchAnalyticsData = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-    // Generate time series data
-    for (let i = selectedTimeRange.days; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      // Fetch data from various integrated tools
+      const [threatsData, vulnerabilitiesData, incidentsData, complianceData, riskScoresData, assetsData] = await Promise.all([
+        fetchThreatsData(selectedTimeRange.days),
+        fetchVulnerabilitiesData(selectedTimeRange.days),
+        fetchIncidentsData(selectedTimeRange.days),
+        fetchComplianceData(),
+        fetchRiskScoresData(),
+        fetchAssetsData()
+      ]);
 
-      threats.push({
-        date: dateStr,
-        blocked: Math.floor(Math.random() * 1000) + 500,
-        detected: Math.floor(Math.random() * 500) + 200,
-        investigated: Math.floor(Math.random() * 100) + 50
+      setAnalyticsData({
+        threats: threatsData,
+        vulnerabilities: vulnerabilitiesData,
+        incidents: incidentsData,
+        compliance: complianceData,
+        riskScores: riskScoresData,
+        assets: assetsData
       });
-
-      vulnerabilities.push({
-        date: dateStr,
-        critical: Math.floor(Math.random() * 10) + 5,
-        high: Math.floor(Math.random() * 20) + 10,
-        medium: Math.floor(Math.random() * 50) + 20,
-        low: Math.floor(Math.random() * 100) + 50
-      });
-
-      incidents.push({
-        date: dateStr,
-        created: Math.floor(Math.random() * 20) + 5,
-        resolved: Math.floor(Math.random() * 15) + 3,
-        pending: Math.floor(Math.random() * 10) + 2
-      });
+    } catch (err) {
+      setError('Failed to fetch analytics data. Please check your integrations.');
+      console.error('Analytics data fetch error:', err);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    // Generate risk scores
-    riskCategories.forEach(category => {
-      riskScores.push({
-        category,
-        current: Math.floor(Math.random() * 40) + 60,
-        previous: Math.floor(Math.random() * 40) + 60,
-        factors: [
-          { name: 'Vulnerabilities', value: Math.random() * 100 },
-          { name: 'Incidents', value: Math.random() * 100 },
-          { name: 'Compliance', value: Math.random() * 100 },
-          { name: 'Controls', value: Math.random() * 100 }
-        ]
-      });
-    });
+  // Helper functions to fetch data from integrated tools
+  const fetchThreatsData = async (days: number) => {
+    // Implementation would fetch from SIEM, EDR, and other threat detection tools
+    const { data, error } = await supabase
+      .from('threat_events')
+      .select('*')
+      .gte('timestamp', new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString())
+      .order('timestamp', { ascending: true });
 
-    setAnalyticsData({
-      threats,
-      vulnerabilities,
-      incidents,
-      riskScores,
-      compliance: [
-        { name: 'NIST CSF', value: 78, status: 'Good' },
-        { name: 'ISO 27001', value: 82, status: 'Good' },
-        { name: 'SOC 2', value: 91, status: 'Excellent' },
-        { name: 'PCI DSS', value: 65, status: 'Needs Improvement' }
-      ],
-      assets: [
-        { type: 'Servers', count: 245, secured: 238 },
-        { type: 'Workstations', count: 1250, secured: 1180 },
-        { type: 'Network Devices', count: 89, secured: 87 },
-        { type: 'Cloud Resources', count: 456, secured: 445 }
-      ]
-    });
+    if (error) throw error;
+    return data || [];
+  };
+
+  const fetchVulnerabilitiesData = async (days: number) => {
+    // Implementation would fetch from vulnerability scanners
+    const { data, error } = await supabase
+      .from('vulnerability_scan_results')
+      .select('*')
+      .gte('scan_date', new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString())
+      .order('scan_date', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  };
+
+  const fetchIncidentsData = async (days: number) => {
+    // Implementation would fetch from incident management systems
+    const { data, error } = await supabase
+      .from('security_incidents')
+      .select('*')
+      .gte('created_at', new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString())
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  };
+
+  const fetchComplianceData = async () => {
+    // Implementation would fetch from compliance management systems
+    const { data, error } = await supabase
+      .from('compliance_assessments')
+      .select('*')
+      .eq('status', 'active')
+      .order('last_assessment', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  };
+
+  const fetchRiskScoresData = async () => {
+    // Implementation would calculate risk scores from various data sources
+    const { data, error } = await supabase
+      .from('risk_assessments')
+      .select('*')
+      .eq('is_active', true)
+      .order('updated_at', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
+  };
+
+  const fetchAssetsData = async () => {
+    // Implementation would fetch from asset management systems
+    const { data, error } = await supabase
+      .from('security_assets')
+      .select('*')
+      .eq('is_active', true)
+      .order('last_scan', { ascending: false });
+
+    if (error) throw error;
+    return data || [];
   };
 
   // Initialize default widgets
@@ -198,13 +231,12 @@ const AnalyticsOverlay: React.FC = () => {
   };
 
   useEffect(() => {
-    generateMockData();
+    fetchAnalyticsData();
     initializeWidgets();
-    setIsLoading(false);
 
     // Set up auto-refresh
     const interval = setInterval(() => {
-      generateMockData();
+      fetchAnalyticsData();
     }, refreshInterval);
 
     return () => clearInterval(interval);
@@ -358,10 +390,61 @@ const AnalyticsOverlay: React.FC = () => {
   };
 
   // Export functionality
-  const exportData = (format: 'pdf' | 'csv') => {
-    // In production, this would generate actual exports
-    console.log(`Exporting data as ${format}`);
-    alert(`Export to ${format.toUpperCase()} functionality would be implemented here`);
+  const exportData = async (format: 'pdf' | 'csv') => {
+    try {
+      setIsLoading(true);
+      
+      if (format === 'pdf') {
+        // Generate PDF report with current analytics data
+        const { generateAnalyticsPdf } = await import('../../utils/generatePdf');
+        await generateAnalyticsPdf(analyticsData, selectedTimeRange, 'analytics-report.pdf');
+      } else if (format === 'csv') {
+        // Generate CSV export
+        const csvData = convertToCSV(analyticsData);
+        downloadCSV(csvData, 'analytics-data.csv');
+      }
+    } catch (error) {
+      setError(`Failed to export ${format.toUpperCase()} report`);
+      console.error('Export error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const convertToCSV = (data: any) => {
+    // Convert analytics data to CSV format
+    const csvRows = [];
+    
+    // Add headers
+    csvRows.push(['Date', 'Threats Blocked', 'Threats Detected', 'Vulnerabilities Critical', 'Vulnerabilities High', 'Incidents Created', 'Incidents Resolved']);
+    
+    // Add data rows
+    data.threats.forEach((threat: any, index: number) => {
+      const vuln = data.vulnerabilities[index] || {};
+      const incident = data.incidents[index] || {};
+      
+      csvRows.push([
+        threat.date || '',
+        threat.blocked || 0,
+        threat.detected || 0,
+        vuln.critical || 0,
+        vuln.high || 0,
+        incident.created || 0,
+        incident.resolved || 0
+      ]);
+    });
+    
+    return csvRows.map(row => row.join(',')).join('\n');
+  };
+
+  const downloadCSV = (csvContent: string, filename: string) => {
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -398,7 +481,7 @@ const AnalyticsOverlay: React.FC = () => {
 
             {/* Refresh Button */}
             <button
-              onClick={() => generateMockData()}
+              onClick={() => fetchAnalyticsData()}
               className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
               title="Refresh data"
             >
