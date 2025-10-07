@@ -3,21 +3,14 @@ const Joi = require('joi');
 // Environment validation
 const validateEnvironment = () => {
   const requiredEnvVars = [
-    'MONGODB_URI',
-    'JWT_SECRET',
-    'SESSION_SECRET',
-    'ENCRYPTION_KEY'
+    'VITE_SUPABASE_URL',
+    'VITE_SUPABASE_ANON_KEY'
   ];
 
   const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
-  
+
   if (missingVars.length > 0) {
     throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
-  }
-
-  // Validate encryption key length
-  if (process.env.ENCRYPTION_KEY && process.env.ENCRYPTION_KEY.length !== 32) {
-    throw new Error('ENCRYPTION_KEY must be exactly 32 characters long');
   }
 };
 
