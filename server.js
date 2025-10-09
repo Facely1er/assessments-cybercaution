@@ -16,13 +16,9 @@ const securityRoutes = require('./routes/security');
 
 const { errorHandler } = require('./middleware/errorHandler');
 const { logger } = require('./utils/logger');
-const { validateEnvironment } = require('./utils/validation');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Validate environment variables
-validateEnvironment();
 
 // Security middleware
 app.use(helmet({
